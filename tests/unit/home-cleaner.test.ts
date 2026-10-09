@@ -18,4 +18,14 @@ describe('welcome cleaner', () => {
     applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'inbox' }, 'welcome');
     expect(clicks).toBe(1);
   });
+
+  it('hides a compact advert badge card even when its close glyph is present', () => {
+    document.body.innerHTML = '<main id="dvContentContainer"><section id="banner"><span id="badge">广告×</span></section></main>';
+    const banner = document.querySelector('#banner')!;
+    const badge = document.querySelector('#badge')!;
+    Object.defineProperty(badge, 'getBoundingClientRect', { value: () => ({ width: 45, height: 20 }) });
+    Object.defineProperty(banner, 'getBoundingClientRect', { value: () => ({ width: 600, height: 220 }) });
+    applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'minimal-home' }, 'welcome');
+    expect(banner.hasAttribute(HIDDEN_ATTRIBUTE)).toBe(true);
+  });
 });

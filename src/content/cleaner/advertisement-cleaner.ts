@@ -7,13 +7,20 @@ export function cleanAdvertisements(settings: Settings, documentRef: Document = 
   if (!root) return;
   if (settings.hideAds) {
     for (const badge of root.querySelectorAll('span, div, a')) {
-      if (tidy(badge.textContent) !== '广告') continue;
+      if (!isAdBadge(badge)) continue;
       const card = closestBoundedCard(badge, root);
       if (card) setHidden(card, true);
     }
     root.querySelectorAll('[data-ad], [data-advertisement], .mail-advertisement').forEach((element) => setHidden(element, true));
   }
   if (settings.hideAi) cleanWelcomeAiModules(root);
+}
+
+function isAdBadge(element: Element): boolean {
+  const label = tidy(element.textContent);
+  if (label !== '广告' && !label.startsWith('广告×')) return false;
+  const rect = element.getBoundingClientRect();
+  return rect.width <= 100 && rect.height <= 48;
 }
 
 function welcomeRoot(documentRef: Document): Element | null {

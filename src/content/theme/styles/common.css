@@ -1,5 +1,10 @@
 html[data-mail-minimal-hidden="true"] { display: none !important; }
 html [data-mail-minimal-hidden="true"] { display: none !important; }
+/* CSS fallbacks survive React/SPA redraws. They are enabled only by the matching Cleaner setting. */
+html[data-mail-minimal-cleaner][data-mail-minimal-hide-other-tools] #dvNavFoot { display: none !important; }
+html[data-mail-minimal-cleaner][data-mail-minimal-hide-ai] :is(#APP-smartAssistant, .APP-smartAssistant, .APP-toolAssistant, .APP-jobAssistant) { display: none !important; }
+html[data-mail-minimal-cleaner][data-mail-minimal-hide-ai][data-mail-minimal-page="welcome"] #dvContentContainer :is([data-module*="assistant" i], [data-component*="assistant" i], [data-testid*="assistant" i], [data-module*="ai" i], [class*="assistant" i]) { display: none !important; }
+html[data-mail-minimal-cleaner][data-mail-minimal-hide-ads][data-mail-minimal-page="welcome"] #dvContentContainer :is([data-ad], [data-advertisement], .mail-advertisement) { display: none !important; }
 html[data-mail-minimal-theme] body.frame-default {
   color: var(--mail-minimal-text) !important;
   font-family: var(--mail-minimal-font) !important;

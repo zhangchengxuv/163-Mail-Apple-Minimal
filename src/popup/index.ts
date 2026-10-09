@@ -7,7 +7,7 @@ const status = document.querySelector<HTMLElement>('#site-status')!;
 const icon = document.querySelector<HTMLImageElement>('#brand-icon')!;
 const cleaner = document.querySelector<HTMLInputElement>('[data-setting="cleanerEnabled"]')!;
 const theme = document.querySelector<HTMLInputElement>('[data-setting="themeEnabled"]')!;
-const homepage = document.querySelector<HTMLSelectElement>('#homepage-mode')!;
+const homepage = [...document.querySelectorAll<HTMLInputElement>('input[name="homepageMode"]')];
 
 function setStatus(text: string, kind: 'ready' | 'waiting' | 'unsupported'): void {
   status.textContent = text;
@@ -17,7 +17,7 @@ function setStatus(text: string, kind: 'ready' | 'waiting' | 'unsupported'): voi
 function render(settings: Settings): void {
   cleaner.checked = settings.cleanerEnabled;
   theme.checked = settings.themeEnabled;
-  homepage.value = settings.homepageMode;
+  homepage.forEach((input) => { input.checked = input.value === settings.homepageMode; });
 }
 
 function pageName(page: MailPage): string {
@@ -43,7 +43,9 @@ async function init(): Promise<void> {
   await refreshStatus();
   cleaner.addEventListener('change', async () => render(await updateSettings({ cleanerEnabled: cleaner.checked })));
   theme.addEventListener('change', async () => render(await updateSettings({ themeEnabled: theme.checked })));
-  homepage.addEventListener('change', async () => render(await updateSettings({ homepageMode: homepage.value as Settings['homepageMode'] })));
+  homepage.forEach((input) => input.addEventListener('change', async () => {
+    if (input.checked) render(await updateSettings({ homepageMode: input.value as Settings['homepageMode'] }));
+  }));
   document.querySelector('#reset')!.addEventListener('click', async () => render(await resetSettings()));
   document.querySelector('#advanced')!.addEventListener('click', () => void chrome.runtime.openOptionsPage());
 }
