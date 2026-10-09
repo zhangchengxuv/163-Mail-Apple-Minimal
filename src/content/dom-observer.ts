@@ -7,7 +7,12 @@ export class BatchedObserver {
   }
 
   observe(root: Node): void {
-    this.observer.observe(root, { childList: true, subtree: true });
+    this.observer.observe(root, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'style', 'aria-selected', 'aria-hidden']
+    });
   }
 
   schedule(): void {

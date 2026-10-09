@@ -1,5 +1,15 @@
 <!doctype html>
 <html lang="zh-CN">
   <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>163 Mail Minimal</title></head>
-  <body><main class="panel"><header><h1>163 Mail Minimal</h1><p>让网易邮箱更简洁</p><span id="site-status" class="status">正在检查网站状态…</span></header><form id="settings-form"></form><footer><button id="reset" type="button" class="link-button">恢复默认设置</button><span>v1.0.0</span></footer></main><script type="module" src="./index.ts"></script></body>
+  <body>
+    <main class="panel">
+      <header class="brand"><img id="brand-icon" width="40" height="40" alt="" /><div><h1>163 Mail Minimal</h1><p>简洁、安全的网易邮箱体验</p></div></header>
+      <p id="site-status" class="status" role="status">正在检查当前页面…</p>
+      <section class="card feature"><div><h2>界面净化</h2><p>广告、AI 和推广入口</p></div><label class="switch"><input aria-label="启用界面净化" type="checkbox" data-setting="cleanerEnabled"><span></span></label></section>
+      <section class="card feature"><div><h2>Apple Mail 外观</h2><p>顶部、侧栏和邮件列表</p></div><label class="switch"><input aria-label="启用 Apple Mail 外观" type="checkbox" data-setting="themeEnabled"><span></span></label></section>
+      <section class="card homepage"><label for="homepage-mode">首页行为</label><select id="homepage-mode" data-setting="homepageMode"><option value="inbox">直接进入收件箱</option><option value="minimal-home">极简首页</option><option value="original-home">网易原版首页</option></select></section>
+      <footer><button id="advanced" type="button">高级设置</button><button id="reset" type="button">恢复默认</button><span id="version"></span></footer>
+    </main>
+    <script type="module" src="./index.ts"></script>
+  </body>
 </html>

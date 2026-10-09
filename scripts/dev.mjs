@@ -2,6 +2,8 @@ import { spawn, spawnSync } from 'node:child_process';
 
 const command = process.platform === 'win32' ? 'npx.cmd' : 'npx';
 const run = (args) => spawnSync(command, args, { stdio: 'inherit' });
+const icons = run(['node', 'scripts/build-icons.mjs']);
+if (icons.status !== 0) process.exit(icons.status ?? 1);
 const content = run(['vite', 'build', '--config', 'vite.content.config.ts']);
 if (content.status !== 0) process.exit(content.status ?? 1);
 const css = run(['node', 'scripts/build-content-css.mjs']);

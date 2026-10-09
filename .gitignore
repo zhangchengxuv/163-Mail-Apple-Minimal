@@ -4,6 +4,7 @@ node_modules/
 npm-install.log
 # Local browser archive; may contain account/session data and must never be committed.
 html/
+public/icons/
 dist/
 release/
 playwright-report/

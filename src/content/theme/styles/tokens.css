@@ -1,13 +1,25 @@
 html {
+  --mail-bg: #f5f7fa;
+  --mail-surface: #ffffff;
+  --mail-sidebar: #edf2f8;
+  --mail-text-primary: #263445;
+  --mail-text-secondary: #7b8797;
+  --mail-border: #e3e8ef;
+  --mail-accent: #007aff;
+  --mail-hover: #f0f5fc;
+  --mail-selected: #e7f0fc;
+  --mail-radius-sm: 8px;
+  --mail-radius-md: 12px;
+  --mail-shadow-sm: 0 2px 9px rgb(40 60 90 / 4.5%);
   --mail-minimal-accent: #007aff;
-  --mail-minimal-page-bg: #f5f7fa;
-  --mail-minimal-sidebar-bg: #edf2f8;
-  --mail-minimal-surface: #ffffff;
-  --mail-minimal-text: #263445;
-  --mail-minimal-muted: #7b8797;
-  --mail-minimal-border: #e3e8ef;
-  --mail-minimal-hover: #f0f5fc;
-  --mail-minimal-selected: #e7f0fc;
-  --mail-minimal-radius: 8px;
+  --mail-minimal-page-bg: var(--mail-bg);
+  --mail-minimal-sidebar-bg: var(--mail-sidebar);
+  --mail-minimal-surface: var(--mail-surface);
+  --mail-minimal-text: var(--mail-text-primary);
+  --mail-minimal-muted: var(--mail-text-secondary);
+  --mail-minimal-border: var(--mail-border);
+  --mail-minimal-hover: var(--mail-hover);
+  --mail-minimal-selected: var(--mail-selected);
+  --mail-minimal-radius: var(--mail-radius-sm);
   --mail-minimal-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
 }

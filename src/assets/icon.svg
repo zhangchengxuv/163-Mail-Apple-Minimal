@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title>163 Mail Minimal</title>
+  <defs>
+    <linearGradient id="bg" x1="18" y1="12" x2="110" y2="118" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5D9DFF"/>
+      <stop offset="1" stop-color="#2469DC"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#bg)"/>
+  <rect x="28" y="37" width="72" height="55" rx="10" fill="#fff"/>
+  <path d="m31 43 31 25a4 4 0 0 0 5 0l30-25" fill="none" stroke="#3B7CE4" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m30 87 24-21m44 21L74 66" fill="none" stroke="#D7E7FF" stroke-width="4" stroke-linecap="round"/>
+</svg>

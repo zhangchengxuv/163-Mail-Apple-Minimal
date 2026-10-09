@@ -3,15 +3,37 @@ import { setHidden, tidy } from './dom';
 
 /** Only inspects the welcome module and only accepts a bounded card around a verified advert badge. */
 export function cleanAdvertisements(settings: Settings, documentRef: Document = document): void {
-  if (!settings.hideAds) return;
-  const root = documentRef.querySelector('#dvContentContainer');
+  const root = welcomeRoot(documentRef);
   if (!root) return;
-  for (const badge of root.querySelectorAll('span, div, a')) {
-    if (tidy(badge.textContent) !== '广告') continue;
-    const card = closestBoundedCard(badge, root);
+  if (settings.hideAds) {
+    for (const badge of root.querySelectorAll('span, div, a')) {
+      if (tidy(badge.textContent) !== '广告') continue;
+      const card = closestBoundedCard(badge, root);
+      if (card) setHidden(card, true);
+    }
+    root.querySelectorAll('[data-ad], [data-advertisement], .mail-advertisement').forEach((element) => setHidden(element, true));
+  }
+  if (settings.hideAi) cleanWelcomeAiModules(root);
+}
+
+function welcomeRoot(documentRef: Document): Element | null {
+  return documentRef.querySelector('[id*="welcome.WelcomeModule" i], [id*="WelcomeModule" i], #dvContentContainer');
+}
+
+function cleanWelcomeAiModules(root: Element): void {
+  const moduleSelectors = [
+    '[data-module*="assistant" i]', '[data-component*="assistant" i]',
+    '[data-testid*="assistant" i]', '[data-module*="ai" i]',
+    '.APP-smartAssistant', '.APP-toolAssistant', '.APP-jobAssistant'
+  ];
+  root.querySelectorAll(moduleSelectors.join(', ')).forEach((element) => setHidden(element, true));
+
+  // On the welcome module only, an AI assistant's large prompt card has a search-like input.
+  // This bounded structural check never touches the header search or mail rows.
+  for (const input of root.querySelectorAll('input[placeholder*="搜索邮件"], textarea[placeholder*="搜索邮件"]')) {
+    const card = closestBoundedCard(input, root);
     if (card) setHidden(card, true);
   }
-  root.querySelectorAll('[data-ad], [data-advertisement], .mail-advertisement').forEach((element) => setHidden(element, true));
 }
 
 function closestBoundedCard(start: Element, stop: Element): Element | undefined {

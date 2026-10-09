@@ -22,4 +22,7 @@ for (const content of manifest.content_scripts ?? []) {
 for (const page of [manifest.action?.default_popup, manifest.options_page]) {
   if (!page || !existsSync(resolve(dist, page))) throw new Error(`Manifest references missing page: ${page}`);
 }
+for (const icon of Object.values(manifest.icons ?? {})) {
+  if (!existsSync(resolve(dist, icon))) throw new Error(`Manifest references missing icon: ${icon}`);
+}
 console.log('Manifest is valid and all declared extension assets exist.');

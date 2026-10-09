@@ -21,7 +21,8 @@ Object.defineProperty(globalThis, 'chrome', {
       },
       onChanged: { addListener: (listener: Listener) => listeners.push(listener) }
     },
-    tabs: { query: async () => [] }
+    tabs: { query: async () => [], sendMessage: async () => ({ ready: true, page: 'list' }) },
+    runtime: { getURL: (path: string) => path, openOptionsPage: async () => undefined }
   }
 });
 

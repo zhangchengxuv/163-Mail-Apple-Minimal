@@ -1,25 +1,8 @@
-:root { color: #263445; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif; background: #f5f7fa; }
-* { box-sizing: border-box; }
-body { margin: 0; width: 360px; min-height: 520px; background: #f5f7fa; }
-.panel { padding: 20px; }
-header { margin-bottom: 16px; }
-h1 { margin: 0; font-size: 20px; letter-spacing: -.2px; }
-header p { margin: 4px 0 8px; color: #7b8797; font-size: 13px; }
-.status { display: inline-flex; padding: 4px 8px; border-radius: 999px; background: #e7f0fc; color: #2869ad; font-size: 11px; }
-.group { margin: 12px 0; padding: 12px 14px; border: 1px solid #e3e8ef; border-radius: 12px; background: #fff; }
-.group h2 { margin: 0 0 6px; font-size: 13px; }
-.group-description { margin: 0 0 8px; color: #7b8797; font-size: 11px; }
-.setting { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px; font-size: 13px; }
-.setting input[type="checkbox"] { appearance: none; width: 34px; height: 20px; margin: 0; border-radius: 99px; background: #cbd3de; cursor: pointer; transition: background .15s ease; }
-.setting input[type="checkbox"]::after { display: block; width: 16px; height: 16px; margin: 2px; border-radius: 50%; background: white; box-shadow: 0 1px 2px rgb(0 0 0 / 15%); content: ""; transition: transform .15s ease; }
-.setting input[type="checkbox"]:checked { background: #007aff; }
-.setting input[type="checkbox"]:checked::after { transform: translateX(14px); }
-.setting input:disabled { opacity: .45; cursor: default; }
-.radios { display: grid; gap: 7px; font-size: 12px; }
-.radios label { display: flex; gap: 8px; align-items: center; }
-.accent-row { display: flex; gap: 8px; align-items: center; }
-select, input[type="color"] { border: 1px solid #dbe2eb; border-radius: 7px; background: #fff; color: inherit; font: inherit; }
-select { min-width: 120px; padding: 5px; }
-input[type="color"] { width: 34px; height: 28px; padding: 2px; }
-footer { display: flex; justify-content: space-between; align-items: center; padding: 4px 2px; color: #7b8797; font-size: 11px; }
-.link-button { padding: 0; border: 0; background: none; color: #007aff; font: inherit; cursor: pointer; }
+:root { color: #263445; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif; background: #f4f6fa; }
+* { box-sizing: border-box; } body { width: 380px; margin: 0; background: #f4f6fa; } button, select { font: inherit; } .panel { padding: 18px; }
+.brand { display: flex; align-items: center; gap: 11px; } .brand img { border-radius: 11px; } h1 { margin: 0; font-size: 18px; letter-spacing: -.2px; } .brand p { margin: 3px 0 0; color: #78869a; font-size: 12px; }
+.status { min-height: 27px; margin: 14px 0 12px; padding: 6px 9px; border-radius: 8px; background: #eaf2fe; color: #3972aa; font-size: 11px; } .status[data-kind="ready"] { background: #eaf7ee; color: #34784a; } .status[data-kind="waiting"] { background: #fff6dd; color: #856314; }
+.card { border: 1px solid #e1e6ee; border-radius: 12px; background: #fff; } .feature { display: flex; align-items: center; justify-content: space-between; min-height: 70px; padding: 13px 14px; margin-top: 9px; } h2 { margin: 0; font-size: 14px; } .feature p { margin: 4px 0 0; color: #7b8797; font-size: 11px; }
+.switch input { position: absolute; opacity: 0; } .switch span { display: block; width: 38px; height: 22px; border-radius: 99px; background: #cbd3de; cursor: pointer; transition: background .16s ease; } .switch span::after { display: block; width: 18px; height: 18px; margin: 2px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / 18%); content: ""; transition: transform .16s ease; } .switch input:checked + span { background: #007aff; } .switch input:checked + span::after { transform: translateX(16px); } .switch input:focus-visible + span { outline: 2px solid #73aff4; outline-offset: 2px; }
+.homepage { display: grid; gap: 7px; padding: 12px 14px; margin-top: 9px; color: #435268; font-size: 12px; font-weight: 600; } select { width: 100%; padding: 7px 9px; border: 1px solid #dce4ee; border-radius: 8px; background: #f8fafc; color: #344258; font-size: 12px; }
+footer { display: flex; align-items: center; gap: 12px; padding: 13px 2px 0; font-size: 11px; } footer button { padding: 0; border: 0; background: none; color: #3479c9; cursor: pointer; } footer button:hover { color: #005fc7; } #version { margin-left: auto; color: #8792a2; }

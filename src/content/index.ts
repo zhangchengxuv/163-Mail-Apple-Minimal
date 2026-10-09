@@ -7,11 +7,13 @@ import type { Settings } from '../shared/types';
 
 let settings: Settings;
 let currentPage = detectPage();
+let initialized = false;
 
 function refresh(): void {
   currentPage = detectPage();
   applyTheme(settings, currentPage);
   applyCleaner(settings, currentPage);
+  initialized = true;
 }
 
 async function start(): Promise<void> {
@@ -25,6 +27,10 @@ async function start(): Promise<void> {
     if (area !== 'sync' || !changes.settings) return;
     settings = changes.settings.newValue as Settings;
     refresh();
+  });
+  chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+    if (message?.type !== 'mail-minimal:status') return;
+    sendResponse({ ready: initialized, page: currentPage });
   });
 }
 
