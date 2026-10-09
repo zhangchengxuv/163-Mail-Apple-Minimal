@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "163 Mail Minimal",
+  "version": "1.0.0",
+  "description": "A privacy-focused interface cleanup and Apple Mail-inspired theme for NetEase 163 Mail.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://mail.163.com/*"],
+  "action": {
+    "default_title": "163 Mail Minimal",
+    "default_popup": "src/popup/index.html"
+  },
+  "options_page": "src/options/index.html",
+  "content_scripts": [
+    {
+      "matches": ["https://mail.163.com/*"],
+      "css": ["assets/content.css"],
+      "js": ["assets/content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

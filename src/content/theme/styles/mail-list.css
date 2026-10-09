@@ -1,0 +1,29 @@
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer.frame-main-outer,
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main[role="main"],
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body { background: var(--mail-minimal-page-bg) !important; background-image: none !important; }
+html[data-mail-minimal-list] header.frame-main-cont-head,
+html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar,
+html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar-ext { background: #fff !important; background-image: none !important; border-color: var(--mail-minimal-border) !important; box-shadow: none !important; }
+html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar > .nui-toolbar-item > .nui-btn {
+  border: 1px solid #dce4ee !important; border-radius: 7px !important; background: #f8fafc !important; box-shadow: none !important;
+}
+html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar-ext .nui-roundBtn {
+  border: 1px solid #dce4ee !important; border-radius: 7px !important; background: #f8fafc !important; box-shadow: none !important;
+}
+/* Only the outer pagination button owns a border: fixes the historic double frame. */
+html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar-ext .nui-roundBtn .nui-btn-text { border: 0 !important; background: transparent !important; box-shadow: none !important; }
+html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] {
+  background: var(--mail-minimal-surface) !important; border-bottom-color: var(--mail-minimal-border) !important; outline: none !important;
+}
+/* Keep every native row layer aligned with its parent so selection cannot leave a date-column seam. */
+html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] > .nl0,
+html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] .hV0,
+html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] .im0 { background-color: inherit !important; background-image: none !important; }
+html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"]:hover { background: var(--mail-minimal-hover) !important; }
+html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0.ij0[role="link"],
+html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"][aria-selected="true"],
+html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"]:has([role="checkbox"][aria-checked="true"]) {
+  background: var(--mail-minimal-selected) !important; box-shadow: inset 3px 0 0 var(--mail-minimal-accent) !important;
+}
+html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"]:focus { outline: none !important; }
+html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"]:focus-visible { outline: 2px solid var(--mail-minimal-accent) !important; outline-offset: -2px !important; }

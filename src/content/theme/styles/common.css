@@ -1,0 +1,15 @@
+html[data-mail-minimal-hidden="true"] { display: none !important; }
+html [data-mail-minimal-hidden="true"] { display: none !important; }
+html[data-mail-minimal-theme] body.frame-default {
+  color: var(--mail-minimal-text) !important;
+  font-family: var(--mail-minimal-font) !important;
+  -webkit-font-smoothing: antialiased;
+}
+html[data-mail-minimal-theme] :focus:not(:focus-visible) { outline: none !important; }
+html[data-mail-minimal-theme] :focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--mail-minimal-accent) 70%, white) !important;
+  outline-offset: 2px !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-mail-minimal-theme] *, html[data-mail-minimal-theme] *::before, html[data-mail-minimal-theme] *::after { transition-duration: 0ms !important; }
+}

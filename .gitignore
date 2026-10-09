@@ -1,0 +1,9 @@
+node_modules/
+.npm-cache/
+.playwright-browsers/
+npm-install.log
+dist/
+release/
+playwright-report/
+test-results/
+.DS_Store

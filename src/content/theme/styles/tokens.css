@@ -1,0 +1,13 @@
+html {
+  --mail-minimal-accent: #007aff;
+  --mail-minimal-page-bg: #f5f7fa;
+  --mail-minimal-sidebar-bg: #edf2f8;
+  --mail-minimal-surface: #ffffff;
+  --mail-minimal-text: #263445;
+  --mail-minimal-muted: #7b8797;
+  --mail-minimal-border: #e3e8ef;
+  --mail-minimal-hover: #f0f5fc;
+  --mail-minimal-selected: #e7f0fc;
+  --mail-minimal-radius: 8px;
+  --mail-minimal-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+}

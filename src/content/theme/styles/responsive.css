@@ -1,0 +1,3 @@
+@media (max-width: 960px) {
+  html[data-mail-minimal-sidebar] #dvNavContainer.frame-nav { width: auto !important; }
+}

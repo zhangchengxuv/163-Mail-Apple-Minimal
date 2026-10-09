@@ -1,0 +1,4 @@
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] #dvContentContainer,
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] .frame-main { background: var(--mail-minimal-page-bg) !important; }
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] header.frame-main-cont-head { background: #fff !important; border-color: var(--mail-minimal-border) !important; }
+/* Mail bodies and nested iframe documents are intentionally untouched. */

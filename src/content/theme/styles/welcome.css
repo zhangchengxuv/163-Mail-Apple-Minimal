@@ -1,0 +1,2 @@
+html[data-mail-minimal-page="welcome"][data-mail-minimal-theme] #dvContentContainer,
+html[data-mail-minimal-page="welcome"][data-mail-minimal-theme] .frame-main { background: var(--mail-minimal-page-bg) !important; }
