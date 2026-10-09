@@ -43,6 +43,8 @@ npm run build
 
 `npm run dev` 持续构建到 `dist/`，供浏览器的“重新加载”按钮使用。`npm run build` 同时执行 Manifest 校验并生成发布 ZIP。
 
+构建校验会额外确认内容脚本是可由 Chrome 注入的经典 IIFE，而不是带 `import` 的 ES Module。
+
 若不下载 Playwright 自带 Chromium，可指定本机 Edge/Chrome 执行 UI 测试：`PLAYWRIGHT_BROWSER_EXECUTABLE=/path/to/browser npm run test:e2e`（PowerShell 请使用 `$env:PLAYWRIGHT_BROWSER_EXECUTABLE='…'; npm run test:e2e`）。
 
 ## 设置说明

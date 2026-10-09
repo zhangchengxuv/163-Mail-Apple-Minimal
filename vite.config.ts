@@ -5,10 +5,10 @@ export default defineConfig({
   base: './',
   build: {
     outDir: 'dist',
-    emptyOutDir: true,
+    // The content-script bundle is built first by vite.content.config.ts.
+    emptyOutDir: false,
     rollupOptions: {
       input: {
-        content: resolve(__dirname, 'src/content/index.ts'),
         popup: resolve(__dirname, 'src/popup/index.html'),
         options: resolve(__dirname, 'src/options/index.html')
       },

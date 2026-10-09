@@ -12,6 +12,12 @@ for (const content of manifest.content_scripts ?? []) {
   for (const file of [...(content.js ?? []), ...(content.css ?? [])]) {
     if (!existsSync(resolve(dist, file))) throw new Error(`Manifest references missing asset: ${file}`);
   }
+  for (const script of content.js ?? []) {
+    const source = readFileSync(resolve(dist, script), 'utf8');
+    if (/^\s*(?:import|export)\s/m.test(source)) {
+      throw new Error(`Content script must be a classic IIFE, not an ES module: ${script}`);
+    }
+  }
 }
 for (const page of [manifest.action?.default_popup, manifest.options_page]) {
   if (!page || !existsSync(resolve(dist, page))) throw new Error(`Manifest references missing page: ${page}`);

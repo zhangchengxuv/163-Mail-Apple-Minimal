@@ -5,8 +5,8 @@
   "description": "A privacy-focused Apple Mail-inspired UI cleanup extension for NetEase 163 Mail.",
   "type": "module",
   "scripts": {
-    "dev": "vite build --watch",
-    "build": "vite build && node scripts/validate-manifest.mjs && node scripts/package-release.mjs",
+    "dev": "node scripts/dev.mjs",
+    "build": "vite build --config vite.content.config.ts && node scripts/build-content-css.mjs && vite build && node scripts/validate-manifest.mjs && node scripts/package-release.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
     "test": "vitest run",

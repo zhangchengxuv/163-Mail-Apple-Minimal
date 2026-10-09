@@ -1,12 +1,3 @@
-import './theme/styles/tokens.css';
-import './theme/styles/common.css';
-import './theme/styles/header.css';
-import './theme/styles/sidebar.css';
-import './theme/styles/mail-list.css';
-import './theme/styles/compose.css';
-import './theme/styles/reader.css';
-import './theme/styles/welcome.css';
-import './theme/styles/responsive.css';
 import { applyCleaner } from './cleaner';
 import { BatchedObserver } from './dom-observer';
 import { detectPage } from './page-detector';
