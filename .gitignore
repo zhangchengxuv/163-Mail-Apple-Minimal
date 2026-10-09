@@ -2,6 +2,8 @@ node_modules/
 .npm-cache/
 .playwright-browsers/
 npm-install.log
+# Local browser archive; may contain account/session data and must never be committed.
+html/
 dist/
 release/
 playwright-report/
