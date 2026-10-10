@@ -1,5 +1,9 @@
 # 163 Mail Minimal
 
+[![CI](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/actions/workflows/ci.yml)
+[![Release](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/actions/workflows/release.yml/badge.svg)](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/actions/workflows/release.yml)
+[![Latest Release](https://img.shields.io/github/v/release/zhangchengxuv/163-Mail-Apple-Minimal?display_name=tag)](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/releases/latest)
+
 一个面向网易 163 邮箱的 Manifest V3 浏览器扩展：以最小权限清理推广入口，并提供克制的 Apple Mail 风格界面。它不读取、保存或上传邮件内容。
 
 > 当前版本：v1.1.2。项目仅适配 `https://mail.163.com/*` 的 JS6 页面；未在真实登录邮箱中运行的选择器均采用安全跳过策略，见“已知限制”。
@@ -27,6 +31,8 @@
 
 也可使用构建生成的 `release/163-mail-minimal-v1.1.2.zip` 解压后加载；ZIP 内是安装文件而非源码。
 
+最新正式版本与下载地址见 [GitHub Releases](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/releases/latest)。Release ZIP 是开发者模式下的“加载解压缩的扩展”安装包，不是 Chrome 或 Edge 商店的一键安装程序。
+
 ## 开发
 
 要求：Node.js 20+、npm 10+。
@@ -46,6 +52,27 @@ npm run build
 构建校验会额外确认内容脚本是可由 Chrome 注入的经典 IIFE，而不是带 `import` 的 ES Module。
 
 若不下载 Playwright 自带 Chromium，可指定本机 Edge/Chrome 执行 UI 测试：`PLAYWRIGHT_BROWSER_EXECUTABLE=/path/to/browser npm run test:e2e`（PowerShell 请使用 `$env:PLAYWRIGHT_BROWSER_EXECUTABLE='…'; npm run test:e2e`）。
+
+## CI/CD 自动化
+
+- [CI 工作流](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/actions/workflows/ci.yml) 在 `main` 的 Push、Pull Request 和 Actions 页面手动运行时执行 `npm ci`、类型检查、Lint、单元测试、生产构建、Manifest/版本/ZIP 结构校验；只上传短期构建产物，绝不创建 Release。
+- [Release 工作流](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/actions/workflows/release.yml) 仅在推送稳定版 `vX.Y.Z` Tag 时运行。它重新执行质量检查、校验 Tag 与 `package.json`、源码 Manifest、构建 Manifest 版本一致，生成 ZIP 与 SHA256 文件，并创建公开 GitHub Release。
+- 手动构建：进入 GitHub 的 **Actions → CI → Run workflow**。该入口只构建和测试，不发布 Release。
+
+### 发布下一个版本
+
+1. 同步修改 `package.json` 和 `public/manifest.json` 的版本号，例如 `1.1.3`；不要修改工作流来绕过版本校验。
+2. 运行 `npm install` 后执行 `npm run typecheck`、`npm run lint`、`npm run test`、`npm run build`、`npm run validate:version`、`npm run validate:release`。
+3. 提交并推送版本代码到 `main`。
+4. 创建并推送已存在提交的注释 Tag：`git tag -a v1.1.3 -m "163 Mail Minimal v1.1.3"`，然后 `git push 163-Mail-·-Apple-Minimal v1.1.3`。
+5. Release 工作流会拒绝已有 Release、缺失 Tag、非稳定 Tag、版本不一致或任一质量检查失败的情况；修复后请使用新的版本号，不要覆盖 Tag 或资产。
+
+### 常见 CI 失败
+
+- `npm ci` 失败：在本地执行 `npm install` 更新并提交 `package-lock.json`。
+- 版本校验失败：确认 Tag 去掉 `v` 后与 `package.json`、`public/manifest.json`、`dist/manifest.json` 完全一致。
+- ZIP 校验失败：运行 `npm run build` 后再执行 `npm run validate:release`，不要手工压缩源码目录。
+- Release 403：检查仓库 **Settings → Actions → General → Workflow permissions** 是否允许 `GITHUB_TOKEN` 以读写权限创建 Release；工作流不使用私人 PAT。
 
 ## 设置说明
 
@@ -69,6 +96,8 @@ npm run build
 ## 测试
 
 Vitest 使用脱敏静态夹具覆盖：顶部/侧栏净化、主开关恢复、邮件主题中包含“AI”时不误隐藏、主题作用域和 Storage 持久化。Playwright 覆盖 Popup 渲染和主开关联动。真实邮箱兼容性不能由静态测试代替。
+
+附加发布校验命令：`npm run validate:workflows`、`npm run validate:version`、`npm run validate:release` 和 `npm run checksum:release`。最后一条会在 `release/` 写入对应 ZIP 的 SHA256 校验文件。
 
 ## 人工验证清单
 

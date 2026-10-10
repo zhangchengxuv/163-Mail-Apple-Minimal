@@ -1,5 +1,9 @@
 # 163 Mail Minimal
 
+[![CI](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/actions/workflows/ci.yml)
+[![Release](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/actions/workflows/release.yml/badge.svg)](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/actions/workflows/release.yml)
+[![Latest Release](https://img.shields.io/github/v/release/zhangchengxuv/163-Mail-Apple-Minimal?display_name=tag)](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/releases/latest)
+
 A Manifest V3 browser extension for `mail.163.com` that independently provides interface cleanup and a restrained Apple Mail-inspired theme. It never reads, stores, or uploads email content.
 
 ## Highlights
@@ -27,6 +31,29 @@ npm run build
 ```
 
 Open `edge://extensions` or `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select `dist/`. The release archive is generated at `release/163-mail-minimal-v1.1.2.zip`.
+
+See [GitHub Releases](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/releases/latest) for the latest stable download. A Release ZIP is an unpacked developer-mode extension package, not a one-click Chrome Web Store or Edge Add-ons installer.
+
+## CI/CD
+
+- The [CI workflow](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/actions/workflows/ci.yml) runs on pushes to `main`, pull requests, and manual dispatch. It uses `npm ci`, type checking, linting, unit tests, the production build, and Manifest/version/archive validation. It only uploads a short-lived build artifact and never publishes a Release.
+- The [Release workflow](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/actions/workflows/release.yml) runs only after a stable `vX.Y.Z` Tag is pushed. It validates the Tag, package, source Manifest, and built Manifest versions, rebuilds the archive, writes SHA256, and creates a public GitHub Release through the built-in `GITHUB_TOKEN`.
+- For a manual build, open **Actions → CI → Run workflow**. It builds and tests only; it cannot publish a Release.
+
+### Releasing the next version
+
+1. Update both `package.json` and `public/manifest.json` to the same version, for example `1.1.3`.
+2. Run `npm install`, `npm run typecheck`, `npm run lint`, `npm run test`, `npm run build`, `npm run validate:version`, and `npm run validate:release`.
+3. Commit and push the version change to `main`.
+4. Create and push an annotated Tag for the already pushed commit: `git tag -a v1.1.3 -m "163 Mail Minimal v1.1.3"`, then `git push 163-Mail-·-Apple-Minimal v1.1.3`.
+5. The workflow refuses non-stable Tags, mismatched versions, missing Tags, existing Releases, and any failed quality gate. Fix the issue and publish a new version; never overwrite a Tag or Release asset.
+
+### Common failures
+
+- `npm ci` fails: run `npm install` locally and commit the matching `package-lock.json`.
+- Version validation fails: the Tag without `v`, `package.json`, `public/manifest.json`, and `dist/manifest.json` must match exactly.
+- Archive validation fails: run `npm run build` then `npm run validate:release`; do not zip the source repository manually.
+- Release receives HTTP 403: verify **Settings → Actions → General → Workflow permissions** permits the built-in `GITHUB_TOKEN` to write Releases. No personal access token is required.
 
 ## Limits
 

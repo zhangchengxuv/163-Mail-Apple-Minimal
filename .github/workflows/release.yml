@@ -1,0 +1,168 @@
+name: Release extension
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate tagged release
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate workflow files
+        run: npm run validate:workflows
+
+      - name: Verify stable tag and project versions
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          git show-ref --verify --quiet "refs/tags/${RELEASE_TAG}"
+          npm run typecheck
+          npm run lint
+          npm run test
+          npm run build
+          npm run validate:manifest
+          npm run validate:version
+          npm run validate:release
+
+  release:
+    name: Publish GitHub Release
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: write
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies and rebuild verified payload
+        run: |
+          npm ci
+          npm run build
+          npm run validate:manifest
+          RELEASE_TAG="${{ github.ref_name }}" npm run validate:version
+          npm run validate:release
+          npm run checksum:release
+
+      - name: Read release metadata
+        id: metadata
+        run: |
+          VERSION="$(node -p \"require('./package.json').version\")"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "archive=release/163-mail-minimal-v${VERSION}.zip" >> "$GITHUB_OUTPUT"
+          echo "checksum=release/163-mail-minimal-v${VERSION}.zip.sha256" >> "$GITHUB_OUTPUT"
+
+      - name: Refuse to overwrite an existing Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            echo "A Release already exists for $TAG; refusing to overwrite it." >&2
+            exit 1
+          fi
+
+      - name: Create public Release and upload assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          ARCHIVE: ${{ steps.metadata.outputs.archive }}
+          CHECKSUM: ${{ steps.metadata.outputs.checksum }}
+        run: |
+          git show-ref --verify --quiet "refs/tags/${TAG}"
+          cat > release-notes.md <<'EOF'
+          ## What's New
+          - See the automatically generated notes below for changes in this version.
+
+          ## Bug Fixes
+          - See the automatically generated notes below for fixes in this version.
+
+          ## Installation
+          1. Download the Release ZIP below and extract it.
+          2. Open `edge://extensions` or `chrome://extensions`.
+          3. Enable Developer mode, choose **Load unpacked**, and select the extracted folder containing `manifest.json`.
+          4. This ZIP is a developer-mode unpacked extension package, not a browser-store one-click installer.
+
+          ## Known Issues
+          - Static fixtures and automated tests cannot replace validation in a logged-in 163 Mail account.
+          - Dynamic 163 Mail DOM changes can require selector updates; uncertain modules are skipped safely.
+
+          ---
+
+          ## 中文更新说明
+
+          ### 新功能与修复
+          - 请查看下方自动生成的版本变更说明；工作流不会虚构未实现的功能。
+
+          ### 安装方法
+          1. 下载并解压下方 Release ZIP。
+          2. 打开 `edge://extensions` 或 `chrome://extensions`。
+          3. 开启开发人员模式，点击「加载解压缩的扩展程序」，选择包含 `manifest.json` 的解压目录。
+          4. 此 ZIP 用于开发者模式解压加载，不是浏览器商店的一键安装包。
+
+          ### 已知限制
+          - 静态夹具和自动化测试不能替代登录后真实邮箱的人工验证。
+          - 网易邮箱动态 DOM 更新后，部分选择器可能需要维护；不确定的模块会安全跳过。
+          EOF
+          gh release create "$TAG" "$ARCHIVE" "$CHECKSUM" \
+            --repo "$GITHUB_REPOSITORY" \
+            --verify-tag \
+            --fail-on-no-commits \
+            --title "163 Mail Minimal v${TAG#v}" \
+            --notes "$(cat release-notes.md)" \
+            --generate-notes
+
+      - name: Verify published Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          ARCHIVE: ${{ steps.metadata.outputs.archive }}
+          CHECKSUM: ${{ steps.metadata.outputs.checksum }}
+        run: |
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json url,isDraft,isPrerelease,assets > release.json
+          node - "$ARCHIVE" "$CHECKSUM" <<'NODE'
+          const fs = require('node:fs');
+          const [archive, checksum] = process.argv.slice(2);
+          const release = JSON.parse(fs.readFileSync('release.json', 'utf8'));
+          const assets = new Set(release.assets.map((asset) => asset.name));
+          if (release.isDraft || release.isPrerelease || !assets.has(archive.split('/').pop()) || !assets.has(checksum.split('/').pop())) {
+            throw new Error('Published Release is missing required public assets.');
+          }
+          console.log(`Release URL: ${release.url}`);
+          NODE
