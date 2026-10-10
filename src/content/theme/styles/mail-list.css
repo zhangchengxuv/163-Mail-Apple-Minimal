@@ -23,7 +23,15 @@ html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar, .n
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar > .nui-toolbar-item {
+  /* NetEase lays toolbar items out as floats.  Making each float a flex
+   * container keeps compound controls (checkbox + menu trigger) measured as
+   * one item without changing the toolbar's native ordering or events. */
+  display: flex !important;
+  align-items: center !important;
   flex: 0 0 auto !important;
+  inline-size: max-content !important;
+  min-inline-size: max-content !important;
+  gap: var(--mail-toolbar-gap) !important;
   margin-inline-end: var(--mail-toolbar-gap) !important;
 }
 
@@ -48,6 +56,22 @@ html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar > .
   line-height: 1.2 !important;
   text-indent: 0 !important;
   white-space: nowrap !important;
+}
+
+/* Native list buttons use `margin-right: -1px` to join grouped controls.
+ * That is correct for the old rectangular design, but lets Delete overlap the
+ * select-all compound control after its minimum width was compacted.  Keep
+ * the compound control intrinsically sized and let the item gap separate
+ * adjacent native actions. */
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar > .nui-toolbar-item > .nui-btn {
+  margin-inline-end: 0 !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar :is(.nui-btn:has(.nui-chk), .nui-btn:has([role="checkbox"])),
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar > .nui-toolbar-item:has(.nui-chk),
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar > .nui-toolbar-item:has([role="checkbox"]) {
+  flex: 0 0 auto !important;
+  min-inline-size: calc(var(--mail-toolbar-button-height) + var(--mail-toolbar-arrow-width)) !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar-ext .nui-roundBtn {

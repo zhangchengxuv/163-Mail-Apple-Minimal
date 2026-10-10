@@ -11,6 +11,9 @@ type Theme = 'light' | 'dark';
 
 function pageMarkup(theme: Theme, fontSize: number, pageType: 'read' | 'list'): string {
   const listAttribute = pageType === 'list' ? ' data-mail-minimal-list' : '';
+  const selectionControls = pageType === 'list'
+    ? '<div class="nui-toolbar-item" data-test="select-all-group"><button class="nui-btn" data-test="select-all"><span class="nui-chk" role="checkbox" aria-label="全选"><span class="nui-chk-symbol">□</span></span><span class="nui-splitBtn-arr" data-test="select-all-arrow">⌄</span></button><button class="nui-btn" data-test="delete"><span class="nui-btn-text">删除</span></button></div>'
+    : '';
   return `<!doctype html>
     <html data-mail-minimal-page="${pageType}" data-mail-minimal-theme="${theme}"${listAttribute} style="--mail-minimal-font-size: ${fontSize}px">
       <head><style>${styles}
@@ -24,6 +27,7 @@ function pageMarkup(theme: Theme, fontSize: number, pageType: 'read' | 'list'): 
         <main id="_dvModuleContainer_read.ReadModule_1">
           <header class="frame-main-cont-head">
             <div class="nui-toolbar">
+              ${selectionControls}
               <div class="nui-toolbar-item"><button class="nui-btn"><span class="nui-btn-text">返回</span></button></div>
               <div class="nui-toolbar-item"><button class="nui-btn"><span class="nui-btn-text">回复</span></button></div>
               <div class="nui-toolbar-item"><button class="nui-btn"><span class="nui-btn-text">回复全部</span></button></div>
@@ -41,7 +45,7 @@ function pageMarkup(theme: Theme, fontSize: number, pageType: 'read' | 'list'): 
 }
 
 async function toolbarMetrics(page: Page) {
-  return page.locator('.nui-toolbar .nui-btn:not(.nui-splitBtn)').evaluateAll((buttons) => buttons.map((button) => {
+  return page.locator('.nui-toolbar .nui-btn:not(.nui-splitBtn):not([data-test])').evaluateAll((buttons) => buttons.map((button) => {
     const rect = button.getBoundingClientRect();
     const text = button.querySelector<HTMLElement>('.nui-btn-text')!.getBoundingClientRect();
     return {
@@ -50,6 +54,29 @@ async function toolbarMetrics(page: Page) {
       textCenterOffset: (text.top + text.bottom - rect.top - rect.bottom) / 2
     };
   }));
+}
+
+async function selectAllMetrics(page: Page) {
+  return page.locator('[data-test="select-all-group"]').evaluate((group) => {
+    const rect = (selector: string) => {
+      const element = group.querySelector<HTMLElement>(selector)!;
+      const { left, right, top, bottom } = element.getBoundingClientRect();
+      return { left, right, top, bottom, width: right - left, height: bottom - top };
+    };
+
+    const selectAll = rect('[data-test="select-all"]');
+    const deleteButton = rect('[data-test="delete"]');
+    const checkbox = rect('.nui-chk');
+    const arrow = rect('[data-test="select-all-arrow"]');
+    return {
+      selectAll,
+      deleteButton,
+      checkbox,
+      arrow,
+      gap: deleteButton.left - selectAll.right,
+      intersects: !(selectAll.right <= deleteButton.left || deleteButton.right <= selectAll.left || selectAll.bottom <= deleteButton.top || deleteButton.bottom <= selectAll.top)
+    };
+  });
 }
 
 for (const pageType of ['read', 'list'] as const) {
@@ -70,6 +97,18 @@ for (const pageType of ['read', 'list'] as const) {
         expect(button.height).toBeGreaterThanOrEqual(30);
         expect(button.height).toBeLessThanOrEqual(32);
         expect(Math.abs(button.textCenterOffset)).toBeLessThanOrEqual(2);
+      }
+
+      if (pageType === 'list') {
+        const selectAll = await selectAllMetrics(page);
+        expect(selectAll.selectAll.width).toBeGreaterThanOrEqual(52);
+        expect(selectAll.gap).toBeGreaterThanOrEqual(4);
+        expect(selectAll.gap).toBeLessThanOrEqual(6);
+        expect(selectAll.intersects).toBe(false);
+        expect(selectAll.checkbox.left).toBeGreaterThanOrEqual(selectAll.selectAll.left);
+        expect(selectAll.checkbox.right).toBeLessThanOrEqual(selectAll.selectAll.right);
+        expect(selectAll.arrow.left).toBeGreaterThanOrEqual(selectAll.selectAll.left);
+        expect(selectAll.arrow.right).toBeLessThanOrEqual(selectAll.selectAll.right);
       }
     }
 
@@ -138,6 +177,11 @@ for (const pageType of ['read', 'list'] as const) {
         expect(layout.scrollWidth).toBeLessThanOrEqual(layout.clientWidth);
         expect(layout.toolbarFontSize).toBe('13px');
         expect(layout.buttonMinHeight).toBe('30px');
+        if (pageType === 'list') {
+          const selectAll = await selectAllMetrics(page);
+          expect(selectAll.intersects).toBe(false);
+          expect(selectAll.gap).toBeGreaterThan(0);
+        }
       }
     }
 
