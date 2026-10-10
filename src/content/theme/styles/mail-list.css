@@ -1,29 +1,73 @@
 html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer.frame-main-outer,
 html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main[role="main"],
-html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body { background: var(--mail-minimal-page-bg) !important; background-image: none !important; }
-html[data-mail-minimal-list] header.frame-main-cont-head,
-html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar,
-html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar-ext { background: var(--mail-minimal-surface) !important; background-image: none !important; border-color: var(--mail-minimal-border) !important; color: var(--mail-minimal-text) !important; box-shadow: none !important; }
-html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar > .nui-toolbar-item > .nui-btn {
-  border: 1px solid var(--mail-control-border) !important; border-radius: 7px !important; background: var(--mail-control) !important; color: var(--mail-minimal-text) !important; box-shadow: none !important;
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body {
+  background: var(--mail-minimal-page-bg) !important;
+  background-image: none !important;
+  color: var(--mail-minimal-text) !important;
 }
-html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar-ext .nui-roundBtn {
-  border: 1px solid var(--mail-control-border) !important; border-radius: 7px !important; background: var(--mail-control) !important; color: var(--mail-minimal-text) !important; box-shadow: none !important;
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(header.frame-main-cont-head, .frame-main-cont-head, .nui-toolbar, .nui-toolbar-ext) {
+  background: var(--mail-minimal-surface) !important;
+  background-image: none !important;
+  border-color: var(--mail-minimal-border) !important;
+  color: var(--mail-minimal-text) !important;
+  box-shadow: none !important;
 }
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar > .nui-toolbar-item > .nui-btn, .nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn) {
+  border: 1px solid var(--mail-control-border) !important;
+  border-radius: 7px !important;
+  background: var(--mail-control) !important;
+  color: var(--mail-minimal-text) !important;
+  box-shadow: none !important;
+}
+
 /* Only the outer pagination button owns a border: fixes the historic double frame. */
-html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar-ext .nui-roundBtn .nui-btn-text { border: 0 !important; background: transparent !important; box-shadow: none !important; }
-html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] {
-  background: var(--mail-minimal-surface) !important; border-bottom-color: var(--mail-minimal-border) !important; color: var(--mail-minimal-text) !important; outline: none !important;
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar-ext .nui-roundBtn .nui-btn-text {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
-/* Keep every native row layer aligned with its parent so selection cannot leave a date-column seam. */
-html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] > .nl0,
-html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] .hV0,
-html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] .im0 { background-color: inherit !important; background-image: none !important; }
-html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"]:hover { background: var(--mail-minimal-hover) !important; }
-html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0.ij0[role="link"],
-html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"][aria-selected="true"],
-html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"]:has([role="checkbox"][aria-checked="true"]) {
-  background: var(--mail-minimal-selected) !important; box-shadow: inset 3px 0 0 var(--mail-minimal-accent) !important;
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] {
+  background: var(--mail-minimal-surface) !important;
+  border-color: var(--mail-minimal-border) !important;
+  border-bottom-color: color-mix(in srgb, var(--mail-minimal-border) 72%, transparent) !important;
+  color: var(--mail-minimal-text) !important;
+  font-size: var(--mail-minimal-font-size) !important;
+  outline: none !important;
 }
-html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"]:focus { outline: none !important; }
-html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"]:focus-visible { outline: 2px solid var(--mail-minimal-accent) !important; outline-offset: -2px !important; }
+
+/* Keep every native row layer aligned so date and quick-action areas never form pale seams. */
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] :is(.nl0, .hV0, .im0) {
+  background-color: inherit !important;
+  background-image: none !important;
+  border-color: inherit !important;
+  color: inherit !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"]:hover {
+  background: var(--mail-minimal-hover) !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body .tv0 > .rF0.ij0[role="link"],
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"][aria-selected="true"],
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"]:has([role="checkbox"][aria-checked="true"]) {
+  background: var(--mail-minimal-selected) !important;
+  box-shadow: inset 3px 0 0 var(--mail-minimal-accent) !important;
+}
+
+/* Native date group rows are not message links; make their divider readable but deliberately quiet. */
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body .tv0 > :not(.rF0[role="link"]) {
+  background: var(--mail-minimal-page-bg) !important;
+  border-color: var(--mail-minimal-border) !important;
+  color: var(--mail-minimal-muted) !important;
+  font-size: var(--mail-minimal-font-small) !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"]:focus { outline: none !important; }
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"]:focus-visible {
+  outline: 2px solid var(--mail-focus-ring) !important;
+  outline-offset: -2px !important;
+}
+html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer :is(input[type="checkbox"], input[type="radio"]) { accent-color: var(--mail-minimal-accent); }

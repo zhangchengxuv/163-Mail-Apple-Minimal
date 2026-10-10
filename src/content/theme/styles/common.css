@@ -9,7 +9,15 @@ html[data-mail-minimal-cleaner][data-mail-minimal-hide-welcome-membership][data-
 html[data-mail-minimal-theme] body.frame-default {
   color: var(--mail-minimal-text) !important;
   font-family: var(--mail-minimal-font) !important;
+  font-size: var(--mail-minimal-font-size) !important;
   -webkit-font-smoothing: antialiased;
+}
+html[data-mail-minimal-theme] :is(.nui-menu, .nui-menu-item, .nui-pop, .nui-popover) {
+  border-color: var(--mail-minimal-border) !important;
+}
+html[data-mail-minimal-theme="dark"] :is(.nui-menu, .nui-pop, .nui-popover) {
+  background-color: var(--mail-minimal-surface) !important;
+  color: var(--mail-minimal-text) !important;
 }
 html[data-mail-minimal-theme] :focus:not(:focus-visible) { outline: none !important; }
 html[data-mail-minimal-theme] :focus-visible {

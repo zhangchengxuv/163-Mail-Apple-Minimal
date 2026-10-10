@@ -55,6 +55,9 @@ test('options persist a manually selected weather city', async ({ page }) => {
   await city.fill('Singapore');
   await city.press('Tab');
   await expect(city).toHaveValue('Singapore');
+  const fontSize = page.getByLabel('界面字号');
+  await fontSize.selectOption('16');
+  await expect(fontSize).toHaveValue('16');
 });
 
 test('options only requests and saves current position after an explicit click', async ({ page }) => {

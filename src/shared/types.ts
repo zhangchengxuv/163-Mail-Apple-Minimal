@@ -4,6 +4,7 @@ export type MailPage = 'welcome' | 'list' | 'compose' | 'read' | 'unknown';
 export type HomepageMode = 'inbox' | 'minimal-home' | 'original-home';
 export type AccentColor = 'blue' | 'graphite' | 'custom';
 export type ThemeMode = 'light' | 'dark' | 'system';
+export type UiFontSize = 13 | 14 | 15 | 16;
 
 export interface Settings {
   cleanerEnabled: boolean;
@@ -19,6 +20,7 @@ export interface Settings {
   themeCompose: boolean;
   themeRead: boolean;
   themeMode: ThemeMode;
+  uiFontSize: UiFontSize;
   homepageMode: HomepageMode;
   accentColor: AccentColor;
   customAccent: string;

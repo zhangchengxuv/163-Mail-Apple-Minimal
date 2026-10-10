@@ -4,6 +4,10 @@ html[data-mail-minimal-header] header.frame-head {
   border-bottom: 1px solid var(--mail-minimal-border) !important;
   box-shadow: 0 2px 9px rgb(40 60 90 / 4.5%) !important;
 }
+html[data-mail-minimal-header] header.frame-head :is(#spnUid, [name="account"] .nui-txt-link, [name="setting"] .nui-txt-link, .rZ0) {
+  color: var(--mail-minimal-text) !important;
+  font-size: var(--mail-minimal-font-small) !important;
+}
 html[data-mail-minimal-header] #dvMultiTabWrapper,
 html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs { background: transparent !important; background-image: none !important; }
 html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item {
@@ -14,7 +18,7 @@ html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item:hover { backgro
 html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item-selected {
   background: var(--mail-tab-selected) !important; border-color: var(--mail-minimal-border) !important; box-shadow: none !important;
 }
-html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item-text { color: var(--mail-minimal-muted) !important; font-weight: 500 !important; }
+html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item-text { color: var(--mail-minimal-muted) !important; font-size: var(--mail-minimal-font-size) !important; font-weight: 500 !important; }
 html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item-selected .nui-tabs-item-text { color: var(--mail-minimal-accent) !important; font-weight: 650 !important; }
 html[data-mail-minimal-header] header.frame-head input[type="text"],
 html[data-mail-minimal-header] header.frame-head input[type="search"] {

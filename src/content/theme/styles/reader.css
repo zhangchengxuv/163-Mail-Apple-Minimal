@@ -1,4 +1,5 @@
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] #dvContentContainer,
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] .frame-main { background: var(--mail-minimal-page-bg) !important; }
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] header.frame-main-cont-head { background: var(--mail-minimal-surface) !important; border-color: var(--mail-minimal-border) !important; color: var(--mail-minimal-text) !important; }
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] header.frame-main-cont-head { font-size: var(--mail-minimal-font-size); }
 /* Mail bodies and nested iframe documents are intentionally untouched. */

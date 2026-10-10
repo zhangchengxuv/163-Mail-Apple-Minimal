@@ -1,5 +1,24 @@
-html[data-mail-minimal-page="welcome"][data-mail-minimal-theme] #dvContentContainer,
-html[data-mail-minimal-page="welcome"][data-mail-minimal-theme] .frame-main { background: var(--mail-minimal-page-bg) !important; }
+/* The verified JS6 welcome root has a native light canvas outside individual cards. */
+html[data-mail-minimal-page="welcome"][data-mail-minimal-theme] :is(body.frame-default, #dvContentContainer, #dvContentContainer.frame-main-outer, #dvContentContainer .frame-main, #dvContentContainer .frame-main-cont-body, [id^="_dvModuleContainer_welcome.WelcomeModule_"]) {
+  background: var(--mail-minimal-page-bg) !important;
+  background-image: none !important;
+}
+/* These are stable welcome-page module IDs; no generic document-wide card restyling. */
+html[data-mail-minimal-page="welcome"][data-mail-minimal-theme="dark"] :is([id$="_dvInfoPanel"], [id$="_dvMemberCenter"]) {
+  background: var(--mail-minimal-surface) !important;
+  border: 1px solid var(--mail-minimal-border) !important;
+  box-shadow: var(--mail-shadow-sm) !important;
+  color: var(--mail-minimal-text) !important;
+}
+html[data-mail-minimal-page="welcome"][data-mail-minimal-theme="dark"] :is([id$="_dvInfoPanel"], [id$="_dvMemberCenter"]) :is(span, p, a, b, strong, em, i, label) {
+  color: var(--mail-minimal-text) !important;
+}
+html[data-mail-minimal-page="welcome"][data-mail-minimal-theme="dark"] [id$="_dvMemberCenter"] :is([class*="progress" i], [class*="bar" i]) {
+  border-color: var(--mail-minimal-border) !important;
+}
+html[data-mail-minimal-page="welcome"][data-mail-minimal-theme="dark"] [id$="_dvMemberCenter"] :is([class*="progress" i], [class*="bar" i]) > * {
+  background-color: var(--mail-minimal-accent) !important;
+}
 
 /* This card remains in the native welcome content flow; it never uses positioning or viewport offsets. */
 html[data-mail-minimal-page="welcome"] [data-mail-minimal-card="today"] {
@@ -17,25 +36,25 @@ html[data-mail-minimal-page="welcome"] [data-mail-minimal-card="today"] {
 .mail-minimal-today-layout { display: flex; align-items: stretch; justify-content: space-between; gap: 24px; }
 .mail-minimal-today-main { min-width: 0; flex: 1 1 auto; }
 .mail-minimal-today-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.mail-minimal-today-heading p { margin: 0 0 3px; color: var(--mail-minimal-muted); font-size: 12px; font-weight: 600; }
-.mail-minimal-today-heading h2 { margin: 0; font-size: 18px; line-height: 24px; }
-.mail-minimal-today-heading time { color: var(--mail-minimal-muted); font-size: 12px; white-space: nowrap; }
-.mail-minimal-today-stats { display: flex; gap: 24px; margin-top: 16px; color: var(--mail-minimal-muted); font-size: 12px; }
+.mail-minimal-today-heading p { margin: 0 0 3px; color: var(--mail-minimal-muted); font-size: var(--mail-minimal-font-small); font-weight: 600; }
+.mail-minimal-today-heading h2 { margin: 0; font-size: calc(var(--mail-minimal-font-size) + 4px); line-height: 24px; }
+.mail-minimal-today-heading time { color: var(--mail-minimal-muted); font-size: var(--mail-minimal-font-small); white-space: nowrap; }
+.mail-minimal-today-stats { display: flex; gap: 24px; margin-top: 16px; color: var(--mail-minimal-muted); font-size: var(--mail-minimal-font-small); }
 .mail-minimal-today-stats span { display: inline-flex; align-items: baseline; gap: 5px; }
-.mail-minimal-today-stats b { color: var(--mail-minimal-text); font-size: 21px; font-weight: 650; }
+.mail-minimal-today-stats b { color: var(--mail-minimal-text); font-size: calc(var(--mail-minimal-font-size) + 7px); font-weight: 650; }
 .mail-minimal-today-actions { display: flex; gap: 8px; margin-top: 16px; }
-.mail-minimal-today-actions button { padding: 7px 11px; border: 1px solid var(--mail-minimal-border); border-radius: var(--mail-radius-sm); background: var(--mail-control); color: var(--mail-minimal-text); font: inherit; font-size: 12px; cursor: pointer; }
+.mail-minimal-today-actions button { padding: 7px 11px; border: 1px solid var(--mail-minimal-border); border-radius: var(--mail-radius-sm); background: var(--mail-control); color: var(--mail-minimal-text); font: inherit; font-size: var(--mail-minimal-font-small); cursor: pointer; }
 .mail-minimal-today-actions button:first-child { border-color: var(--mail-minimal-accent); background: var(--mail-minimal-accent); color: var(--mail-on-accent); }
 .mail-minimal-today-actions button:hover { background: var(--mail-minimal-hover); }
 .mail-minimal-today-actions button:first-child:hover { filter: brightness(.96); background: var(--mail-minimal-accent); }
 .mail-minimal-today-weather { display: flex; flex: 0 0 174px; align-items: center; gap: 10px; margin: 0; padding-left: 20px; border-left: 1px solid var(--mail-minimal-border); color: var(--mail-minimal-muted); }
 .mail-minimal-today-weather[hidden] { display: none; }
-.mail-minimal-weather-symbol { width: 28px; color: var(--mail-minimal-accent); font-size: 24px; line-height: 1; text-align: center; }
+.mail-minimal-weather-symbol { width: 28px; color: var(--mail-minimal-accent); font-size: calc(var(--mail-minimal-font-size) + 10px); line-height: 1; text-align: center; }
 .mail-minimal-weather-copy { display: grid; min-width: 0; gap: 1px; }
 .mail-minimal-weather-copy p, .mail-minimal-weather-copy small, .mail-minimal-weather-copy strong, .mail-minimal-weather-copy span { overflow: hidden; margin: 0; text-overflow: ellipsis; white-space: nowrap; }
-.mail-minimal-weather-copy p { color: var(--mail-minimal-text); font-size: 12px; font-weight: 600; }
-.mail-minimal-weather-copy strong { color: var(--mail-minimal-text); font-size: 25px; font-weight: 650; letter-spacing: -.5px; line-height: 29px; }
-.mail-minimal-weather-copy span { font-size: 12px; }
-.mail-minimal-weather-copy small { color: var(--mail-minimal-muted); font-size: 10px; }
+.mail-minimal-weather-copy p { color: var(--mail-minimal-text); font-size: var(--mail-minimal-font-small); font-weight: 600; }
+.mail-minimal-weather-copy strong { color: var(--mail-minimal-text); font-size: calc(var(--mail-minimal-font-size) + 11px); font-weight: 650; letter-spacing: -.5px; line-height: 29px; }
+.mail-minimal-weather-copy span { font-size: var(--mail-minimal-font-small); }
+.mail-minimal-weather-copy small { color: var(--mail-minimal-muted); font-size: var(--mail-minimal-font-caption); }
 .mail-minimal-today-weather[data-state="loading"] .mail-minimal-weather-symbol { color: var(--mail-minimal-muted); }
 @media (max-width: 720px) { html[data-mail-minimal-page="welcome"] [data-mail-minimal-card="today"] { width: calc(100% - 24px); margin-top: 14px; } .mail-minimal-today-layout { flex-direction: column; gap: 16px; } .mail-minimal-today-heading { flex-direction: column; } .mail-minimal-today-weather { flex-basis: auto; padding: 13px 0 0; border-top: 1px solid var(--mail-minimal-border); border-left: 0; } }

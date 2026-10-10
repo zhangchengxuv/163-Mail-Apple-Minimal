@@ -10,11 +10,13 @@ describe('Theme manager', () => {
     expect(document.documentElement.hasAttribute(THEME_ATTRIBUTE)).toBe(true);
     expect(document.documentElement.getAttribute(THEME_ATTRIBUTE)).toBe('light');
     expect(document.documentElement.style.getPropertyValue('--mail-minimal-accent')).toBe('#596273');
+    expect(document.documentElement.style.getPropertyValue('--mail-minimal-font-size')).toBe('14px');
   });
 
   it('turns off all theme styling without leaving a stale attribute', () => {
     applyTheme({ ...DEFAULT_SETTINGS, themeEnabled: false }, 'list');
     expect(document.documentElement.hasAttribute(THEME_ATTRIBUTE)).toBe(false);
+    expect(document.documentElement.style.getPropertyValue('--mail-minimal-font-size')).toBe('');
   });
 
   it('resolves light, dark, and system modes without changing the active page', () => {
@@ -33,5 +35,14 @@ describe('Theme manager', () => {
     expect(resolveThemeMode('dark', false)).toBe('dark');
     expect(resolveThemeMode('system', true)).toBe('dark');
     expect(resolveThemeMode('system', false)).toBe('light');
+  });
+
+  it('updates the UI font token without touching mailbox content', () => {
+    const message = document.createElement('article');
+    message.textContent = 'Original message body';
+    document.body.append(message);
+    applyTheme({ ...DEFAULT_SETTINGS, uiFontSize: 16 }, 'list', document.documentElement, 'dark');
+    expect(document.documentElement.style.getPropertyValue('--mail-minimal-font-size')).toBe('16px');
+    expect(message.textContent).toBe('Original message body');
   });
 });

@@ -1,7 +1,7 @@
 html[data-mail-minimal-page="compose"][data-mail-minimal-theme] body.frame-default { background: var(--mail-minimal-page-bg) !important; }
 html[data-mail-minimal-page="compose"][data-mail-minimal-theme] [id*="ComposeModule"] { background: var(--mail-minimal-page-bg) !important; }
 html[data-mail-minimal-page="compose"][data-mail-minimal-theme] [id*="ComposeModule"] input,
-html[data-mail-minimal-page="compose"][data-mail-minimal-theme] [id*="ComposeModule"] textarea { box-shadow: none !important; }
+html[data-mail-minimal-page="compose"][data-mail-minimal-theme] [id*="ComposeModule"] textarea { box-shadow: none !important; font-size: var(--mail-minimal-font-size) !important; color: var(--mail-minimal-text) !important; }
 html[data-mail-minimal-page="compose"][data-mail-minimal-theme] [id*="ComposeModule"] [role="toolbar"] { background: var(--mail-control) !important; border-color: var(--mail-minimal-border) !important; color: var(--mail-minimal-text) !important; }
 html[data-mail-minimal-page="compose"][data-mail-minimal-theme] [id*="ComposeModule"] [role="toolbar"] .nui-btn { border-color: transparent !important; border-radius: 6px !important; background: transparent !important; box-shadow: none !important; }
 html[data-mail-minimal-page="compose"][data-mail-minimal-theme] [id*="ComposeModule"] [role="toolbar"] .nui-btn:hover { background: var(--mail-minimal-hover) !important; }

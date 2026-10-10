@@ -17,7 +17,10 @@ export function normalizeSettings(value: Partial<Settings> | undefined): Setting
     : DEFAULT_SETTINGS.weatherCity;
   const weatherLocationMode = candidate.weatherLocationMode === 'geolocation' ? 'geolocation' : 'manual';
   const themeMode = candidate.themeMode === 'light' || candidate.themeMode === 'dark' ? candidate.themeMode : 'system';
-  return { ...candidate, customAccent, weatherCity, weatherLocationMode, themeMode, showWeather: Boolean(candidate.showWeather) };
+  const uiFontSize = [13, 14, 15, 16].includes(Number(candidate.uiFontSize))
+    ? Number(candidate.uiFontSize) as Settings['uiFontSize']
+    : DEFAULT_SETTINGS.uiFontSize;
+  return { ...candidate, customAccent, weatherCity, weatherLocationMode, themeMode, uiFontSize, showWeather: Boolean(candidate.showWeather) };
 }
 
 export function accentValue(settings: Settings): string {

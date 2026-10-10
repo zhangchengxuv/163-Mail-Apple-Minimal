@@ -11,6 +11,7 @@ A Manifest V3 browser extension for `mail.163.com` that independently provides i
 - Independent cleanup and theme switches, stored with `chrome.storage.sync`.
 - Scoped CSS for header, sidebar, list, compose, reader, and welcome states.
 - Light, dark, and system-following appearance modes for the extension and mailbox chrome; email bodies, images, and iframes are never inverted.
+- Four persistent mailbox-chrome font sizes (13–16px) without browser zoom, rich-email font overrides, or virtual-list row-height changes.
 - No custom dashboard, history overrides, dynamic-ID selectors, or contact-panel geometry overrides.
 - Minimal permissions: `storage`, `geolocation` used only after an explicit Options-page action, `https://mail.163.com/*`, and two narrowly scoped Open-Meteo endpoints used only for optional weather.
 - Static local assets only; no remote code, analytics, or ads.
@@ -25,6 +26,8 @@ The required, narrowly scoped host permissions are `https://geocoding-api.open-m
 
 Choose **Light**, **Dark**, or **System** in the popup or Options page. System is the default and follows `prefers-color-scheme` while the mailbox is open, without refetching weather or reloading the list. Dark mode uses scoped CSS variables for the NetEase shell, Today card, and extension settings only. It deliberately leaves HTML email bodies, images, signatures, tables, iframe documents, and rich-text editor content untouched.
 
+Choose the UI size in **Options → Home and color**: 13px compact, 14px standard, 15px large, or 16px extra large. The setting applies to mailbox chrome such as navigation, list metadata, toolbar labels, Today, and compose controls. It does not use browser zoom and does not modify message-body typography or virtual-list row height.
+
 ## Build and install
 
 ```bash
@@ -35,7 +38,7 @@ npm run test
 npm run build
 ```
 
-Open `edge://extensions` or `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select `dist/`. The release archive is generated at `release/163-mail-minimal-v1.2.0.zip`.
+Open `edge://extensions` or `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select `dist/`. The release archive is generated at `release/163-mail-minimal-v1.3.0.zip`.
 
 See [GitHub Releases](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/releases/latest) for the latest stable download. A Release ZIP is an unpacked developer-mode extension package, not a one-click Chrome Web Store or Edge Add-ons installer.
 

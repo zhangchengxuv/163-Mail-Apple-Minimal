@@ -18,12 +18,15 @@ export function applyTheme(
   resolvedTheme = resolvedThemeForSettings(settings)
 ): ResolvedThemeMode | undefined {
   root.setAttribute(PAGE_ATTRIBUTE, page);
-  root.style.setProperty('--mail-minimal-accent', accentValue(settings));
   const enabled = pageEnabled(page, settings);
   if (enabled) {
+    root.style.setProperty('--mail-minimal-accent', accentValue(settings));
+    root.style.setProperty('--mail-minimal-font-size', `${settings.uiFontSize}px`);
     root.setAttribute(THEME_ATTRIBUTE, resolvedTheme);
     root.setAttribute('data-mail-minimal-theme-mode', settings.themeMode);
   } else {
+    root.style.removeProperty('--mail-minimal-accent');
+    root.style.removeProperty('--mail-minimal-font-size');
     root.removeAttribute(THEME_ATTRIBUTE);
     root.removeAttribute('data-mail-minimal-theme-mode');
   }

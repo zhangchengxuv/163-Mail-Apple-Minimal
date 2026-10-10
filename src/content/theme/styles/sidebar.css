@@ -3,8 +3,10 @@ html[data-mail-minimal-sidebar] #dvNavContainer #dvNavTop,
 html[data-mail-minimal-sidebar] #dvNavContainer #dvNavTop > ul { background: var(--mail-minimal-sidebar-bg) !important; background-image: none !important; }
 html[data-mail-minimal-sidebar] #dvNavTop li[role="button"],
 html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label {
-  border-radius: var(--mail-minimal-radius) !important; color: var(--mail-minimal-text) !important;
+  border-radius: var(--mail-minimal-radius) !important; color: var(--mail-minimal-text) !important; font-size: var(--mail-minimal-font-size) !important;
 }
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] { color: var(--mail-minimal-accent) !important; }
+html[data-mail-minimal-theme="dark"] #dvNavContainer :is(.nui-tree-item-count, .nui-tree-item-inlineIcon, .nui-ico) { color: var(--mail-minimal-muted) !important; }
 html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:hover,
 html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label:hover { background: var(--mail-minimal-hover) !important; }
 html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label-selected,

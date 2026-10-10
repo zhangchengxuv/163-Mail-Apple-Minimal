@@ -4,7 +4,7 @@ export const STORAGE_KEY = 'settings';
 export const PAGE_ATTRIBUTE = 'data-mail-minimal-page';
 export const THEME_ATTRIBUTE = 'data-mail-minimal-theme';
 export const HIDDEN_ATTRIBUTE = 'data-mail-minimal-hidden';
-export const VERSION = '1.2.0';
+export const VERSION = '1.3.0';
 
 export const DEFAULT_SETTINGS: Readonly<Settings> = Object.freeze({
   cleanerEnabled: true,
@@ -20,6 +20,7 @@ export const DEFAULT_SETTINGS: Readonly<Settings> = Object.freeze({
   themeCompose: true,
   themeRead: true,
   themeMode: 'system',
+  uiFontSize: 14,
   homepageMode: 'inbox',
   accentColor: 'blue',
   customAccent: '#007AFF',
