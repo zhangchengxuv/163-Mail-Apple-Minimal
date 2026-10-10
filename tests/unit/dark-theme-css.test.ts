@@ -42,20 +42,31 @@ describe('dark theme CSS regression boundaries', () => {
     expect(css).toContain('background: transparent !important');
   });
 
-  it('removes only the dark action text-layer surface without changing sidebar geometry', () => {
+  it('gives dark sidebar action controls a token-based surface without changing their geometry', () => {
     const sidebar = readStyle('sidebar.css');
+    const tokens = readStyle('tokens.css');
     const popup = readPopupStyle();
-    expect(sidebar).not.toContain('[data-mail-minimal-theme="dark"] #dvNavTop li[role="button"] {');
-    expect(sidebar).toContain('li[role="button"] .nui-btn-text');
-    expect(sidebar).toContain('background: transparent !important');
+    expect(sidebar).toContain('[data-mail-minimal-theme="dark"] #dvNavTop li[role="button"] {');
+    expect(sidebar).toContain('.nui-btn-text');
+    expect(sidebar).toContain('background-color: var(--mail-control) !important');
+    expect(sidebar).toContain('grid-template-columns: repeat(2, minmax(0, 1fr))');
+    expect(sidebar).toContain('min-height: var(--mail-minimal-action-min-height)');
+    expect(sidebar).not.toMatch(/transform:\s*scale/i);
+    expect(tokens).toContain('--mail-minimal-action-min-height');
+    expect(tokens).toContain('--mail-minimal-action-padding-inline');
+    expect(tokens).toContain('--mail-minimal-action-icon-size');
     expect(popup).toContain('--popup-surface: #202a36');
     expect(popup).toContain('.switch { display: inline-flex; align-items: center');
     expect(popup).toContain('top: 2px; left: 2px');
   });
 
-  it('does not target reader iframe documents or generic message bodies', () => {
+  it('keeps message bodies untouched while styling reader controls and the marked quick-reply panel', () => {
     const css = readStyle('reader.css');
-    expect(css).not.toMatch(/iframe\s*\{/i);
     expect(css).not.toMatch(/filter:\s*invert/i);
+    expect(css).not.toMatch(/iframe\s*\{/i);
+    expect(css).toContain('[data-mail-minimal-reader-quick-reply]');
+    expect(css).toContain(':hover:not(:disabled):not([aria-disabled="true"])');
+    expect(css).toContain(':active:not(:disabled):not([aria-disabled="true"])');
+    expect(css).toContain('.nui-btn[aria-disabled="true"]');
   });
 });

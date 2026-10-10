@@ -4,6 +4,12 @@ html {
   --mail-minimal-accent: #007aff;
   --mail-minimal-font-size: 14px;
   --mail-minimal-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  --mail-minimal-action-min-height: max(36px, calc(var(--mail-minimal-font-size) * 2.5));
+  --mail-minimal-action-padding-inline: max(8px, calc(var(--mail-minimal-font-size) * 0.65));
+  --mail-minimal-action-gap: max(5px, calc(var(--mail-minimal-font-size) * 0.4));
+  --mail-minimal-action-icon-size: max(16px, calc(var(--mail-minimal-font-size) + 2px));
+  --mail-minimal-action-line-height: 1.2;
+  --mail-minimal-action-radius: 9px;
 }
 
 html[data-mail-minimal-theme="light"] {

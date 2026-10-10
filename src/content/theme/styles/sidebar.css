@@ -1,21 +1,69 @@
 html[data-mail-minimal-sidebar] #dvNavContainer.frame-nav,
 html[data-mail-minimal-sidebar] #dvNavContainer #dvNavTop,
 html[data-mail-minimal-sidebar] #dvNavContainer #dvNavTop > ul { background: var(--mail-minimal-sidebar-bg) !important; background-image: none !important; }
+html[data-mail-minimal-sidebar] :is(#dvNavTop, #dvNavTop > ul) {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(var(--mail-minimal-action-min-height), auto);
+  gap: var(--mail-minimal-action-gap);
+  align-items: stretch;
+  height: auto !important;
+  min-height: calc(var(--mail-minimal-action-min-height) + (var(--mail-minimal-action-gap) * 2));
+  padding: var(--mail-minimal-action-gap) !important;
+  box-sizing: border-box !important;
+}
 html[data-mail-minimal-sidebar] #dvNavTop li[role="button"],
 html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label {
   border-radius: var(--mail-minimal-radius) !important; color: var(--mail-minimal-text) !important; font-size: var(--mail-minimal-font-size) !important;
 }
-html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] { color: var(--mail-minimal-accent) !important; }
-/* JS6 gives the receive/compose button text layer a white background. Keep its native parent geometry intact. */
-html[data-mail-minimal-sidebar][data-mail-minimal-theme="dark"] #dvNavTop li[role="button"] .nui-btn-text {
-  background: transparent !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: var(--mail-minimal-action-gap);
+  min-width: 0 !important;
+  min-height: var(--mail-minimal-action-min-height);
+  margin: 0 !important;
+  padding: 0 var(--mail-minimal-action-padding-inline) !important;
+  box-sizing: border-box !important;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: var(--mail-minimal-action-line-height) !important;
   color: var(--mail-minimal-accent) !important;
 }
-html[data-mail-minimal-sidebar][data-mail-minimal-theme="dark"] #dvNavTop li[role="button"]:hover .nui-btn-text {
-  background: var(--mail-minimal-hover) !important;
+/* Keep the native button structure, but let the tokenized outer surface own its size and color. */
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] :is(.nui-btn, .nui-btn-text) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0;
+  max-width: 100%;
+  line-height: inherit !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: inherit !important;
 }
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] .nui-btn-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--mail-minimal-font-size) !important;
+}
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] .nui-btn-icon {
+  flex: 0 0 var(--mail-minimal-action-icon-size);
+  inline-size: var(--mail-minimal-action-icon-size);
+  block-size: var(--mail-minimal-action-icon-size);
+}
+html[data-mail-minimal-sidebar][data-mail-minimal-theme="dark"] #dvNavTop li[role="button"] {
+  background-color: var(--mail-control) !important;
+  border: 1px solid var(--mail-control-border) !important;
+  color: var(--mail-minimal-accent) !important;
+}
+html[data-mail-minimal-sidebar][data-mail-minimal-theme="dark"] #dvNavTop li[role="button"]:hover {
+  background-color: var(--mail-minimal-hover) !important;
+  border-color: var(--mail-minimal-accent) !important;
+}
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:active { background-color: var(--mail-minimal-selected) !important; }
 html[data-mail-minimal-theme="dark"] #dvNavContainer :is(.nui-tree-item-count, .nui-tree-item-inlineIcon, .nui-ico) { color: var(--mail-minimal-muted) !important; }
 html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:hover,
 html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label:hover { background: var(--mail-minimal-hover) !important; }

@@ -2,6 +2,7 @@ import { applyCleaner } from './cleaner';
 import { BatchedObserver } from './dom-observer';
 import { detectPage } from './page-detector';
 import { applyTheme } from './theme';
+import { syncReaderChrome } from './theme/reader-chrome';
 import { getSettings } from '../shared/settings';
 import type { Settings } from '../shared/types';
 
@@ -11,7 +12,8 @@ let initialized = false;
 
 function refresh(): void {
   currentPage = detectPage();
-  applyTheme(settings, currentPage);
+  const resolvedTheme = applyTheme(settings, currentPage);
+  syncReaderChrome(document, currentPage, resolvedTheme === 'dark');
   applyCleaner(settings, currentPage);
   initialized = true;
 }

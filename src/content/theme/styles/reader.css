@@ -27,3 +27,57 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-roundBtn .nui-
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] header.frame-main-cont-head {
   font-size: var(--mail-minimal-font-size);
 }
+
+/* Deep reader controls: each state remains distinct without leaving white text layers behind. */
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(header.frame-main-cont-head, .frame-main-cont-head, .nui-toolbar, .nui-toolbar-ext) {
+  background: var(--mail-header) !important;
+  border-color: var(--mail-minimal-border) !important;
+}
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(.nui-toolbar::before, .nui-toolbar::after, .nui-toolbar-ext::before, .nui-toolbar-ext::after) {
+  background: transparent !important;
+  border-color: var(--mail-minimal-border) !important;
+}
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn) {
+  min-height: var(--mail-minimal-action-min-height);
+  padding-inline: var(--mail-minimal-action-padding-inline);
+  border-color: var(--mail-control-border) !important;
+  border-radius: var(--mail-minimal-action-radius) !important;
+  background: var(--mail-control) !important;
+  color: var(--mail-minimal-text) !important;
+  line-height: var(--mail-minimal-action-line-height) !important;
+}
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn) :is(.nui-btn-text, .nui-btn-icon, span) {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: inherit !important;
+}
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn):hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--mail-minimal-hover) !important;
+  border-color: var(--mail-minimal-accent) !important;
+}
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn):active:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--mail-minimal-selected) !important;
+}
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(.nui-toolbar .nui-btn:disabled, .nui-toolbar .nui-btn[aria-disabled="true"], .nui-toolbar .nui-btn-disabled, .nui-toolbar-ext .nui-roundBtn:disabled, .nui-toolbar-ext .nui-roundBtn[aria-disabled="true"], .nui-toolbar-ext .nui-btn-disabled) {
+  background: color-mix(in srgb, var(--mail-control) 72%, var(--mail-bg)) !important;
+  border-color: color-mix(in srgb, var(--mail-control-border) 58%, transparent) !important;
+  color: color-mix(in srgb, var(--mail-minimal-muted) 68%, var(--mail-bg)) !important;
+  opacity: 1 !important;
+}
+
+/* Runtime marks only the verified, light quick-reply surface at the bottom of a reader. */
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] [data-mail-minimal-reader-quick-reply] {
+  background: var(--mail-minimal-surface) !important;
+  border: 1px solid var(--mail-minimal-border) !important;
+  color: var(--mail-minimal-text) !important;
+  box-shadow: none !important;
+}
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] [data-mail-minimal-reader-quick-reply] :is(.nui-btn, .nui-roundBtn, button, [role="button"]) {
+  border-color: var(--mail-control-border) !important;
+  background: var(--mail-control) !important;
+  color: var(--mail-minimal-text) !important;
+}
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] [data-mail-minimal-reader-quick-reply] :is(.nui-btn-text, .nui-btn-icon) {
+  background: transparent !important;
+  color: inherit !important;
+}

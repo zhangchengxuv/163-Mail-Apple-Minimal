@@ -16,7 +16,7 @@ const cleanup: Array<[keyof Settings, string, string]> = [
 const appearance: Array<[keyof Settings, string, string]> = [
   ['themeEnabled', '启用 Apple Mail 风格', '仅改变网易邮箱外围界面'], ['themeHeader', '顶部导航', '搜索和账户操作保持原生'],
   ['themeSidebar', '左侧导航', '不改变侧栏与主内容区几何'], ['themeList', '邮件列表', '保留虚拟列表和批量操作'],
-  ['themeCompose', '写信页面', '不覆盖联系人侧栏显示逻辑'], ['themeRead', '阅读页面', '不修改邮件正文或 iframe']
+  ['themeCompose', '写信页面', '不覆盖联系人侧栏显示逻辑'], ['themeRead', '阅读页面', '深色模式仅调整外围界面，不改写邮件正文或 iframe']
 ];
 
 function toggle(key: keyof Settings, title: string, help: string, checked: boolean, disabled = false): string {
