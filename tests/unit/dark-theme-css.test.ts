@@ -26,6 +26,14 @@ describe('dark theme CSS regression boundaries', () => {
     expect(css).toContain(':is(.nl0, .hV0, .im0)');
     expect(css).toContain('border-bottom-color: color-mix');
     expect(css).toContain('background: var(--mail-control)');
+    expect(css).toContain('.nui-btn-text');
+  });
+
+  it('keeps the dark account bar and search field above contrast threshold tokens', () => {
+    const css = readStyle('header.css');
+    expect(css).toContain('background: #18212c');
+    expect(css).toContain('color: #eef4fc');
+    expect(css).toContain('.nui-ipt-placeholder');
   });
 
   it('does not target reader iframe documents or generic message bodies', () => {

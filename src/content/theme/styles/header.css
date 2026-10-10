@@ -4,10 +4,21 @@ html[data-mail-minimal-header] header.frame-head {
   border-bottom: 1px solid var(--mail-minimal-border) !important;
   box-shadow: 0 2px 9px rgb(40 60 90 / 4.5%) !important;
 }
+/* JS6 keeps the account bar in .tY0 and gives links their own muted color. */
+html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head .tY0 {
+  background: #18212c !important;
+  border-bottom: 1px solid var(--mail-minimal-border) !important;
+}
 html[data-mail-minimal-header] header.frame-head :is(#spnUid, [name="account"] .nui-txt-link, [name="setting"] .nui-txt-link, .rZ0) {
   color: var(--mail-minimal-text) !important;
   font-size: var(--mail-minimal-font-small) !important;
+  opacity: 1 !important;
 }
+html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head :is(#spnUid, [name="account"] .nui-txt-link, [name="setting"] .nui-txt-link) {
+  color: #eef4fc !important;
+  text-shadow: none !important;
+}
+html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head :is([name="account"] .nui-txt-link, [name="setting"] .nui-txt-link):hover { color: var(--mail-minimal-accent) !important; }
 html[data-mail-minimal-header] #dvMultiTabWrapper,
 html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs { background: transparent !important; background-image: none !important; }
 html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item {
@@ -24,3 +35,10 @@ html[data-mail-minimal-header] header.frame-head input[type="text"],
 html[data-mail-minimal-header] header.frame-head input[type="search"] {
   border: 1px solid var(--mail-control-border) !important; border-radius: 16px !important; background: var(--mail-control) !important; color: var(--mail-minimal-text) !important; box-shadow: none !important;
 }
+html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head :is(.nui-ipt, .nui-ipt-input, .nui-ipt-placeholder) {
+  background-color: var(--mail-control) !important;
+  border-color: var(--mail-control-border) !important;
+  color: var(--mail-minimal-text) !important;
+  opacity: 1 !important;
+}
+html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head .nui-ipt-placeholder { color: var(--mail-minimal-muted) !important; }

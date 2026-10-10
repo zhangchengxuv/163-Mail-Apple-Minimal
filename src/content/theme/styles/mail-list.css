@@ -21,6 +21,12 @@ html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar > .
   color: var(--mail-minimal-text) !important;
   box-shadow: none !important;
 }
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar :is(.nui-btn-text, .nui-btn-icon, .nui-btn > span) {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: inherit !important;
+  box-shadow: none !important;
+}
 
 /* Only the outer pagination button owns a border: fixes the historic double frame. */
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar-ext .nui-roundBtn .nui-btn-text {
