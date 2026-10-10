@@ -71,6 +71,7 @@ describe('dark theme CSS regression boundaries', () => {
 
   it('keeps message bodies untouched while styling reader controls and the marked quick-reply panel', () => {
     const css = readStyle('reader.css');
+    const tokens = readStyle('tokens.css');
     expect(css).not.toMatch(/filter:\s*invert/i);
     expect(css).not.toMatch(/iframe\s*\{/i);
     expect(css).toContain('[data-mail-minimal-reader-quick-reply]');
@@ -79,5 +80,11 @@ describe('dark theme CSS regression boundaries', () => {
     expect(css).toContain(':hover:not(:disabled):not([aria-disabled="true"])');
     expect(css).toContain(':active:not(:disabled):not([aria-disabled="true"])');
     expect(css).toContain('.nui-btn[aria-disabled="true"]');
+    expect(css).toContain('--mail-reader-toolbar-button-height');
+    expect(css).toContain('flex: 0 0 auto !important');
+    expect(css).toContain('letter-spacing: normal !important');
+    expect(tokens).toContain('--mail-reader-toolbar-bg: #f7f9fc');
+    expect(tokens).toContain('--mail-reader-toolbar-bg: #202937');
+    expect(tokens).toContain('--mail-reader-toolbar-button-height: clamp(34px');
   });
 });

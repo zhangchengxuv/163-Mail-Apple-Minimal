@@ -5,18 +5,76 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(body.frame-defa
   color: var(--mail-minimal-text) !important;
 }
 
+/* Reader toolbar. It deliberately has its own compact tokens rather than
+   inheriting the larger sidebar action dimensions. */
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(header.frame-main-cont-head, .frame-main-cont-head, .nui-toolbar, .nui-toolbar-ext) {
-  background: var(--mail-minimal-surface) !important;
+  min-block-size: var(--mail-reader-toolbar-height) !important;
+  background: var(--mail-reader-toolbar-bg) !important;
   border-color: var(--mail-minimal-border) !important;
-  color: var(--mail-minimal-text) !important;
+  color: var(--mail-reader-toolbar-text) !important;
+  box-sizing: border-box !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar, .nui-toolbar-ext) {
+  padding-block: 4px !important;
+  padding-inline: 8px !important;
+  font-size: var(--mail-minimal-font-size) !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar > .nui-toolbar-item {
+  flex: 0 0 auto !important;
+  margin-inline-end: var(--mail-reader-toolbar-gap) !important;
 }
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn) {
-  border: 1px solid var(--mail-control-border) !important;
-  border-radius: 7px !important;
-  background: var(--mail-control) !important;
-  color: var(--mail-minimal-text) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  inline-size: auto !important;
+  min-inline-size: 0 !important;
+  min-block-size: var(--mail-reader-toolbar-button-height) !important;
+  padding-inline: var(--mail-reader-toolbar-padding-inline) !important;
+  border: 1px solid var(--mail-reader-toolbar-button-border) !important;
+  border-radius: var(--mail-reader-toolbar-radius) !important;
+  background: var(--mail-reader-toolbar-button-bg) !important;
+  color: var(--mail-reader-toolbar-text) !important;
   box-shadow: none !important;
+  font-size: var(--mail-minimal-font-size) !important;
+  font-weight: 500 !important;
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  line-height: 1.2 !important;
+  text-indent: 0 !important;
+  white-space: nowrap !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar-ext .nui-roundBtn {
+  min-inline-size: var(--mail-reader-toolbar-button-height) !important;
+  padding-inline: 8px !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn) :is(.nui-btn-text, .nui-btn-icon) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-block-size: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  font: inherit !important;
+  letter-spacing: inherit !important;
+  word-spacing: inherit !important;
+  line-height: inherit !important;
+  text-indent: 0 !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn-icon, .nui-toolbar-ext .nui-btn-icon) {
+  inline-size: var(--mail-reader-toolbar-icon-size) !important;
+  block-size: var(--mail-reader-toolbar-icon-size) !important;
+  color: var(--mail-reader-toolbar-icon) !important;
 }
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-roundBtn .nui-btn-text {
@@ -24,44 +82,24 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-roundBtn .nui-
   background: transparent !important;
 }
 
-html[data-mail-minimal-page="read"][data-mail-minimal-theme] header.frame-main-cont-head {
-  font-size: var(--mail-minimal-font-size);
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn):hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--mail-reader-toolbar-hover) !important;
+  border-color: color-mix(in srgb, var(--mail-reader-toolbar-button-border) 62%, var(--mail-minimal-accent)) !important;
 }
 
-/* Deep reader controls: each state remains distinct without leaving white text layers behind. */
-html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(header.frame-main-cont-head, .frame-main-cont-head, .nui-toolbar, .nui-toolbar-ext) {
-  background: var(--mail-header) !important;
-  border-color: var(--mail-minimal-border) !important;
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn):active:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--mail-reader-toolbar-active) !important;
 }
-html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(.nui-toolbar::before, .nui-toolbar::after, .nui-toolbar-ext::before, .nui-toolbar-ext::after) {
-  background: transparent !important;
-  border-color: var(--mail-minimal-border) !important;
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn):focus-visible {
+  outline: 2px solid var(--mail-focus-ring) !important;
+  outline-offset: 1px;
 }
-html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn) {
-  min-height: var(--mail-minimal-action-min-height);
-  padding-inline: var(--mail-minimal-action-padding-inline);
-  border-color: var(--mail-control-border) !important;
-  border-radius: var(--mail-minimal-action-radius) !important;
-  background: var(--mail-control) !important;
-  color: var(--mail-minimal-text) !important;
-  line-height: var(--mail-minimal-action-line-height) !important;
-}
-html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn) :is(.nui-btn-text, .nui-btn-icon, span) {
-  background: transparent !important;
-  border-color: transparent !important;
-  color: inherit !important;
-}
-html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn):hover:not(:disabled):not([aria-disabled="true"]) {
-  background: var(--mail-minimal-hover) !important;
-  border-color: var(--mail-minimal-accent) !important;
-}
-html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn):active:not(:disabled):not([aria-disabled="true"]) {
-  background: var(--mail-minimal-selected) !important;
-}
-html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(.nui-toolbar .nui-btn:disabled, .nui-toolbar .nui-btn[aria-disabled="true"], .nui-toolbar .nui-btn-disabled, .nui-toolbar-ext .nui-roundBtn:disabled, .nui-toolbar-ext .nui-roundBtn[aria-disabled="true"], .nui-toolbar-ext .nui-btn-disabled) {
-  background: color-mix(in srgb, var(--mail-control) 72%, var(--mail-bg)) !important;
-  border-color: color-mix(in srgb, var(--mail-control-border) 58%, transparent) !important;
-  color: color-mix(in srgb, var(--mail-minimal-muted) 68%, var(--mail-bg)) !important;
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn:disabled, .nui-toolbar .nui-btn[aria-disabled="true"], .nui-toolbar .nui-btn-disabled, .nui-toolbar-ext .nui-roundBtn:disabled, .nui-toolbar-ext .nui-roundBtn[aria-disabled="true"], .nui-toolbar-ext .nui-btn-disabled) {
+  background: color-mix(in srgb, var(--mail-reader-toolbar-button-bg) 72%, var(--mail-reader-toolbar-bg)) !important;
+  border-color: color-mix(in srgb, var(--mail-reader-toolbar-button-border) 52%, transparent) !important;
+  color: var(--mail-reader-toolbar-disabled) !important;
   opacity: 1 !important;
 }
 
