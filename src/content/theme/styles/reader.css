@@ -1,5 +1,29 @@
-html[data-mail-minimal-page="read"][data-mail-minimal-theme] #dvContentContainer,
-html[data-mail-minimal-page="read"][data-mail-minimal-theme] .frame-main { background: var(--mail-minimal-page-bg) !important; }
-html[data-mail-minimal-page="read"][data-mail-minimal-theme] header.frame-main-cont-head { background: var(--mail-minimal-surface) !important; border-color: var(--mail-minimal-border) !important; color: var(--mail-minimal-text) !important; }
-html[data-mail-minimal-page="read"][data-mail-minimal-theme] header.frame-main-cont-head { font-size: var(--mail-minimal-font-size); }
-/* Mail bodies and nested iframe documents are intentionally untouched. */
+/* Reader shell only. Message HTML, nested iframes, images, tables, and signatures remain untouched. */
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(body.frame-default, #dvContentContainer, #dvContentContainer.frame-main-outer, #dvContentContainer .frame-main, #dvContentContainer .frame-main-cont-body, [id*="ReadModule"]) {
+  background: var(--mail-minimal-page-bg) !important;
+  background-image: none !important;
+  color: var(--mail-minimal-text) !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(header.frame-main-cont-head, .frame-main-cont-head, .nui-toolbar, .nui-toolbar-ext) {
+  background: var(--mail-minimal-surface) !important;
+  border-color: var(--mail-minimal-border) !important;
+  color: var(--mail-minimal-text) !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn) {
+  border: 1px solid var(--mail-control-border) !important;
+  border-radius: 7px !important;
+  background: var(--mail-control) !important;
+  color: var(--mail-minimal-text) !important;
+  box-shadow: none !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-roundBtn .nui-btn-text {
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] header.frame-main-cont-head {
+  font-size: var(--mail-minimal-font-size);
+}
