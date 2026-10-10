@@ -29,12 +29,14 @@ describe('dark theme CSS regression boundaries', () => {
     expect(css).toContain('.nui-btn-text');
   });
 
-  it('keeps the dark account bar and search field above contrast threshold tokens', () => {
+  it('uses one shared search surface without a nested input background in either theme', () => {
     const css = readStyle('header.css');
     expect(css).toContain('background: #18212c');
     expect(css).toContain('color: #eef4fc');
     expect(css).toContain('.nui-ipt-placeholder');
     expect(css).toContain('[role="search"].sU0');
+    expect(css).toContain('.sU0 .ru0');
+    expect(css).toContain('box-sizing: border-box !important');
     expect(css).toContain('background: transparent !important');
   });
 

@@ -36,13 +36,19 @@ html[data-mail-minimal-header] header.frame-head input[type="search"] {
   border: 1px solid var(--mail-control-border) !important; border-radius: 16px !important; background: var(--mail-control) !important; color: var(--mail-minimal-text) !important; box-shadow: none !important;
 }
 /* The native search shell and input both paint backgrounds; make the shell the only surface. */
-html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head [role="search"].sU0 {
-  background: #273341 !important;
-  border: 1px solid var(--mail-control-border) !important;
-  border-radius: 16px !important;
+html[data-mail-minimal-header] header.frame-head [role="search"].sU0 {
+  background: transparent !important;
   box-shadow: none !important;
 }
-html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head [role="search"] :is(.nui-ipt, .nui-ipt-input) {
+html[data-mail-minimal-header] header.frame-head [role="search"].sU0 .ru0 {
+  background: var(--mail-control) !important;
+  border: 1px solid var(--mail-control-border) !important;
+  border-radius: 16px !important;
+  box-sizing: border-box !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
+}
+html[data-mail-minimal-header] header.frame-head [role="search"] :is(.nui-ipt, .nui-ipt-input) {
   background: transparent !important;
   border: 0 !important;
   border-radius: 0 !important;
@@ -50,8 +56,12 @@ html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head
   box-shadow: none !important;
   opacity: 1 !important;
 }
-html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head [role="search"] .nui-ipt-placeholder {
+html[data-mail-minimal-header] header.frame-head [role="search"] .nui-ipt-placeholder {
   background: transparent !important;
   color: var(--mail-minimal-muted) !important;
   opacity: 1 !important;
+}
+html[data-mail-minimal-header] header.frame-head [role="search"].sU0:focus-within .ru0 {
+  border-color: var(--mail-minimal-accent) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--mail-minimal-accent) 18%, transparent) !important;
 }

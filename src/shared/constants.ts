@@ -4,7 +4,7 @@ export const STORAGE_KEY = 'settings';
 export const PAGE_ATTRIBUTE = 'data-mail-minimal-page';
 export const THEME_ATTRIBUTE = 'data-mail-minimal-theme';
 export const HIDDEN_ATTRIBUTE = 'data-mail-minimal-hidden';
-export const VERSION = '1.3.3';
+export const VERSION = '1.3.4';
 
 export const DEFAULT_SETTINGS: Readonly<Settings> = Object.freeze({
   cleanerEnabled: true,
