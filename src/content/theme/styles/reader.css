@@ -5,13 +5,13 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(body.frame-defa
   color: var(--mail-minimal-text) !important;
 }
 
-/* Reader toolbar. It deliberately has its own compact tokens rather than
-   inheriting the larger sidebar action dimensions. */
+/* Reader toolbar uses the shared compact toolbar tokens, never the larger
+   sidebar action dimensions. */
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(header.frame-main-cont-head, .frame-main-cont-head, .nui-toolbar, .nui-toolbar-ext) {
-  min-block-size: var(--mail-reader-toolbar-height) !important;
-  background: var(--mail-reader-toolbar-bg) !important;
+  min-block-size: var(--mail-toolbar-height) !important;
+  background: var(--mail-toolbar-bg) !important;
   border-color: var(--mail-minimal-border) !important;
-  color: var(--mail-reader-toolbar-text) !important;
+  color: var(--mail-toolbar-text) !important;
   box-sizing: border-box !important;
 }
 
@@ -23,7 +23,7 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar, .
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar > .nui-toolbar-item {
   flex: 0 0 auto !important;
-  margin-inline-end: var(--mail-reader-toolbar-gap) !important;
+  margin-inline-end: var(--mail-toolbar-gap) !important;
 }
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn) {
@@ -33,12 +33,12 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .n
   flex: 0 0 auto !important;
   inline-size: auto !important;
   min-inline-size: 0 !important;
-  min-block-size: var(--mail-reader-toolbar-button-height) !important;
-  padding-inline: var(--mail-reader-toolbar-padding-inline) !important;
-  border: 1px solid var(--mail-reader-toolbar-button-border) !important;
-  border-radius: var(--mail-reader-toolbar-radius) !important;
-  background: var(--mail-reader-toolbar-button-bg) !important;
-  color: var(--mail-reader-toolbar-text) !important;
+  min-block-size: var(--mail-toolbar-button-height) !important;
+  padding-inline: var(--mail-toolbar-padding-inline) !important;
+  border: 1px solid var(--mail-toolbar-button-border) !important;
+  border-radius: var(--mail-toolbar-radius) !important;
+  background: var(--mail-toolbar-button-bg) !important;
+  color: var(--mail-toolbar-text) !important;
   box-shadow: none !important;
   font-size: var(--mail-minimal-font-size) !important;
   font-weight: 500 !important;
@@ -50,8 +50,74 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .n
 }
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar-ext .nui-roundBtn {
-  min-inline-size: var(--mail-reader-toolbar-button-height) !important;
+  min-inline-size: var(--mail-toolbar-button-height) !important;
   padding-inline: 8px !important;
+}
+
+/* NetEase split buttons keep their own text and arrow elements.  The native
+   elements carry light bitmap backgrounds (including disabled states), so the
+   parent owns the visual surface and the two children only provide layout. */
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn.nui-splitBtn, .nui-toolbar .nui-btn:has(.nui-splitBtn-text), .nui-toolbar .nui-splitBtn) {
+  display: inline-flex !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar :is(.nui-splitBtn-text, .nui-splitBtn-arr) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: static !important;
+  min-block-size: var(--mail-toolbar-button-height) !important;
+  block-size: var(--mail-toolbar-button-height) !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  box-sizing: border-box !important;
+  font: inherit !important;
+  line-height: 1.2 !important;
+  text-indent: 0 !important;
+  vertical-align: middle !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar .nui-splitBtn-text {
+  padding-inline: var(--mail-toolbar-padding-inline) !important;
+  white-space: nowrap !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar .nui-splitBtn-arr {
+  flex: 0 0 var(--mail-toolbar-button-height) !important;
+  inline-size: var(--mail-toolbar-button-height) !important;
+  min-inline-size: var(--mail-toolbar-button-height) !important;
+  padding: 0 !important;
+  border-inline-start: 1px solid var(--mail-toolbar-button-border) !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar .nui-splitBtn-split {
+  display: block !important;
+  position: static !important;
+  flex: 0 0 1px !important;
+  inline-size: 1px !important;
+  block-size: auto !important;
+  margin: 0 !important;
+  background: var(--mail-toolbar-button-border) !important;
+  overflow: hidden !important;
+  text-indent: 0 !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar .nui-btn:has(.nui-splitBtn-split) .nui-splitBtn-arr {
+  border-inline-start: 0 !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar .nui-splitBtn-arr .nui-ico {
+  position: static !important;
+  margin: 0 !important;
+  color: var(--mail-toolbar-icon) !important;
 }
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn) :is(.nui-btn-text, .nui-btn-icon) {
@@ -72,9 +138,9 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .n
 }
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn-icon, .nui-toolbar-ext .nui-btn-icon) {
-  inline-size: var(--mail-reader-toolbar-icon-size) !important;
-  block-size: var(--mail-reader-toolbar-icon-size) !important;
-  color: var(--mail-reader-toolbar-icon) !important;
+  inline-size: var(--mail-toolbar-icon-size) !important;
+  block-size: var(--mail-toolbar-icon-size) !important;
+  color: var(--mail-toolbar-icon) !important;
 }
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-roundBtn .nui-btn-text {
@@ -83,12 +149,12 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-roundBtn .nui-
 }
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn):hover:not(:disabled):not([aria-disabled="true"]) {
-  background: var(--mail-reader-toolbar-hover) !important;
-  border-color: color-mix(in srgb, var(--mail-reader-toolbar-button-border) 62%, var(--mail-minimal-accent)) !important;
+  background: var(--mail-toolbar-hover) !important;
+  border-color: color-mix(in srgb, var(--mail-toolbar-button-border) 62%, var(--mail-minimal-accent)) !important;
 }
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn):active:not(:disabled):not([aria-disabled="true"]) {
-  background: var(--mail-reader-toolbar-active) !important;
+  background: var(--mail-toolbar-active) !important;
 }
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .frame-main-cont-head .nui-btn):focus-visible {
@@ -97,11 +163,24 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .n
 }
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn:disabled, .nui-toolbar .nui-btn[aria-disabled="true"], .nui-toolbar .nui-btn-disabled, .nui-toolbar-ext .nui-roundBtn:disabled, .nui-toolbar-ext .nui-roundBtn[aria-disabled="true"], .nui-toolbar-ext .nui-btn-disabled) {
-  background: color-mix(in srgb, var(--mail-reader-toolbar-button-bg) 72%, var(--mail-reader-toolbar-bg)) !important;
-  border-color: color-mix(in srgb, var(--mail-reader-toolbar-button-border) 52%, transparent) !important;
-  color: var(--mail-reader-toolbar-disabled) !important;
+  background: color-mix(in srgb, var(--mail-toolbar-button-bg) 72%, var(--mail-toolbar-bg)) !important;
+  border-color: color-mix(in srgb, var(--mail-toolbar-button-border) 52%, transparent) !important;
+  color: var(--mail-toolbar-disabled) !important;
   opacity: 1 !important;
 }
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar :is(.nui-btn:has(.nui-splitBtn-text-disabled), .nui-btn:has(.nui-splitBtn-arr-disabled), .nui-splitBtn:has(.nui-splitBtn-text-disabled), .nui-splitBtn:has(.nui-splitBtn-arr-disabled)) {
+  background: color-mix(in srgb, var(--mail-toolbar-button-bg) 72%, var(--mail-toolbar-bg)) !important;
+  border-color: color-mix(in srgb, var(--mail-toolbar-button-border) 52%, transparent) !important;
+  color: var(--mail-toolbar-disabled) !important;
+}
+
+html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar :is(.nui-splitBtn-text-disabled, .nui-splitBtn-arr-disabled) {
+  background: transparent !important;
+  color: var(--mail-toolbar-disabled) !important;
+  cursor: not-allowed !important;
+}
+
 
 /* Runtime marks only the verified, light quick-reply surface at the bottom of a reader. */
 html[data-mail-minimal-page="read"] [data-mail-minimal-reader-quick-reply-hidden] {

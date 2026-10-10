@@ -27,6 +27,10 @@ function pageMarkup(theme: Theme, fontSize: number): string {
               <li class="ra0 mD0" role="button" tabindex="0"><span class="om0"><b class="nui-ico fn-bg ga0"></b></span><span class="oz0">写信</span></li>
             </ul>
           </div>
+          <div id="dvNavTree">
+            <div class="nui-tree-item-label nui-tree-item-label-selected"><span class="nui-tree-item-text">收件箱</span><span class="nui-tree-item-count">(2)</span></div>
+            <div class="nui-tree-item-label"><span class="nui-tree-item-text">草稿箱</span></div>
+          </div>
         </nav>
       </body>
     </html>`;
@@ -71,6 +75,26 @@ for (const theme of ['light', 'dark'] as const) {
     }
 
     await page.setContent(pageMarkup(theme, 14));
+    const selected = page.locator('.nui-tree-item-label-selected');
+    const selectedText = selected.locator('.nui-tree-item-text');
+    const selectedColor = await selected.evaluate((element) => getComputedStyle(element).color);
+    const selectedBackground = await selected.evaluate((element) => getComputedStyle(element).backgroundColor);
+    const textColor = await selectedText.evaluate((element) => getComputedStyle(element).color);
+    const selectedGeometry = await selected.evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      const text = element.querySelector<HTMLElement>('.nui-tree-item-text')!.getBoundingClientRect();
+      const topActions = element.ownerDocument.querySelector('#dvNavTop')!.getBoundingClientRect();
+      return {
+        height: rect.height,
+        gapFromActions: rect.top - topActions.bottom,
+        textIsAboveLabel: element.ownerDocument.elementFromPoint((text.left + text.right) / 2, (text.top + text.bottom) / 2) === element.querySelector('.nui-tree-item-text')
+      };
+    });
+    expect(textColor).toBe(selectedColor);
+    expect(selectedBackground).not.toBe('rgba(0, 0, 0, 0)');
+    expect(selectedGeometry.height).toBeGreaterThanOrEqual(28);
+    expect(selectedGeometry.gapFromActions).toBeGreaterThanOrEqual(6);
+    expect(selectedGeometry.textIsAboveLabel).toBe(true);
     await page.screenshot({ path: testInfo.outputPath(`sidebar-actions-${theme}.png`) });
     await testInfo.attach('alignment-metrics.json', {
       body: JSON.stringify(measurements, null, 2),

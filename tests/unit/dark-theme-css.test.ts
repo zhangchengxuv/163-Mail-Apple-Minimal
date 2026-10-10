@@ -27,8 +27,9 @@ describe('dark theme CSS regression boundaries', () => {
     const css = readStyle('mail-list.css');
     expect(css).toContain(':is(.nl0, .hV0, .im0)');
     expect(css).toContain('border-bottom-color: color-mix');
-    expect(css).toContain('background: var(--mail-control)');
-    expect(css).toContain('.nui-btn-text');
+    expect(css).toContain('background: var(--mail-toolbar-button-bg)');
+    expect(css).toContain('.nui-splitBtn-text');
+    expect(css).toContain('.nui-splitBtn-arr');
   });
 
   it('uses one shared search surface without a nested input background in either theme', () => {
@@ -56,6 +57,8 @@ describe('dark theme CSS regression boundaries', () => {
     expect(sidebar).toContain('font-weight: 600 !important');
     expect(sidebar).toContain('grid-template-columns: repeat(2, minmax(0, 1fr))');
     expect(sidebar).toContain('min-block-size: var(--mail-minimal-action-min-height) !important');
+    expect(sidebar).toContain('--mail-sidebar-folder-selected-bg');
+    expect(sidebar).toContain('.nui-tree-item-label-selected::before');
     expect(sidebar).not.toMatch(/transform:\s*scale/i);
     expect(tokens).toContain('--mail-sidebar-action-bg: #ffffff');
     expect(tokens).toContain('--mail-sidebar-action-bg: #223047');
@@ -80,11 +83,13 @@ describe('dark theme CSS regression boundaries', () => {
     expect(css).toContain(':hover:not(:disabled):not([aria-disabled="true"])');
     expect(css).toContain(':active:not(:disabled):not([aria-disabled="true"])');
     expect(css).toContain('.nui-btn[aria-disabled="true"]');
-    expect(css).toContain('--mail-reader-toolbar-button-height');
+    expect(css).toContain('--mail-toolbar-button-height');
+    expect(css).toContain('.nui-splitBtn-text-disabled');
+    expect(css).toContain('.nui-splitBtn-arr-disabled');
     expect(css).toContain('flex: 0 0 auto !important');
     expect(css).toContain('letter-spacing: normal !important');
-    expect(tokens).toContain('--mail-reader-toolbar-bg: #f7f9fc');
-    expect(tokens).toContain('--mail-reader-toolbar-bg: #202937');
-    expect(tokens).toContain('--mail-reader-toolbar-button-height: clamp(34px');
+    expect(tokens).toContain('--mail-toolbar-bg: #f7f9fc');
+    expect(tokens).toContain('--mail-toolbar-bg: #202937');
+    expect(tokens).toContain('--mail-toolbar-button-height: clamp(34px');
   });
 });

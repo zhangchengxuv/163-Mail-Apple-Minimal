@@ -7,32 +7,160 @@ html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer 
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(header.frame-main-cont-head, .frame-main-cont-head, .nui-toolbar, .nui-toolbar-ext) {
-  background: var(--mail-minimal-surface) !important;
+  min-block-size: var(--mail-toolbar-height) !important;
+  background: var(--mail-toolbar-bg) !important;
   background-image: none !important;
   border-color: var(--mail-minimal-border) !important;
-  color: var(--mail-minimal-text) !important;
+  color: var(--mail-toolbar-text) !important;
   box-shadow: none !important;
+  box-sizing: border-box !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar, .nui-toolbar-ext) {
+  padding-block: 4px !important;
+  padding-inline: 8px !important;
+  font-size: var(--mail-minimal-font-size) !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar > .nui-toolbar-item {
+  flex: 0 0 auto !important;
+  margin-inline-end: var(--mail-toolbar-gap) !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar > .nui-toolbar-item > .nui-btn, .nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn) {
-  border: 1px solid var(--mail-control-border) !important;
-  border-radius: 7px !important;
-  background: var(--mail-control) !important;
-  color: var(--mail-minimal-text) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  inline-size: auto !important;
+  min-inline-size: 0 !important;
+  min-block-size: var(--mail-toolbar-button-height) !important;
+  padding-inline: var(--mail-toolbar-padding-inline) !important;
+  border: 1px solid var(--mail-toolbar-button-border) !important;
+  border-radius: var(--mail-toolbar-radius) !important;
+  background: var(--mail-toolbar-button-bg) !important;
+  color: var(--mail-toolbar-text) !important;
   box-shadow: none !important;
-}
-html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar :is(.nui-btn-text, .nui-btn-icon, .nui-btn > span) {
-  background: transparent !important;
-  border-color: transparent !important;
-  color: inherit !important;
-  box-shadow: none !important;
+  font-size: var(--mail-minimal-font-size) !important;
+  font-weight: 500 !important;
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  line-height: 1.2 !important;
+  text-indent: 0 !important;
+  white-space: nowrap !important;
 }
 
-/* Only the outer pagination button owns a border: fixes the historic double frame. */
-html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar-ext .nui-roundBtn .nui-btn-text {
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar-ext .nui-roundBtn {
+  min-inline-size: var(--mail-toolbar-button-height) !important;
+  padding-inline: 8px !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn.nui-splitBtn, .nui-toolbar .nui-btn:has(.nui-splitBtn-text), .nui-toolbar .nui-splitBtn) {
+  display: inline-flex !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar :is(.nui-splitBtn-text, .nui-splitBtn-arr) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: static !important;
+  min-block-size: var(--mail-toolbar-button-height) !important;
+  block-size: var(--mail-toolbar-button-height) !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  box-sizing: border-box !important;
+  font: inherit !important;
+  line-height: 1.2 !important;
+  text-indent: 0 !important;
+  vertical-align: middle !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-splitBtn-text {
+  padding-inline: var(--mail-toolbar-padding-inline) !important;
+  white-space: nowrap !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-splitBtn-arr {
+  flex: 0 0 var(--mail-toolbar-button-height) !important;
+  inline-size: var(--mail-toolbar-button-height) !important;
+  min-inline-size: var(--mail-toolbar-button-height) !important;
+  padding: 0 !important;
+  border-inline-start: 1px solid var(--mail-toolbar-button-border) !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-splitBtn-split {
+  display: block !important;
+  position: static !important;
+  flex: 0 0 1px !important;
+  inline-size: 1px !important;
+  block-size: auto !important;
+  margin: 0 !important;
+  background: var(--mail-toolbar-button-border) !important;
+  overflow: hidden !important;
+  text-indent: 0 !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-btn:has(.nui-splitBtn-split) .nui-splitBtn-arr {
+  border-inline-start: 0 !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-splitBtn-arr .nui-ico {
+  position: static !important;
+  margin: 0 !important;
+  color: var(--mail-toolbar-icon) !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn) :is(.nui-btn-text, .nui-btn-icon) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-block-size: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
   border: 0 !important;
   background: transparent !important;
-  box-shadow: none !important;
+  color: inherit !important;
+  font: inherit !important;
+  letter-spacing: inherit !important;
+  word-spacing: inherit !important;
+  line-height: inherit !important;
+  text-indent: 0 !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn):hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--mail-toolbar-hover) !important;
+  border-color: color-mix(in srgb, var(--mail-toolbar-button-border) 62%, var(--mail-minimal-accent)) !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn):active:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--mail-toolbar-active) !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn:disabled, .nui-toolbar .nui-btn[aria-disabled="true"], .nui-toolbar .nui-btn-disabled, .nui-toolbar-ext .nui-roundBtn:disabled, .nui-toolbar-ext .nui-roundBtn[aria-disabled="true"], .nui-toolbar-ext .nui-btn-disabled) {
+  background: color-mix(in srgb, var(--mail-toolbar-button-bg) 72%, var(--mail-toolbar-bg)) !important;
+  border-color: color-mix(in srgb, var(--mail-toolbar-button-border) 52%, transparent) !important;
+  color: var(--mail-toolbar-disabled) !important;
+  opacity: 1 !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar :is(.nui-btn:has(.nui-splitBtn-text-disabled), .nui-btn:has(.nui-splitBtn-arr-disabled), .nui-splitBtn:has(.nui-splitBtn-text-disabled), .nui-splitBtn:has(.nui-splitBtn-arr-disabled)) {
+  background: color-mix(in srgb, var(--mail-toolbar-button-bg) 72%, var(--mail-toolbar-bg)) !important;
+  border-color: color-mix(in srgb, var(--mail-toolbar-button-border) 52%, transparent) !important;
+  color: var(--mail-toolbar-disabled) !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar :is(.nui-splitBtn-text-disabled, .nui-splitBtn-arr-disabled) {
+  background: transparent !important;
+  color: var(--mail-toolbar-disabled) !important;
+  cursor: not-allowed !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] {

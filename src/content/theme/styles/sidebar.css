@@ -139,6 +139,10 @@ html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:focus-visible {
 }
 
 /* Folder navigation keeps its own quiet hierarchy below the primary actions. */
+html[data-mail-minimal-sidebar] #dvNavTree {
+  margin-block-start: var(--mail-minimal-action-gap) !important;
+}
+
 html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label {
   border-radius: var(--mail-minimal-radius) !important;
   color: var(--mail-minimal-text) !important;
@@ -151,8 +155,26 @@ html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label:hover {
 
 html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label-selected,
 html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label-selected:hover {
-  background: var(--mail-minimal-selected) !important;
-  color: var(--mail-minimal-accent) !important;
+  min-block-size: max(28px, calc(var(--mail-minimal-font-size) + 12px)) !important;
+  background: var(--mail-sidebar-folder-selected-bg) !important;
+  background-image: none !important;
+  color: var(--mail-sidebar-folder-selected-text) !important;
+  position: relative !important;
+  isolation: isolate;
+  overflow: visible !important;
+}
+
+/* Current and older NetEase trees can paint a selected/hover layer with a
+   pseudo-element. Keep that layer behind the actual label and its count. */
+html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label-selected::before,
+html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label-selected::after {
+  z-index: 0 !important;
+}
+
+html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label-selected :is(.nui-tree-item-text, .nui-tree-item-count, .nui-tree-item-inlineIcon, .nui-ico) {
+  position: relative !important;
+  z-index: 1 !important;
+  color: inherit !important;
 }
 
 html[data-mail-minimal-theme="dark"] #dvNavContainer :is(.nui-tree-item-count, .nui-tree-item-inlineIcon, .nui-ico) {
