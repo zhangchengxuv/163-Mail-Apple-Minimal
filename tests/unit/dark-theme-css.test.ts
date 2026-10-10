@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const readStyle = (name: string): string => readFileSync(new URL(`../../src/content/theme/styles/${name}`, import.meta.url), 'utf8');
+const readPopupStyle = (): string => readFileSync('src/popup/popup.css', 'utf8');
 
 describe('dark theme CSS regression boundaries', () => {
   it('uses one dark token palette without an inversion or overlay filter', () => {
@@ -38,6 +39,16 @@ describe('dark theme CSS regression boundaries', () => {
     expect(css).toContain('.sU0 .ru0');
     expect(css).toContain('box-sizing: border-box !important');
     expect(css).toContain('background: transparent !important');
+  });
+
+  it('keeps dark sidebar actions and popup controls on the same restrained palette', () => {
+    const sidebar = readStyle('sidebar.css');
+    const popup = readPopupStyle();
+    expect(sidebar).toContain('#dvNavTop li[role="button"]');
+    expect(sidebar).toContain('background: var(--mail-control) !important');
+    expect(popup).toContain('--popup-surface: #202a36');
+    expect(popup).toContain('.switch { display: inline-flex; align-items: center');
+    expect(popup).toContain('top: 2px; left: 2px');
   });
 
   it('does not target reader iframe documents or generic message bodies', () => {
