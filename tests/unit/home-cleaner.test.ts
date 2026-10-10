@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { applyCleaner } from '../../src/content/cleaner';
 import { DEFAULT_SETTINGS, HIDDEN_ATTRIBUTE } from '../../src/shared/constants';
 
@@ -18,10 +18,11 @@ const welcomeFixture = `
     </div>
   </main>`;
 
-describe('welcome cleaner', () => {
-  it('hides the verified JS6 advertising and assistant module roots while retaining account modules', () => {
-    document.body.innerHTML = welcomeFixture;
+const flushWeather = () => new Promise((resolve) => setTimeout(resolve, 0));
 
+describe('welcome cleaner', () => {
+  it('hides verified JS6 promotion roots while retaining account modules', () => {
+    document.body.innerHTML = welcomeFixture;
     applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'minimal-home' }, 'welcome');
 
     const ad = document.querySelector('[id$="_dvmailrecompanel"]') as HTMLElement;
@@ -38,9 +39,10 @@ describe('welcome cleaner', () => {
     expect(document.querySelector('[id$="_dvPrivilegesPanel"]')?.hasAttribute(HIDDEN_ATTRIBUTE)).toBe(true);
   });
 
-  it('places a Today card in the welcome content flow immediately after account and capacity', () => {
+  it('places Today in content flow and renders a weather summary', async () => {
     document.body.innerHTML = welcomeFixture;
     applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'minimal-home' }, 'welcome');
+    await flushWeather();
 
     const accountBlock = document.querySelector('.account-and-capacity');
     const card = document.querySelector<HTMLElement>('[data-mail-minimal-card="today"]');
@@ -48,6 +50,45 @@ describe('welcome cleaner', () => {
     expect(card?.previousElementSibling).toBe(accountBlock);
     expect(card?.textContent).toContain('今日概览');
     expect(card?.querySelector('time')?.textContent).not.toBe('');
+    expect(card?.querySelector('[data-weather]')?.hasAttribute('hidden')).toBe(false);
+    expect(card?.querySelector('[data-weather-temperature]')?.textContent).toBe('24°C');
+    expect(card?.querySelector('[data-weather-description]')?.textContent).toBe('局部多云');
+  });
+
+  it('keeps Today available but does not render weather when disabled', () => {
+    document.body.innerHTML = welcomeFixture;
+    applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'minimal-home', showWeather: false }, 'welcome');
+
+    const card = document.querySelector<HTMLElement>('[data-mail-minimal-card="today"]');
+    expect(card).not.toBeNull();
+    expect(card?.querySelector('[data-weather]')?.hasAttribute('hidden')).toBe(true);
+  });
+
+  it('updates the weather view when the saved city changes', async () => {
+    document.body.innerHTML = welcomeFixture;
+    applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'minimal-home', weatherCity: 'Tokyo' }, 'welcome');
+    await flushWeather();
+    applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'minimal-home', weatherCity: 'Singapore' }, 'welcome');
+    await flushWeather();
+
+    const card = document.querySelector<HTMLElement>('[data-mail-minimal-card="today"]');
+    expect(card?.querySelector('[data-weather-city]')?.textContent).toBe('Singapore');
+    expect(card?.querySelector('[data-weather-temperature]')?.textContent).toBe('30°C');
+  });
+
+  it('leaves Today intact when weather is unavailable and does not request weather outside welcome', async () => {
+    const sendMessage = vi.spyOn(chrome.runtime, 'sendMessage').mockRejectedValueOnce(new Error('offline'));
+    document.body.innerHTML = welcomeFixture;
+    applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'minimal-home' }, 'welcome');
+    await flushWeather();
+    expect(document.querySelector('[data-mail-minimal-card="today"]')).not.toBeNull();
+    expect(document.querySelector('[data-weather-description]')?.textContent).toBe('天气暂不可用');
+    sendMessage.mockClear();
+
+    document.body.innerHTML = '<main id="_dvModuleContainer_welcome.WelcomeModule_0"></main>';
+    applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'minimal-home' }, 'list');
+    expect(sendMessage).not.toHaveBeenCalled();
+    sendMessage.mockRestore();
   });
 
   it('uses the native inbox item once for default homepage mode', () => {
@@ -59,9 +100,10 @@ describe('welcome cleaner', () => {
     applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'inbox' }, 'welcome');
 
     expect(clicks).toBe(1);
+    expect(document.querySelector('[data-mail-minimal-card="today"]')).toBeNull();
   });
 
-  it('leaves the original welcome page untouched and removes the Today card', () => {
+  it('leaves original welcome page untouched and removes Today', () => {
     document.body.innerHTML = welcomeFixture;
     applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'original-home' }, 'welcome');
 

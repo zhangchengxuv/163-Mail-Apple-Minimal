@@ -11,7 +11,7 @@ const cleanup: Array<[keyof Settings, string, string]> = [
 ];
 const appearance: Array<[keyof Settings, string, string]> = [
   ['themeEnabled', '启用 Apple Mail 风格', '仅改变网易邮箱外围界面'], ['themeHeader', '顶部导航', '搜索和账户操作保持原生'],
-  ['themeSidebar', '左侧导航', '不改变侧栏主内容区几何'], ['themeList', '邮件列表', '保留虚拟列表和批量操作'],
+  ['themeSidebar', '左侧导航', '不改变侧栏与主内容区几何'], ['themeList', '邮件列表', '保留虚拟列表和批量操作'],
   ['themeCompose', '写信页面', '不覆盖联系人侧栏显示逻辑'], ['themeRead', '阅读页面', '不修改邮件正文或 iframe']
 ];
 
@@ -22,9 +22,14 @@ function toggle(key: keyof Settings, title: string, help: string, checked: boole
 function render(settings: Settings): void {
   form.innerHTML = `<section class="group"><h2>界面净化</h2><p class="description">范围限定在邮箱 UI，不扫描邮件内容。</p>${cleanup.map(([key, title, help], index) => toggle(key, title, help, Boolean(settings[key]), index > 0 && !settings.cleanerEnabled)).join('')}</section>
   <section class="group"><h2>Apple Mail 外观</h2><p class="description">各页面按独立作用域应用主题。</p>${appearance.map(([key, title, help], index) => toggle(key, title, help, Boolean(settings[key]), index > 0 && !settings.themeEnabled)).join('')}</section>
-  <section class="group"><h2>首页与配色</h2><label class="row"><span>首页行为<small>默认安全地通过原生入口进入收件箱</small></span><select data-setting="homepageMode"><option value="inbox">直接进入收件箱</option><option value="minimal-home">极简首页</option><option value="original-home">网易原版首页</option></select></label><label class="row"><span>强调色</span><select data-setting="accentColor"><option value="blue">系统蓝</option><option value="graphite">石墨灰</option><option value="custom">自定义颜色</option></select></label><label class="row"><span>自定义强调色</span><input aria-label="自定义强调色" type="color" data-setting="customAccent" value="${settings.customAccent}"></label></section>`;
+  <section class="group"><h2>首页与配色</h2><label class="row"><span>首页行为<small>默认安全地通过原生入口进入收件箱</small></span><select data-setting="homepageMode"><option value="inbox">直接进入收件箱</option><option value="minimal-home">极简首页</option><option value="original-home">网易原版首页</option></select></label><label class="row"><span>强调色</span><select data-setting="accentColor"><option value="blue">系统蓝</option><option value="graphite">石墨灰</option><option value="custom">自定义颜色</option></select></label><label class="row"><span>自定义强调色</span><input aria-label="自定义强调色" type="color" data-setting="customAccent" value="${settings.customAccent}"></label></section>
+  <section class="group"><h2>天气</h2><p class="description">仅在极简首页的 Today 卡显示。不会请求定位，也不会发送邮件内容。</p>${toggle('showWeather', '显示天气', '通过你手动填写的城市获取当前天气', settings.showWeather)}<label class="row"><span>城市名称<small>例如 Tokyo、北京、上海或 Singapore</small></span><input class="city-input" aria-label="天气城市" type="text" maxlength="80" autocomplete="off" spellcheck="false" data-setting="weatherCity" value="${escapeAttribute(settings.weatherCity)}" placeholder="Tokyo" ${settings.showWeather ? '' : 'disabled'}></label></section>`;
   form.querySelector<HTMLSelectElement>('[data-setting="homepageMode"]')!.value = settings.homepageMode;
   form.querySelector<HTMLSelectElement>('[data-setting="accentColor"]')!.value = settings.accentColor;
+}
+
+function escapeAttribute(value: string): string {
+  return value.replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]!);
 }
 
 async function init(): Promise<void> {

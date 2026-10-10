@@ -1,7 +1,10 @@
 import type { Settings } from '../../shared/types';
+import type { WeatherLookupResult } from '../../shared/weather-types';
 import { findWelcomeInner, findWelcomeRoot, WELCOME_INFO_PANEL_SELECTOR } from './welcome-dom';
+import { requestWeather } from './weather-client';
 
 const CARD_ATTRIBUTE = 'data-mail-minimal-card';
+const weatherRequests = new WeakMap<HTMLElement, number>();
 
 export function syncTodayCard(settings: Settings, page: string, documentRef: Document = document): void {
   const existing = documentRef.querySelector<HTMLElement>(`[${CARD_ATTRIBUTE}="today"]`);
@@ -16,6 +19,7 @@ export function syncTodayCard(settings: Settings, page: string, documentRef: Doc
   const card = existing ?? createCard(documentRef);
   placeCard(card, placement);
   updateCard(card, documentRef);
+  syncWeather(card, settings);
 }
 
 function welcomePlacement(documentRef: Document): { inner: HTMLElement; anchor: Element | null } | null {
@@ -40,7 +44,7 @@ function createCard(documentRef: Document): HTMLElement {
   const card = documentRef.createElement('section');
   card.setAttribute(CARD_ATTRIBUTE, 'today');
   card.setAttribute('aria-label', '今日概览');
-  card.innerHTML = `<div class="mail-minimal-today-heading"><div><p>Today</p><h2>今日概览</h2></div><time></time></div><div class="mail-minimal-today-stats"><span data-stat="unread"><b>—</b>未读邮件</span><span data-stat="drafts"><b>—</b>草稿</span></div><div class="mail-minimal-today-actions"><button type="button" data-action="inbox">打开收件箱</button><button type="button" data-action="compose">写邮件</button></div>`;
+  card.innerHTML = `<div class="mail-minimal-today-layout"><div class="mail-minimal-today-main"><div class="mail-minimal-today-heading"><div><p>Today</p><h2>今日概览</h2></div><time></time></div><div class="mail-minimal-today-stats"><span data-stat="unread"><b>—</b>未读邮件</span><span data-stat="drafts"><b>—</b>草稿</span></div><div class="mail-minimal-today-actions"><button type="button" data-action="inbox">打开收件箱</button><button type="button" data-action="compose">写邮件</button></div></div><aside class="mail-minimal-today-weather" data-weather hidden aria-live="polite"><span class="mail-minimal-weather-symbol" data-weather-symbol aria-hidden="true"></span><div class="mail-minimal-weather-copy"><p data-weather-city>天气</p><strong data-weather-temperature></strong><span data-weather-description></span><small data-weather-detail></small></div></aside></div>`;
   card.addEventListener('click', (event) => {
     const button = (event.target as Element).closest<HTMLButtonElement>('button[data-action]');
     if (!button) return;
@@ -53,14 +57,91 @@ function createCard(documentRef: Document): HTMLElement {
 function updateCard(card: HTMLElement, documentRef: Document): void {
   const now = new Date();
   const time = card.querySelector('time');
-  if (time) time.textContent = new Intl.DateTimeFormat('zh-CN', { month: 'long', day: 'numeric', weekday: 'short', hour: '2-digit', minute: '2-digit' }).format(now);
+  const formatted = new Intl.DateTimeFormat('zh-CN', {
+    month: 'long', day: 'numeric', weekday: 'short', hour: '2-digit', minute: '2-digit'
+  }).format(now);
+  if (time && time.textContent !== formatted) time.textContent = formatted;
   setStat(card, 'unread', countFolder(documentRef, '收件箱'));
   setStat(card, 'drafts', countFolder(documentRef, '草稿箱'));
 }
 
+function syncWeather(card: HTMLElement, settings: Settings): void {
+  const panel = card.querySelector<HTMLElement>('[data-weather]');
+  if (!panel) return;
+  if (!settings.showWeather) {
+    panel.hidden = true;
+    card.removeAttribute('data-weather-city');
+    return;
+  }
+
+  const city = settings.weatherCity.trim();
+  if (!city) {
+    renderWeatherUnavailable(panel, '请在高级设置中填写城市');
+    return;
+  }
+  if (card.dataset.weatherCity === city && card.dataset.weatherLoading === 'true') return;
+  if (card.dataset.weatherCity === city && panel.dataset.state === 'ready') return;
+
+  card.dataset.weatherCity = city;
+  card.dataset.weatherLoading = 'true';
+  const requestId = (weatherRequests.get(card) ?? 0) + 1;
+  weatherRequests.set(card, requestId);
+  renderWeatherLoading(panel, city);
+  void requestWeather(city).then((result) => {
+    if (!card.isConnected || weatherRequests.get(card) !== requestId || card.dataset.weatherCity !== city) return;
+    card.dataset.weatherLoading = 'false';
+    renderWeather(panel, result, city);
+  });
+}
+
+function renderWeather(panel: HTMLElement, result: WeatherLookupResult, fallbackCity: string): void {
+  if (!result.weather) {
+    renderWeatherUnavailable(panel, '天气暂不可用', fallbackCity);
+    return;
+  }
+  panel.hidden = false;
+  panel.dataset.state = 'ready';
+  setText(panel, '[data-weather-symbol]', result.weather.symbol);
+  setText(panel, '[data-weather-city]', result.weather.city);
+  setText(panel, '[data-weather-temperature]', `${result.weather.temperatureC}°C`);
+  setText(panel, '[data-weather-description]', result.weather.description);
+  const details = [
+    result.weather.apparentTemperatureC === undefined ? '' : `体感 ${result.weather.apparentTemperatureC}°C`,
+    result.weather.humidity === undefined ? '' : `湿度 ${result.weather.humidity}%`,
+    result.cacheState === 'stale' ? '缓存数据' : ''
+  ].filter(Boolean).join(' · ');
+  setText(panel, '[data-weather-detail]', details);
+}
+
+function renderWeatherLoading(panel: HTMLElement, city: string): void {
+  panel.hidden = false;
+  panel.dataset.state = 'loading';
+  setText(panel, '[data-weather-symbol]', '○');
+  setText(panel, '[data-weather-city]', city);
+  setText(panel, '[data-weather-temperature]', '');
+  setText(panel, '[data-weather-description]', '正在更新天气');
+  setText(panel, '[data-weather-detail]', '');
+}
+
+function renderWeatherUnavailable(panel: HTMLElement, description: string, city = '天气'): void {
+  panel.hidden = false;
+  panel.dataset.state = 'unavailable';
+  setText(panel, '[data-weather-symbol]', '○');
+  setText(panel, '[data-weather-city]', city);
+  setText(panel, '[data-weather-temperature]', '');
+  setText(panel, '[data-weather-description]', description);
+  setText(panel, '[data-weather-detail]', '');
+}
+
+function setText(scope: ParentNode, selector: string, value: string): void {
+  const target = scope.querySelector<HTMLElement>(selector);
+  if (target && target.textContent !== value) target.textContent = value;
+}
+
 function setStat(card: HTMLElement, name: string, count: number | undefined): void {
   const target = card.querySelector<HTMLElement>(`[data-stat="${name}"] b`);
-  if (target) target.textContent = count === undefined ? '—' : String(count);
+  const value = count === undefined ? '—' : String(count);
+  if (target && target.textContent !== value) target.textContent = value;
 }
 
 function countFolder(documentRef: Document, name: string): number | undefined {

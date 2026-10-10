@@ -6,6 +6,8 @@ const icons = run(['node', 'scripts/build-icons.mjs']);
 if (icons.status !== 0) process.exit(icons.status ?? 1);
 const content = run(['vite', 'build', '--config', 'vite.content.config.ts']);
 if (content.status !== 0) process.exit(content.status ?? 1);
+const background = run(['vite', 'build', '--config', 'vite.background.config.ts']);
+if (background.status !== 0) process.exit(background.status ?? 1);
 const css = run(['node', 'scripts/build-content-css.mjs']);
 if (css.status !== 0) process.exit(css.status ?? 1);
 const app = run(['vite', 'build']);
@@ -13,6 +15,7 @@ if (app.status !== 0) process.exit(app.status ?? 1);
 
 const children = [
   spawn(command, ['vite', 'build', '--config', 'vite.content.config.ts', '--watch'], { stdio: 'inherit' }),
+  spawn(command, ['vite', 'build', '--config', 'vite.background.config.ts', '--watch'], { stdio: 'inherit' }),
   spawn(command, ['node', 'scripts/build-content-css.mjs', '--watch'], { stdio: 'inherit' }),
   spawn(command, ['vite', 'build', '--watch'], { stdio: 'inherit' })
 ];

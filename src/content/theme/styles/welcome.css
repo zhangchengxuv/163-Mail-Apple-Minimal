@@ -14,6 +14,8 @@ html[data-mail-minimal-page="welcome"] [data-mail-minimal-card="today"] {
   color: var(--mail-minimal-text);
   font-family: var(--mail-minimal-font);
 }
+.mail-minimal-today-layout { display: flex; align-items: stretch; justify-content: space-between; gap: 24px; }
+.mail-minimal-today-main { min-width: 0; flex: 1 1 auto; }
 .mail-minimal-today-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .mail-minimal-today-heading p { margin: 0 0 3px; color: var(--mail-minimal-muted); font-size: 12px; font-weight: 600; }
 .mail-minimal-today-heading h2 { margin: 0; font-size: 18px; line-height: 24px; }
@@ -26,4 +28,14 @@ html[data-mail-minimal-page="welcome"] [data-mail-minimal-card="today"] {
 .mail-minimal-today-actions button:first-child { border-color: var(--mail-minimal-accent); background: var(--mail-minimal-accent); color: #fff; }
 .mail-minimal-today-actions button:hover { background: var(--mail-minimal-hover); }
 .mail-minimal-today-actions button:first-child:hover { filter: brightness(.96); background: var(--mail-minimal-accent); }
-@media (max-width: 720px) { html[data-mail-minimal-page="welcome"] [data-mail-minimal-card="today"] { width: calc(100% - 24px); margin-top: 14px; } .mail-minimal-today-heading { flex-direction: column; } }
+.mail-minimal-today-weather { display: flex; flex: 0 0 174px; align-items: center; gap: 10px; margin: 0; padding-left: 20px; border-left: 1px solid var(--mail-minimal-border); color: var(--mail-minimal-muted); }
+.mail-minimal-today-weather[hidden] { display: none; }
+.mail-minimal-weather-symbol { width: 28px; color: var(--mail-minimal-accent); font-size: 24px; line-height: 1; text-align: center; }
+.mail-minimal-weather-copy { display: grid; min-width: 0; gap: 1px; }
+.mail-minimal-weather-copy p, .mail-minimal-weather-copy small, .mail-minimal-weather-copy strong, .mail-minimal-weather-copy span { overflow: hidden; margin: 0; text-overflow: ellipsis; white-space: nowrap; }
+.mail-minimal-weather-copy p { color: var(--mail-minimal-text); font-size: 12px; font-weight: 600; }
+.mail-minimal-weather-copy strong { color: var(--mail-minimal-text); font-size: 25px; font-weight: 650; letter-spacing: -.5px; line-height: 29px; }
+.mail-minimal-weather-copy span { font-size: 12px; }
+.mail-minimal-weather-copy small { color: var(--mail-minimal-muted); font-size: 10px; }
+.mail-minimal-today-weather[data-state="loading"] .mail-minimal-weather-symbol { color: var(--mail-minimal-muted); }
+@media (max-width: 720px) { html[data-mail-minimal-page="welcome"] [data-mail-minimal-card="today"] { width: calc(100% - 24px); margin-top: 14px; } .mail-minimal-today-layout { flex-direction: column; gap: 16px; } .mail-minimal-today-heading { flex-direction: column; } .mail-minimal-today-weather { flex-basis: auto; padding: 13px 0 0; border-top: 1px solid var(--mail-minimal-border); border-left: 0; } }

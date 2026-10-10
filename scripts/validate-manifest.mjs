@@ -7,7 +7,12 @@ if (!existsSync(manifestPath)) throw new Error('dist/manifest.json is missing. R
 const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
 if (manifest.manifest_version !== 3) throw new Error('Manifest V3 is required.');
 if (manifest.permissions?.some((permission) => permission !== 'storage')) throw new Error('Unexpected permission in manifest.');
-if (JSON.stringify(manifest.host_permissions) !== JSON.stringify(['https://mail.163.com/*'])) throw new Error('Unexpected host permission.');
+const expectedHosts = ['https://mail.163.com/*', 'https://geocoding-api.open-meteo.com/*', 'https://api.open-meteo.com/*'];
+if (JSON.stringify(manifest.host_permissions) !== JSON.stringify(expectedHosts)) throw new Error('Unexpected host permission.');
+const worker = manifest.background?.service_worker;
+if (!worker || !existsSync(resolve(dist, worker))) throw new Error('Manifest references a missing background service worker.');
+const workerSource = readFileSync(resolve(dist, worker), 'utf8');
+if (/^\s*(?:import|export)\s/m.test(workerSource)) throw new Error('Background service worker must be bundled without module imports.');
 for (const content of manifest.content_scripts ?? []) {
   for (const file of [...(content.js ?? []), ...(content.css ?? [])]) {
     if (!existsSync(resolve(dist, file))) throw new Error(`Manifest references missing asset: ${file}`);

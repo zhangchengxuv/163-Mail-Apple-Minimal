@@ -16,3 +16,20 @@ test('popup document renders its settings controls', async ({ page }) => {
   await page.locator('[data-setting="cleanerEnabled"]').click();
   await expect(page.locator('[data-setting="cleanerEnabled"]')).not.toBeChecked();
 });
+
+test('options persist a manually selected weather city', async ({ page }) => {
+  await page.addInitScript(() => {
+    let settings: Record<string, unknown> = {};
+    Object.defineProperty(window, 'chrome', { value: { storage: { sync: {
+      get: async (key: string) => ({ [key]: settings[key] }),
+      set: async (next: Record<string, unknown>) => { settings = { ...settings, ...next }; }
+    } }, runtime: { getURL: (path: string) => path } } });
+  });
+  await page.goto('/src/options/index.html');
+  await expect(page.getByText('天气', { exact: true })).toBeVisible();
+  const city = page.getByLabel('天气城市');
+  await expect(city).toHaveValue('Tokyo');
+  await city.fill('Singapore');
+  await city.press('Tab');
+  await expect(city).toHaveValue('Singapore');
+});

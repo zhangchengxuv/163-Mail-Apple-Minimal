@@ -21,7 +21,9 @@ export const DEFAULT_SETTINGS: Readonly<Settings> = Object.freeze({
   themeRead: true,
   homepageMode: 'inbox',
   accentColor: 'blue',
-  customAccent: '#007AFF'
+  customAccent: '#007AFF',
+  showWeather: true,
+  weatherCity: 'Tokyo'
 });
 
 export const ACCENTS = {

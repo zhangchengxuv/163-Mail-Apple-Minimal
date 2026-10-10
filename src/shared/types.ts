@@ -18,4 +18,6 @@ export interface Settings {
   homepageMode: HomepageMode;
   accentColor: AccentColor;
   customAccent: string;
+  showWeather: boolean;
+  weatherCity: string;
 }

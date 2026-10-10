@@ -4,7 +4,10 @@
   "version": "1.1.2",
   "description": "Privacy-focused cleanup and a calm Apple Mail-inspired interface for NetEase 163 Mail.",
   "permissions": ["storage"],
-  "host_permissions": ["https://mail.163.com/*"],
+  "host_permissions": ["https://mail.163.com/*", "https://geocoding-api.open-meteo.com/*", "https://api.open-meteo.com/*"],
+  "background": {
+    "service_worker": "assets/background.js"
+  },
   "action": {
     "default_title": "163 Mail Minimal",
     "default_popup": "src/popup/index.html",

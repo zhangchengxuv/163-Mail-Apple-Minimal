@@ -12,7 +12,10 @@ export function normalizeSettings(value: Partial<Settings> | undefined): Setting
   const customAccent = /^#[0-9a-f]{6}$/i.test(candidate.customAccent)
     ? candidate.customAccent.toUpperCase()
     : DEFAULT_SETTINGS.customAccent;
-  return { ...candidate, customAccent };
+  const weatherCity = typeof candidate.weatherCity === 'string'
+    ? candidate.weatherCity.trim().replace(/\s+/g, ' ').slice(0, 80)
+    : DEFAULT_SETTINGS.weatherCity;
+  return { ...candidate, customAccent, weatherCity, showWeather: Boolean(candidate.showWeather) };
 }
 
 export function accentValue(settings: Settings): string {

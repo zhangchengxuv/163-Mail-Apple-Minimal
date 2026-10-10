@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/dev.mjs",
-    "build": "node scripts/build-icons.mjs && vite build --config vite.content.config.ts && node scripts/build-content-css.mjs && vite build && node scripts/validate-manifest.mjs && node scripts/verify-icons.mjs && node scripts/package-release.mjs",
+    "build": "node scripts/build-icons.mjs && vite build --config vite.content.config.ts && vite build --config vite.background.config.ts && node scripts/build-content-css.mjs && vite build && node scripts/validate-manifest.mjs && node scripts/verify-icons.mjs && node scripts/package-release.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
     "test": "vitest run",
