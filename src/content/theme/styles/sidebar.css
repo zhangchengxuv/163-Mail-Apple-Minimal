@@ -14,22 +14,3 @@ html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label-selected:hover,
 html[data-mail-minimal-sidebar] #dvNavTop li[role="button"][aria-current="page"] {
   background: var(--mail-minimal-selected) !important; color: var(--mail-minimal-accent) !important;
 }
-/* JS6 puts a white surface on a nested button-text element in the receive/compose strip. */
-html[data-mail-minimal-sidebar][data-mail-minimal-theme="dark"] #dvNavTop li[role="button"] {
-  background: var(--mail-control) !important;
-  border: 1px solid var(--mail-control-border) !important;
-  border-radius: 6px !important;
-  box-shadow: none !important;
-}
-html[data-mail-minimal-sidebar][data-mail-minimal-theme="dark"] #dvNavTop li[role="button"] :is(.nui-btn-text, .nui-btn-icon, .nui-ico, span) {
-  background: transparent !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-}
-html[data-mail-minimal-sidebar][data-mail-minimal-theme="dark"] #dvNavTop li[role="button"]:hover {
-  background: var(--mail-minimal-hover) !important;
-}
-html[data-mail-minimal-sidebar][data-mail-minimal-theme="dark"] #dvNavTop li[role="button"][aria-current="page"] {
-  background: var(--mail-minimal-selected) !important;
-  border-color: transparent !important;
-}

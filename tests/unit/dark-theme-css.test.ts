@@ -1,8 +1,9 @@
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-const readStyle = (name: string): string => readFileSync(new URL(`../../src/content/theme/styles/${name}`, import.meta.url), 'utf8');
-const readPopupStyle = (): string => readFileSync('src/popup/popup.css', 'utf8');
+const readStyle = (name: string): string => readFileSync(resolve(process.cwd(), 'src/content/theme/styles', name), 'utf8');
+const readPopupStyle = (): string => readFileSync(resolve(process.cwd(), 'src/popup/popup.css'), 'utf8');
 
 describe('dark theme CSS regression boundaries', () => {
   it('uses one dark token palette without an inversion or overlay filter', () => {
@@ -41,11 +42,10 @@ describe('dark theme CSS regression boundaries', () => {
     expect(css).toContain('background: transparent !important');
   });
 
-  it('keeps dark sidebar actions and popup controls on the same restrained palette', () => {
+  it('keeps dark popup controls on the restrained palette without changing sidebar geometry', () => {
     const sidebar = readStyle('sidebar.css');
     const popup = readPopupStyle();
-    expect(sidebar).toContain('#dvNavTop li[role="button"]');
-    expect(sidebar).toContain('background: var(--mail-control) !important');
+    expect(sidebar).not.toContain('[data-mail-minimal-theme="dark"] #dvNavTop li[role="button"] {');
     expect(popup).toContain('--popup-surface: #202a36');
     expect(popup).toContain('.switch { display: inline-flex; align-items: center');
     expect(popup).toContain('top: 2px; left: 2px');
