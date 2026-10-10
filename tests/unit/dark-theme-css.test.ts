@@ -42,10 +42,12 @@ describe('dark theme CSS regression boundaries', () => {
     expect(css).toContain('background: transparent !important');
   });
 
-  it('keeps dark popup controls on the restrained palette without changing sidebar geometry', () => {
+  it('removes only the dark action text-layer surface without changing sidebar geometry', () => {
     const sidebar = readStyle('sidebar.css');
     const popup = readPopupStyle();
     expect(sidebar).not.toContain('[data-mail-minimal-theme="dark"] #dvNavTop li[role="button"] {');
+    expect(sidebar).toContain('li[role="button"] .nui-btn-text');
+    expect(sidebar).toContain('background: transparent !important');
     expect(popup).toContain('--popup-surface: #202a36');
     expect(popup).toContain('.switch { display: inline-flex; align-items: center');
     expect(popup).toContain('top: 2px; left: 2px');

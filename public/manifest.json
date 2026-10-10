@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "163 Mail Minimal",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "description": "Privacy-focused cleanup and a calm Apple Mail-inspired interface for NetEase 163 Mail.",
   "permissions": ["storage", "geolocation"],
   "host_permissions": ["https://mail.163.com/*", "https://geocoding-api.open-meteo.com/*", "https://api.open-meteo.com/*"],
