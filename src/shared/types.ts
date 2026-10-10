@@ -19,6 +19,7 @@ export interface Settings {
   themeList: boolean;
   themeCompose: boolean;
   themeRead: boolean;
+  showQuickReply: boolean;
   themeMode: ThemeMode;
   uiFontSize: UiFontSize;
   homepageMode: HomepageMode;

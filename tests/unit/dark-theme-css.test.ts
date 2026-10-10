@@ -65,6 +65,8 @@ describe('dark theme CSS regression boundaries', () => {
     expect(css).not.toMatch(/filter:\s*invert/i);
     expect(css).not.toMatch(/iframe\s*\{/i);
     expect(css).toContain('[data-mail-minimal-reader-quick-reply]');
+    expect(css).toContain('[data-mail-minimal-reader-quick-reply-hidden]');
+    expect(css).toContain('[data-mail-minimal-reader-message-surface]');
     expect(css).toContain(':hover:not(:disabled):not([aria-disabled="true"])');
     expect(css).toContain(':active:not(:disabled):not([aria-disabled="true"])');
     expect(css).toContain('.nui-btn[aria-disabled="true"]');

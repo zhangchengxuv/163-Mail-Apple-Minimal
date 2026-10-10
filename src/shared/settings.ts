@@ -20,7 +20,18 @@ export function normalizeSettings(value: Partial<Settings> | undefined): Setting
   const uiFontSize = [13, 14, 15, 16].includes(Number(candidate.uiFontSize))
     ? Number(candidate.uiFontSize) as Settings['uiFontSize']
     : DEFAULT_SETTINGS.uiFontSize;
-  return { ...candidate, customAccent, weatherCity, weatherLocationMode, themeMode, uiFontSize, showWeather: Boolean(candidate.showWeather) };
+  return {
+    ...candidate,
+    customAccent,
+    weatherCity,
+    weatherLocationMode,
+    themeMode,
+    uiFontSize,
+    showWeather: Boolean(candidate.showWeather),
+    // Existing installations predate this setting. Keep quick reply available
+    // unless the user has explicitly turned it off.
+    showQuickReply: candidate.showQuickReply !== false
+  };
 }
 
 export function accentValue(settings: Settings): string {

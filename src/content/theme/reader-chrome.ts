@@ -1,8 +1,11 @@
 import type { MailPage } from '../../shared/types';
 
 const QUICK_REPLY_ATTRIBUTE = 'data-mail-minimal-reader-quick-reply';
+const QUICK_REPLY_HIDDEN_ATTRIBUTE = 'data-mail-minimal-reader-quick-reply-hidden';
+const MESSAGE_SURFACE_ATTRIBUTE = 'data-mail-minimal-reader-message-surface';
+const MESSAGE_CENTERED_ATTRIBUTE = 'data-mail-minimal-reader-message-centered';
 const READER_ROOT_SELECTOR = '[id*="read.ReadModule" i], [id*="ReadModule"]';
-const QUICK_REPLY_PATTERN = /快捷回复|quick\s*reply/i;
+const QUICK_REPLY_PATTERN = /(?:\u5feb\u6377\u56de\u590d|quick\s*reply)/i;
 
 function isLightBackground(element: HTMLElement): boolean {
   const color = element.ownerDocument.defaultView?.getComputedStyle(element).backgroundColor ?? '';
@@ -19,7 +22,7 @@ function isNearReaderBottom(candidate: HTMLElement, root: HTMLElement): boolean 
 
 function findQuickReplySurface(root: HTMLElement): HTMLElement | null {
   const candidates = [...root.querySelectorAll<HTMLElement>('div, section, footer, aside, [role="region"]')]
-    .filter((candidate) => QUICK_REPLY_PATTERN.test(candidate.textContent?.replace(/\s/g, '') ?? ''))
+    .filter((candidate) => QUICK_REPLY_PATTERN.test(candidate.textContent ?? ''))
     .filter((candidate) => isNearReaderBottom(candidate, root))
     .sort((first, second) => (first.textContent?.length ?? 0) - (second.textContent?.length ?? 0));
 
@@ -31,14 +34,72 @@ function findQuickReplySurface(root: HTMLElement): HTMLElement | null {
   return null;
 }
 
-export function syncReaderChrome(documentRef: Document = document, page: MailPage, isDark: boolean): void {
-  if (page !== 'read' || !isDark) {
-    documentRef.querySelectorAll(`[${QUICK_REPLY_ATTRIBUTE}]`).forEach((element) => element.removeAttribute(QUICK_REPLY_ATTRIBUTE));
+function findMessageSurface(root: HTMLElement): HTMLElement | null {
+  const frame = root.querySelector<HTMLIFrameElement>('iframe');
+  if (!frame) return null;
+
+  for (let surface: HTMLElement | null = frame.parentElement; surface && surface !== root; surface = surface.parentElement) {
+    const box = surface.getBoundingClientRect();
+    if (isLightBackground(surface) && (box.width === 0 || box.width >= 320) && (box.height === 0 || box.height >= 160)) {
+      return surface;
+    }
+  }
+  return null;
+}
+
+function canCenterSurface(surface: HTMLElement): boolean {
+  const styles = surface.ownerDocument.defaultView?.getComputedStyle(surface);
+  if (!styles) return false;
+  return !['absolute', 'fixed'].includes(styles.position) && !['table', 'inline-table'].includes(styles.display);
+}
+
+function clearReaderMarkers(documentRef: Document): void {
+  documentRef.querySelectorAll(`[${QUICK_REPLY_ATTRIBUTE}], [${QUICK_REPLY_HIDDEN_ATTRIBUTE}], [${MESSAGE_SURFACE_ATTRIBUTE}], [${MESSAGE_CENTERED_ATTRIBUTE}]`)
+    .forEach((element) => {
+      element.removeAttribute(QUICK_REPLY_ATTRIBUTE);
+      element.removeAttribute(QUICK_REPLY_HIDDEN_ATTRIBUTE);
+      element.removeAttribute(MESSAGE_SURFACE_ATTRIBUTE);
+      element.removeAttribute(MESSAGE_CENTERED_ATTRIBUTE);
+    });
+}
+
+/**
+ * Styles only confirmed NetEase reader chrome. It never enters an email iframe
+ * and never changes the sender-provided HTML document inside it.
+ */
+export function syncReaderChrome(
+  documentRef: Document = document,
+  page: MailPage,
+  isDark: boolean,
+  showQuickReply = true
+): void {
+  if (page !== 'read') {
+    clearReaderMarkers(documentRef);
     return;
   }
 
   documentRef.querySelectorAll<HTMLElement>(READER_ROOT_SELECTOR).forEach((root) => {
-    if (root.querySelector(`[${QUICK_REPLY_ATTRIBUTE}]`)) return;
-    findQuickReplySurface(root)?.setAttribute(QUICK_REPLY_ATTRIBUTE, '');
+    const existingQuickReply = root.querySelector<HTMLElement>(`[${QUICK_REPLY_ATTRIBUTE}], [${QUICK_REPLY_HIDDEN_ATTRIBUTE}]`);
+    const quickReply = existingQuickReply ?? findQuickReplySurface(root);
+    if (quickReply) {
+      quickReply.toggleAttribute(QUICK_REPLY_HIDDEN_ATTRIBUTE, !showQuickReply);
+      quickReply.toggleAttribute(QUICK_REPLY_ATTRIBUTE, isDark && showQuickReply);
+    }
+
+    const existingMessageSurface = root.querySelector<HTMLElement>(`[${MESSAGE_SURFACE_ATTRIBUTE}]`);
+    const messageSurface = existingMessageSurface ?? (isDark ? findMessageSurface(root) : null);
+    if (messageSurface) {
+      messageSurface.toggleAttribute(MESSAGE_SURFACE_ATTRIBUTE, isDark);
+      messageSurface.toggleAttribute(MESSAGE_CENTERED_ATTRIBUTE, isDark && canCenterSurface(messageSurface));
+    }
   });
+
+  if (!isDark) {
+    documentRef.querySelectorAll(`[${QUICK_REPLY_ATTRIBUTE}], [${MESSAGE_SURFACE_ATTRIBUTE}], [${MESSAGE_CENTERED_ATTRIBUTE}]`)
+      .forEach((element) => {
+        element.removeAttribute(QUICK_REPLY_ATTRIBUTE);
+        element.removeAttribute(MESSAGE_SURFACE_ATTRIBUTE);
+        element.removeAttribute(MESSAGE_CENTERED_ATTRIBUTE);
+      });
+  }
 }

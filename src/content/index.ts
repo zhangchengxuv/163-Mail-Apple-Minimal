@@ -13,7 +13,7 @@ let initialized = false;
 function refresh(): void {
   currentPage = detectPage();
   const resolvedTheme = applyTheme(settings, currentPage);
-  syncReaderChrome(document, currentPage, resolvedTheme === 'dark');
+  syncReaderChrome(document, currentPage, resolvedTheme === 'dark', settings.showQuickReply);
   applyCleaner(settings, currentPage);
   initialized = true;
 }

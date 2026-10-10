@@ -19,6 +19,7 @@ export const DEFAULT_SETTINGS: Readonly<Settings> = Object.freeze({
   themeList: true,
   themeCompose: true,
   themeRead: true,
+  showQuickReply: true,
   themeMode: 'system',
   uiFontSize: 14,
   homepageMode: 'inbox',

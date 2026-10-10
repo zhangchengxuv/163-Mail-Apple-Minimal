@@ -66,11 +66,15 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] :is(.nui-too
 }
 
 /* Runtime marks only the verified, light quick-reply surface at the bottom of a reader. */
+html[data-mail-minimal-page="read"] [data-mail-minimal-reader-quick-reply-hidden] {
+  display: none !important;
+}
 html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] [data-mail-minimal-reader-quick-reply] {
   background: var(--mail-minimal-surface) !important;
   border: 1px solid var(--mail-minimal-border) !important;
   color: var(--mail-minimal-text) !important;
   box-shadow: none !important;
+  box-sizing: border-box !important;
 }
 html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] [data-mail-minimal-reader-quick-reply] :is(.nui-btn, .nui-roundBtn, button, [role="button"]) {
   border-color: var(--mail-control-border) !important;
@@ -80,4 +84,33 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] [data-mail-m
 html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] [data-mail-minimal-reader-quick-reply] :is(.nui-btn-text, .nui-btn-icon) {
   background: transparent !important;
   color: inherit !important;
+}
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] [data-mail-minimal-reader-quick-reply] :is(input, textarea, [contenteditable="true"]) {
+  background: var(--mail-bg) !important;
+  border: 1px solid var(--mail-control-border) !important;
+  border-radius: 7px !important;
+  color: var(--mail-minimal-text) !important;
+  caret-color: var(--mail-minimal-text) !important;
+}
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] [data-mail-minimal-reader-quick-reply] :is(input, textarea, [contenteditable="true"]):focus-visible {
+  border-color: var(--mail-minimal-accent) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--mail-minimal-accent) 28%, transparent) !important;
+  outline: none !important;
+}
+
+/* The sender's document stays inside its iframe. Only its verified NetEase wrapper
+   gets a dark frame, so white HTML mail has a deliberate boundary instead of a white page spill. */
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] [data-mail-minimal-reader-message-surface] {
+  background: var(--mail-minimal-surface) !important;
+  border: 1px solid var(--mail-minimal-border) !important;
+  border-radius: var(--mail-minimal-radius) !important;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 14%) !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+html[data-mail-minimal-page="read"][data-mail-minimal-theme="dark"] [data-mail-minimal-reader-message-surface][data-mail-minimal-reader-message-centered] {
+  max-inline-size: min(calc(100% - 32px), 1180px) !important;
+  margin-inline: auto !important;
+  margin-block: 16px !important;
+  padding: 12px !important;
 }

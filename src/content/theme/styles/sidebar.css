@@ -1,7 +1,9 @@
 html[data-mail-minimal-sidebar] #dvNavContainer.frame-nav,
 html[data-mail-minimal-sidebar] #dvNavContainer #dvNavTop,
 html[data-mail-minimal-sidebar] #dvNavContainer #dvNavTop > ul { background: var(--mail-minimal-sidebar-bg) !important; background-image: none !important; }
-html[data-mail-minimal-sidebar] :is(#dvNavTop, #dvNavTop > ul) {
+/* #dvNavTop can itself be the native list or contain it. Target just the list,
+   rather than turning both parent and child into grids (which clipped 收信/写信). */
+html[data-mail-minimal-sidebar] :is(#dvNavTop:has(> li[role="button"]), #dvNavTop > ul:has(> li[role="button"])) {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-auto-rows: minmax(var(--mail-minimal-action-min-height), auto);
@@ -22,11 +24,13 @@ html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] {
   justify-content: center !important;
   gap: var(--mail-minimal-action-gap);
   min-width: 0 !important;
+  width: auto !important;
+  max-width: 100% !important;
   min-height: var(--mail-minimal-action-min-height);
   margin: 0 !important;
   padding: 0 var(--mail-minimal-action-padding-inline) !important;
   box-sizing: border-box !important;
-  overflow: hidden;
+  overflow: visible !important;
   white-space: nowrap;
   line-height: var(--mail-minimal-action-line-height) !important;
   color: var(--mail-minimal-accent) !important;
@@ -37,6 +41,8 @@ html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] :is(.nui-btn, .nui-b
   align-items: center !important;
   justify-content: center !important;
   min-width: 0;
+  width: auto !important;
+  flex: 1 1 auto;
   max-width: 100%;
   line-height: inherit !important;
   background-color: transparent !important;
@@ -45,8 +51,8 @@ html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] :is(.nui-btn, .nui-b
   color: inherit !important;
 }
 html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] .nui-btn-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible;
+  text-overflow: clip;
   font-size: var(--mail-minimal-font-size) !important;
 }
 html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] .nui-btn-icon {
