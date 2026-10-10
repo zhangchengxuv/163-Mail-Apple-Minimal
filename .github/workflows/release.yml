@@ -83,7 +83,7 @@ jobs:
       - name: Read release metadata
         id: metadata
         run: |
-          VERSION="$(node -p \"require('./package.json').version\")"
+          VERSION="$(node -p "require('./package.json').version")"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "archive=release/163-mail-minimal-v${VERSION}.zip" >> "$GITHUB_OUTPUT"
           echo "checksum=release/163-mail-minimal-v${VERSION}.zip.sha256" >> "$GITHUB_OUTPUT"

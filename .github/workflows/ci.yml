@@ -59,7 +59,9 @@ jobs:
 
       - name: Read project version
         id: version
-        run: echo "value=$(node -p \"require('./package.json').version\")" >> "$GITHUB_OUTPUT"
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          echo "value=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Upload verified extension package
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
