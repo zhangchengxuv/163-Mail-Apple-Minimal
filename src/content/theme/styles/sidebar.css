@@ -1,12 +1,20 @@
+/* Sidebar shell: the light palette deliberately stays brighter than the message pane. */
 html[data-mail-minimal-sidebar] #dvNavContainer.frame-nav,
 html[data-mail-minimal-sidebar] #dvNavContainer #dvNavTop,
-html[data-mail-minimal-sidebar] #dvNavContainer #dvNavTop > ul { background: var(--mail-minimal-sidebar-bg) !important; background-image: none !important; }
-/* #dvNavTop can itself be the native list or contain it. Target just the list,
-   rather than turning both parent and child into grids (which clipped 收信/写信). */
+html[data-mail-minimal-sidebar] #dvNavContainer #dvNavTop > ul {
+  background: var(--mail-minimal-sidebar-bg) !important;
+  background-image: none !important;
+}
+
+html[data-mail-minimal-sidebar][data-mail-minimal-theme="light"] #dvNavContainer.frame-nav {
+  border-right: 1px solid #d8e2f0 !important;
+}
+
+/* Sidebar primary actions. Target either native list shape, never both parent and child. */
 html[data-mail-minimal-sidebar] :is(#dvNavTop:has(> li[role="button"]), #dvNavTop > ul:has(> li[role="button"])) {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: minmax(var(--mail-minimal-action-min-height), auto);
+  grid-auto-rows: var(--mail-minimal-action-min-height);
   gap: var(--mail-minimal-action-gap);
   align-items: stretch;
   height: auto !important;
@@ -14,67 +22,119 @@ html[data-mail-minimal-sidebar] :is(#dvNavTop:has(> li[role="button"]), #dvNavTo
   padding: var(--mail-minimal-action-gap) !important;
   box-sizing: border-box !important;
 }
-html[data-mail-minimal-sidebar] #dvNavTop li[role="button"],
-html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label {
-  border-radius: var(--mail-minimal-radius) !important; color: var(--mail-minimal-text) !important; font-size: var(--mail-minimal-font-size) !important;
-}
+
 html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: var(--mail-minimal-action-gap);
-  min-width: 0 !important;
-  width: auto !important;
-  max-width: 100% !important;
-  min-height: var(--mail-minimal-action-min-height);
-  margin: 0 !important;
-  padding: 0 var(--mail-minimal-action-padding-inline) !important;
-  box-sizing: border-box !important;
-  overflow: visible !important;
-  white-space: nowrap;
-  line-height: var(--mail-minimal-action-line-height) !important;
-  color: var(--mail-minimal-accent) !important;
-}
-/* Keep the native button structure, but let the tokenized outer surface own its size and color. */
-html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] :is(.nui-btn, .nui-btn-text) {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  min-width: 0;
-  width: auto !important;
-  flex: 1 1 auto;
-  max-width: 100%;
-  line-height: inherit !important;
-  background-color: transparent !important;
-  border-color: transparent !important;
+  align-self: stretch;
+  min-inline-size: 0 !important;
+  min-block-size: var(--mail-minimal-action-min-height) !important;
+  inline-size: auto !important;
+  block-size: var(--mail-minimal-action-min-height) !important;
+  margin: 0 !important;
+  padding-inline: var(--mail-minimal-action-padding-inline) !important;
+  border: 1px solid var(--mail-sidebar-action-border) !important;
+  border-radius: var(--mail-minimal-action-radius) !important;
+  background: var(--mail-sidebar-action-bg) !important;
+  box-sizing: border-box !important;
+  color: var(--mail-sidebar-action-text) !important;
+  font-size: var(--mail-minimal-font-size) !important;
+  font-weight: 600 !important;
+  line-height: var(--mail-minimal-action-line-height) !important;
+  overflow: hidden !important;
+  white-space: nowrap;
+  box-shadow: none !important;
+}
+
+/* Native markup differs across mailbox releases. This keeps every internal layer
+   participating in the same centered flex line without changing its click target. */
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] :is(.nui-btn, .nui-btn-text, a) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: var(--mail-minimal-action-gap) !important;
+  min-inline-size: 0 !important;
+  max-inline-size: 100% !important;
+  min-block-size: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
   box-shadow: none !important;
   color: inherit !important;
+  font: inherit !important;
+  line-height: inherit !important;
+  text-align: center !important;
+  white-space: inherit;
 }
-html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] .nui-btn-text {
-  overflow: visible;
-  text-overflow: clip;
+
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] :is(.nui-btn, a) {
+  flex: 1 1 auto;
+}
+
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] :is(.nui-btn-icon, i, svg) {
+  flex: 0 0 var(--mail-minimal-action-icon-size) !important;
+  inline-size: var(--mail-minimal-action-icon-size) !important;
+  block-size: var(--mail-minimal-action-icon-size) !important;
+  color: var(--mail-sidebar-action-icon) !important;
+  fill: currentColor;
+}
+
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]::before,
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]::after {
+  color: var(--mail-sidebar-action-icon) !important;
+}
+
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:hover {
+  background: var(--mail-sidebar-action-hover-bg) !important;
+  border-color: var(--mail-sidebar-action-hover-border) !important;
+}
+
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:active,
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"][aria-current="page"] {
+  background: var(--mail-sidebar-action-active-bg) !important;
+  border-color: var(--mail-sidebar-action-hover-border) !important;
+  color: var(--mail-sidebar-action-active-text) !important;
+}
+
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:is(:active, [aria-current="page"]) :is(.nui-btn-icon, i, svg) {
+  color: var(--mail-sidebar-action-active-text) !important;
+}
+
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:is([aria-disabled="true"], .nui-btn-disabled, .disabled, :has(.nui-btn-disabled), :has([aria-disabled="true"])) {
+  background: var(--mail-sidebar-action-disabled-bg) !important;
+  border-color: transparent !important;
+  color: var(--mail-sidebar-action-disabled-text) !important;
+  cursor: not-allowed;
+}
+
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:is([aria-disabled="true"], .nui-btn-disabled, .disabled, :has(.nui-btn-disabled), :has([aria-disabled="true"])) :is(.nui-btn-icon, i, svg) {
+  color: var(--mail-sidebar-action-disabled-text) !important;
+}
+
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:focus-visible {
+  outline: 2px solid var(--mail-focus-ring) !important;
+  outline-offset: 2px;
+}
+
+/* Folder navigation keeps its own quiet hierarchy below the primary actions. */
+html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label {
+  border-radius: var(--mail-minimal-radius) !important;
+  color: var(--mail-minimal-text) !important;
   font-size: var(--mail-minimal-font-size) !important;
 }
-html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] .nui-btn-icon {
-  flex: 0 0 var(--mail-minimal-action-icon-size);
-  inline-size: var(--mail-minimal-action-icon-size);
-  block-size: var(--mail-minimal-action-icon-size);
+
+html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label:hover {
+  background: var(--mail-minimal-hover) !important;
 }
-html[data-mail-minimal-sidebar][data-mail-minimal-theme="dark"] #dvNavTop li[role="button"] {
-  background-color: var(--mail-control) !important;
-  border: 1px solid var(--mail-control-border) !important;
+
+html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label-selected,
+html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label-selected:hover {
+  background: var(--mail-minimal-selected) !important;
   color: var(--mail-minimal-accent) !important;
 }
-html[data-mail-minimal-sidebar][data-mail-minimal-theme="dark"] #dvNavTop li[role="button"]:hover {
-  background-color: var(--mail-minimal-hover) !important;
-  border-color: var(--mail-minimal-accent) !important;
-}
-html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:active { background-color: var(--mail-minimal-selected) !important; }
-html[data-mail-minimal-theme="dark"] #dvNavContainer :is(.nui-tree-item-count, .nui-tree-item-inlineIcon, .nui-ico) { color: var(--mail-minimal-muted) !important; }
-html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:hover,
-html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label:hover { background: var(--mail-minimal-hover) !important; }
-html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label-selected,
-html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label-selected:hover,
-html[data-mail-minimal-sidebar] #dvNavTop li[role="button"][aria-current="page"] {
-  background: var(--mail-minimal-selected) !important; color: var(--mail-minimal-accent) !important;
+
+html[data-mail-minimal-theme="dark"] #dvNavContainer :is(.nui-tree-item-count, .nui-tree-item-inlineIcon, .nui-ico) {
+  color: var(--mail-minimal-muted) !important;
 }

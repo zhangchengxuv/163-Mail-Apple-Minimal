@@ -10,7 +10,7 @@ describe('dark theme CSS regression boundaries', () => {
     const css = readStyle('tokens.css');
     expect(css).toContain('--mail-bg: #151a21');
     expect(css).toContain('--mail-surface: #202a36');
-    expect(css).toContain('--mail-sidebar: #1c2530');
+    expect(css).toContain('--mail-sidebar: #182231');
     expect(css).toContain('--mail-text-primary: #edf2f8');
     expect(css).not.toMatch(/filter:\s*invert/i);
   });
@@ -42,17 +42,24 @@ describe('dark theme CSS regression boundaries', () => {
     expect(css).toContain('background: transparent !important');
   });
 
-  it('gives dark sidebar action controls a token-based surface without changing their geometry', () => {
+  it('gives sidebar primary actions separate light and dark tokens with font-size-aware geometry', () => {
     const sidebar = readStyle('sidebar.css');
     const tokens = readStyle('tokens.css');
     const popup = readPopupStyle();
-    expect(sidebar).toContain('[data-mail-minimal-theme="dark"] #dvNavTop li[role="button"] {');
+    expect(sidebar).toContain('/* Sidebar primary actions.');
     expect(sidebar).toContain('.nui-btn-text');
-    expect(sidebar).toContain('background-color: var(--mail-control) !important');
+    expect(sidebar).toContain('background: var(--mail-sidebar-action-bg) !important');
+    expect(sidebar).toContain('align-items: center !important');
+    expect(sidebar).toContain('justify-content: center !important');
+    expect(sidebar).toContain('font-weight: 600 !important');
     expect(sidebar).toContain('grid-template-columns: repeat(2, minmax(0, 1fr))');
-    expect(sidebar).toContain('min-height: var(--mail-minimal-action-min-height)');
+    expect(sidebar).toContain('min-block-size: var(--mail-minimal-action-min-height) !important');
     expect(sidebar).not.toMatch(/transform:\s*scale/i);
-    expect(tokens).toContain('--mail-minimal-action-min-height');
+    expect(tokens).toContain('--mail-sidebar-action-bg: #ffffff');
+    expect(tokens).toContain('--mail-sidebar-action-bg: #223047');
+    expect(tokens).toContain('--mail-sidebar-action-hover-bg: #eef4ff');
+    expect(tokens).toContain('--mail-sidebar-action-hover-bg: #2b3a53');
+    expect(tokens).toContain('--mail-minimal-action-min-height: max(40px');
     expect(tokens).toContain('--mail-minimal-action-padding-inline');
     expect(tokens).toContain('--mail-minimal-action-icon-size');
     expect(popup).toContain('--popup-surface: #202a36');

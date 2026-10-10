@@ -4,18 +4,18 @@ html {
   --mail-minimal-accent: #007aff;
   --mail-minimal-font-size: 14px;
   --mail-minimal-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
-  --mail-minimal-action-min-height: max(36px, calc(var(--mail-minimal-font-size) * 2.5));
-  --mail-minimal-action-padding-inline: max(8px, calc(var(--mail-minimal-font-size) * 0.65));
-  --mail-minimal-action-gap: max(5px, calc(var(--mail-minimal-font-size) * 0.4));
-  --mail-minimal-action-icon-size: max(16px, calc(var(--mail-minimal-font-size) + 2px));
+  --mail-minimal-action-min-height: max(40px, calc(var(--mail-minimal-font-size) * 2.5));
+  --mail-minimal-action-padding-inline: clamp(12px, calc(var(--mail-minimal-font-size) * 0.9), 16px);
+  --mail-minimal-action-gap: max(7px, calc(var(--mail-minimal-font-size) * 0.5));
+  --mail-minimal-action-icon-size: max(16px, calc(var(--mail-minimal-font-size) + 1px));
   --mail-minimal-action-line-height: 1.2;
-  --mail-minimal-action-radius: 9px;
+  --mail-minimal-action-radius: 12px;
 }
 
 html[data-mail-minimal-theme="light"] {
   --mail-bg: #f5f7fa;
   --mail-surface: #ffffff;
-  --mail-sidebar: #edf2f8;
+  --mail-sidebar: #f5f8fc;
   --mail-text-primary: #263445;
   --mail-text-secondary: #7b8797;
   --mail-border: #e3e8ef;
@@ -28,13 +28,23 @@ html[data-mail-minimal-theme="light"] {
   --mail-on-accent: #ffffff;
   --mail-shadow-sm: 0 2px 9px rgb(40 60 90 / 4.5%);
   --mail-focus-ring: color-mix(in srgb, var(--mail-minimal-accent) 70%, white);
+  --mail-sidebar-action-bg: #ffffff;
+  --mail-sidebar-action-border: #d8e2f0;
+  --mail-sidebar-action-text: #3a73f0;
+  --mail-sidebar-action-icon: #3a73f0;
+  --mail-sidebar-action-hover-bg: #eef4ff;
+  --mail-sidebar-action-hover-border: #bfd2f4;
+  --mail-sidebar-action-active-bg: #dce9ff;
+  --mail-sidebar-action-active-text: #2459d6;
+  --mail-sidebar-action-disabled-bg: #f0f3f8;
+  --mail-sidebar-action-disabled-text: #9aabc1;
 }
 
 html[data-mail-minimal-theme="dark"] {
   color-scheme: dark;
   --mail-bg: #151a21;
   --mail-surface: #202a36;
-  --mail-sidebar: #1c2530;
+  --mail-sidebar: #182231;
   --mail-text-primary: #edf2f8;
   --mail-text-secondary: #a9b7c9;
   --mail-border: #34404e;
@@ -47,6 +57,16 @@ html[data-mail-minimal-theme="dark"] {
   --mail-on-accent: #101722;
   --mail-shadow-sm: 0 2px 10px rgb(0 0 0 / 22%);
   --mail-focus-ring: color-mix(in srgb, var(--mail-minimal-accent) 78%, white);
+  --mail-sidebar-action-bg: #223047;
+  --mail-sidebar-action-border: #31425b;
+  --mail-sidebar-action-text: #dce8ff;
+  --mail-sidebar-action-icon: #dce8ff;
+  --mail-sidebar-action-hover-bg: #2b3a53;
+  --mail-sidebar-action-hover-border: #496484;
+  --mail-sidebar-action-active-bg: #35507a;
+  --mail-sidebar-action-active-text: #f2f6ff;
+  --mail-sidebar-action-disabled-bg: #1d293a;
+  --mail-sidebar-action-disabled-text: #718096;
 }
 
 html[data-mail-minimal-theme] {
