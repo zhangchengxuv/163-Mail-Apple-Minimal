@@ -20,9 +20,13 @@ test('popup document renders its settings controls', async ({ page }) => {
 test('options persist a manually selected weather city', async ({ page }) => {
   await page.addInitScript(() => {
     let settings: Record<string, unknown> = {};
+    let local: Record<string, unknown> = {};
     Object.defineProperty(window, 'chrome', { value: { storage: { sync: {
       get: async (key: string) => ({ [key]: settings[key] }),
       set: async (next: Record<string, unknown>) => { settings = { ...settings, ...next }; }
+    }, local: {
+      get: async (key: string) => ({ [key]: local[key] }),
+      set: async (next: Record<string, unknown>) => { local = { ...local, ...next }; }
     } }, runtime: { getURL: (path: string) => path } } });
   });
   await page.goto('/src/options/index.html');
@@ -32,4 +36,28 @@ test('options persist a manually selected weather city', async ({ page }) => {
   await city.fill('Singapore');
   await city.press('Tab');
   await expect(city).toHaveValue('Singapore');
+});
+
+test('options only requests and saves current position after an explicit click', async ({ page }) => {
+  await page.addInitScript(() => {
+    let settings: Record<string, unknown> = {};
+    let local: Record<string, unknown> = {};
+    Object.defineProperty(window, 'chrome', { value: { storage: { sync: {
+      get: async (key: string) => ({ [key]: settings[key] }),
+      set: async (next: Record<string, unknown>) => { settings = { ...settings, ...next }; }
+    }, local: {
+      get: async (key: string) => ({ [key]: local[key] }),
+      set: async (next: Record<string, unknown>) => { local = { ...local, ...next }; }
+    } }, runtime: { getURL: (path: string) => path } } });
+    Object.defineProperty(window.navigator, 'geolocation', { value: {
+      getCurrentPosition: (success: (position: GeolocationPosition) => void) => success({
+        coords: { latitude: 1.3521, longitude: 103.8198 }
+      } as GeolocationPosition)
+    } });
+  });
+  await page.goto('/src/options/index.html');
+  await expect(page.getByRole('button', { name: '使用当前位置' })).toBeVisible();
+  await page.getByRole('button', { name: '使用当前位置' }).click();
+  await expect(page.getByText('当前位置已保存，仅保存在本机')).toBeVisible();
+  await expect(page.locator('input[name="weatherLocationMode"][value="geolocation"]')).toBeChecked();
 });

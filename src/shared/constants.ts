@@ -23,6 +23,7 @@ export const DEFAULT_SETTINGS: Readonly<Settings> = Object.freeze({
   accentColor: 'blue',
   customAccent: '#007AFF',
   showWeather: true,
+  weatherLocationMode: 'manual',
   weatherCity: 'Tokyo'
 });
 

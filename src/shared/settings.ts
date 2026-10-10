@@ -15,7 +15,8 @@ export function normalizeSettings(value: Partial<Settings> | undefined): Setting
   const weatherCity = typeof candidate.weatherCity === 'string'
     ? candidate.weatherCity.trim().replace(/\s+/g, ' ').slice(0, 80)
     : DEFAULT_SETTINGS.weatherCity;
-  return { ...candidate, customAccent, weatherCity, showWeather: Boolean(candidate.showWeather) };
+  const weatherLocationMode = candidate.weatherLocationMode === 'geolocation' ? 'geolocation' : 'manual';
+  return { ...candidate, customAccent, weatherCity, weatherLocationMode, showWeather: Boolean(candidate.showWeather) };
 }
 
 export function accentValue(settings: Settings): string {

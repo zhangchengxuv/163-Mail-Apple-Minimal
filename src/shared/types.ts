@@ -1,3 +1,5 @@
+import type { WeatherLocationMode } from './weather-types';
+
 export type MailPage = 'welcome' | 'list' | 'compose' | 'read' | 'unknown';
 export type HomepageMode = 'inbox' | 'minimal-home' | 'original-home';
 export type AccentColor = 'blue' | 'graphite' | 'custom';
@@ -19,5 +21,6 @@ export interface Settings {
   accentColor: AccentColor;
   customAccent: string;
   showWeather: boolean;
+  weatherLocationMode: WeatherLocationMode;
   weatherCity: string;
 }

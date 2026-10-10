@@ -1,4 +1,10 @@
-import { WEATHER_CACHE_KEY, type WeatherLookupResult, type WeatherSummary } from '../shared/weather-types';
+import {
+  WEATHER_CACHE_KEY,
+  type SavedWeatherLocation,
+  type WeatherLookupResult,
+  type WeatherSource,
+  type WeatherSummary
+} from '../shared/weather-types';
 
 export const WEATHER_CACHE_TTL_MS = 30 * 60 * 1000;
 const REQUEST_TIMEOUT_MS = 8_000;
@@ -11,7 +17,7 @@ export interface WeatherStorage {
 export type WeatherFetcher = (input: string, init?: RequestInit) => Promise<Pick<Response, 'ok' | 'json'>>;
 
 interface WeatherCache {
-  cityKey: string;
+  sourceKey: string;
   weather: WeatherSummary;
 }
 
@@ -41,18 +47,19 @@ export function createWeatherService(dependencies: ServiceDependencies = {}) {
   const now = dependencies.now ?? Date.now;
 
   return {
-    async getWeather(cityInput: string): Promise<WeatherLookupResult> {
-      const city = normalizeCity(cityInput);
-      if (!city || !storage) return unavailable();
+    async getWeather(source: WeatherSource): Promise<WeatherLookupResult> {
+      if (!storage) return unavailable();
+      const normalizedSource = normalizeSource(source);
+      if (!normalizedSource) return source.mode === 'geolocation' ? unavailable('location-unavailable') : unavailable();
 
-      const cached = await readCache(storage, city);
+      const cached = await readCache(storage, normalizedSource);
       if (cached && now() - cached.updatedAt < WEATHER_CACHE_TTL_MS) {
         return { weather: cached, cacheState: 'fresh' };
       }
 
       try {
-        const weather = await fetchWeather(city, fetcher, now);
-        await storage.set({ [WEATHER_CACHE_KEY]: { cityKey: cityKey(city), weather } satisfies WeatherCache });
+        const weather = await fetchWeather(normalizedSource, fetcher, now);
+        await storage.set({ [WEATHER_CACHE_KEY]: { sourceKey: weatherSourceKey(normalizedSource), weather } satisfies WeatherCache });
         return { weather, cacheState: 'fresh' };
       } catch {
         return cached ? { weather: cached, cacheState: 'stale' } : unavailable();
@@ -78,14 +85,34 @@ export function describeWeatherCode(code: number, isDay = true): { description: 
   return { description: '天气未知', symbol: '○' };
 }
 
-async function readCache(storage: WeatherStorage, city: string): Promise<WeatherSummary | null> {
+async function readCache(storage: WeatherStorage, source: WeatherSource): Promise<WeatherSummary | null> {
   const result = await storage.get(WEATHER_CACHE_KEY);
   const cache = result[WEATHER_CACHE_KEY] as Partial<WeatherCache> | undefined;
-  if (!cache || cache.cityKey !== cityKey(city) || !isWeatherSummary(cache.weather)) return null;
+  if (!cache || cache.sourceKey !== weatherSourceKey(source) || !isWeatherSummary(cache.weather)) return null;
   return cache.weather;
 }
 
-async function fetchWeather(city: string, fetcher: WeatherFetcher, now: () => number): Promise<WeatherSummary> {
+function normalizeSource(source: WeatherSource): WeatherSource | null {
+  if (source.mode === 'geolocation') return isWeatherLocation(source.location) ? source : null;
+  const city = normalizeCity(source.city);
+  return city ? { mode: 'manual', city } : null;
+}
+
+function weatherSourceKey(source: WeatherSource): string {
+  if (source.mode === 'manual') return `manual:${cityKey(source.city)}`;
+  return `geolocation:${source.location?.latitude.toFixed(3)}:${source.location?.longitude.toFixed(3)}`;
+}
+
+async function fetchWeather(source: WeatherSource, fetcher: WeatherFetcher, now: () => number): Promise<WeatherSummary> {
+  if (source.mode === 'geolocation') {
+    const location = source.location;
+    if (!isWeatherLocation(location)) throw new Error('Weather location was unavailable');
+    return fetchForecast(location.label, location.latitude, location.longitude, fetcher, now);
+  }
+  return fetchWeatherForCity(source.city, fetcher, now);
+}
+
+async function fetchWeatherForCity(city: string, fetcher: WeatherFetcher, now: () => number): Promise<WeatherSummary> {
   const geocodingUrl = new URL('https://geocoding-api.open-meteo.com/v1/search');
   geocodingUrl.searchParams.set('name', city);
   geocodingUrl.searchParams.set('count', '1');
@@ -94,10 +121,13 @@ async function fetchWeather(city: string, fetcher: WeatherFetcher, now: () => nu
   const geocoding = await fetchJson<GeocodingResponse>(geocodingUrl, fetcher);
   const place = geocoding.results?.[0];
   if (!isFiniteNumber(place?.latitude) || !isFiniteNumber(place?.longitude)) throw new Error('Weather city was not found');
+  return fetchForecast(place.name?.trim() || city, place.latitude, place.longitude, fetcher, now);
+}
 
+async function fetchForecast(label: string, latitude: number, longitude: number, fetcher: WeatherFetcher, now: () => number): Promise<WeatherSummary> {
   const forecastUrl = new URL('https://api.open-meteo.com/v1/forecast');
-  forecastUrl.searchParams.set('latitude', String(place.latitude));
-  forecastUrl.searchParams.set('longitude', String(place.longitude));
+  forecastUrl.searchParams.set('latitude', String(latitude));
+  forecastUrl.searchParams.set('longitude', String(longitude));
   forecastUrl.searchParams.set('current', 'temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,is_day');
   forecastUrl.searchParams.set('temperature_unit', 'celsius');
   forecastUrl.searchParams.set('timezone', 'auto');
@@ -107,7 +137,7 @@ async function fetchWeather(city: string, fetcher: WeatherFetcher, now: () => nu
 
   const condition = describeWeatherCode(current.weather_code, current.is_day !== 0);
   return {
-    city: place.name?.trim() || city,
+    city: label,
     temperatureC: Math.round(current.temperature_2m),
     apparentTemperatureC: isFiniteNumber(current.apparent_temperature) ? Math.round(current.apparent_temperature) : undefined,
     humidity: isFiniteNumber(current.relative_humidity_2m) ? Math.round(current.relative_humidity_2m) : undefined,
@@ -134,8 +164,8 @@ function cityKey(city: string): string {
   return city.toLocaleLowerCase();
 }
 
-function unavailable(): WeatherLookupResult {
-  return { weather: null, cacheState: 'unavailable' };
+function unavailable(reason?: 'location-unavailable'): WeatherLookupResult {
+  return reason ? { weather: null, cacheState: 'unavailable', reason } : { weather: null, cacheState: 'unavailable' };
 }
 
 function isFiniteNumber(value: unknown): value is number {
@@ -151,4 +181,14 @@ function isWeatherSummary(value: unknown): value is WeatherSummary {
     && typeof weather.description === 'string'
     && typeof weather.symbol === 'string'
     && isFiniteNumber(weather.updatedAt);
+}
+
+function isWeatherLocation(value: SavedWeatherLocation | null): value is SavedWeatherLocation {
+  return value !== null
+    && isFiniteNumber(value.latitude)
+    && isFiniteNumber(value.longitude)
+    && value.latitude >= -90
+    && value.latitude <= 90
+    && value.longitude >= -180
+    && value.longitude <= 180;
 }

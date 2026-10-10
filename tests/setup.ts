@@ -30,8 +30,8 @@ Object.defineProperty(globalThis, 'chrome', {
     runtime: {
       getURL: (path: string) => path,
       openOptionsPage: async () => undefined,
-      sendMessage: async (message: { city?: string }) => ({
-        weather: { city: message.city || 'Tokyo', temperatureC: message.city === 'Singapore' ? 30 : 24, apparentTemperatureC: message.city === 'Singapore' ? 31 : 25, humidity: 58, weatherCode: 2, description: '局部多云', symbol: '⛅', updatedAt: Date.now() },
+      sendMessage: async (message: { city?: string; locationMode?: string }) => ({
+        weather: { city: message.locationMode === 'geolocation' ? '当前位置' : message.city || 'Tokyo', temperatureC: message.city === 'Singapore' ? 30 : 24, apparentTemperatureC: message.city === 'Singapore' ? 31 : 25, humidity: 58, weatherCode: 2, description: '局部多云', symbol: '⛅', updatedAt: Date.now() },
         cacheState: 'fresh'
       })
     }

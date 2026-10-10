@@ -76,6 +76,19 @@ describe('welcome cleaner', () => {
     expect(card?.querySelector('[data-weather-temperature]')?.textContent).toBe('30°C');
   });
 
+  it('requests weather for the saved current location only in minimal welcome', async () => {
+    const sendMessage = vi.spyOn(chrome.runtime, 'sendMessage');
+    document.body.innerHTML = welcomeFixture;
+    applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'minimal-home', weatherLocationMode: 'geolocation' }, 'welcome');
+    await flushWeather();
+
+    expect(sendMessage).toHaveBeenCalledWith({
+      type: 'mail-minimal:weather:get', locationMode: 'geolocation', city: 'Tokyo'
+    });
+    expect(document.querySelector('[data-weather-city]')?.textContent).toBe('当前位置');
+    sendMessage.mockRestore();
+  });
+
   it('leaves Today intact when weather is unavailable and does not request weather outside welcome', async () => {
     const sendMessage = vi.spyOn(chrome.runtime, 'sendMessage').mockRejectedValueOnce(new Error('offline'));
     document.body.innerHTML = welcomeFixture;

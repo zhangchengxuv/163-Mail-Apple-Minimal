@@ -70,33 +70,37 @@ function syncWeather(card: HTMLElement, settings: Settings): void {
   if (!panel) return;
   if (!settings.showWeather) {
     panel.hidden = true;
-    card.removeAttribute('data-weather-city');
+    card.removeAttribute('data-weather-source');
+    card.removeAttribute('data-weather-loading');
     return;
   }
 
+  const isGeolocation = settings.weatherLocationMode === 'geolocation';
   const city = settings.weatherCity.trim();
-  if (!city) {
+  if (!isGeolocation && !city) {
     renderWeatherUnavailable(panel, '请在高级设置中填写城市');
     return;
   }
-  if (card.dataset.weatherCity === city && card.dataset.weatherLoading === 'true') return;
-  if (card.dataset.weatherCity === city && panel.dataset.state === 'ready') return;
+  const requestKey = isGeolocation ? 'geolocation' : `manual:${city}`;
+  const fallbackLabel = isGeolocation ? '当前位置' : city;
+  if (card.dataset.weatherSource === requestKey && card.dataset.weatherLoading === 'true') return;
+  if (card.dataset.weatherSource === requestKey && panel.dataset.state === 'ready') return;
 
-  card.dataset.weatherCity = city;
+  card.dataset.weatherSource = requestKey;
   card.dataset.weatherLoading = 'true';
   const requestId = (weatherRequests.get(card) ?? 0) + 1;
   weatherRequests.set(card, requestId);
-  renderWeatherLoading(panel, city);
-  void requestWeather(city).then((result) => {
-    if (!card.isConnected || weatherRequests.get(card) !== requestId || card.dataset.weatherCity !== city) return;
+  renderWeatherLoading(panel, fallbackLabel);
+  void requestWeather(settings.weatherLocationMode, city).then((result) => {
+    if (!card.isConnected || weatherRequests.get(card) !== requestId || card.dataset.weatherSource !== requestKey) return;
     card.dataset.weatherLoading = 'false';
-    renderWeather(panel, result, city);
+    renderWeather(panel, result, fallbackLabel);
   });
 }
 
 function renderWeather(panel: HTMLElement, result: WeatherLookupResult, fallbackCity: string): void {
   if (!result.weather) {
-    renderWeatherUnavailable(panel, '天气暂不可用', fallbackCity);
+    renderWeatherUnavailable(panel, result.reason === 'location-unavailable' ? '请在高级设置中使用当前位置' : '天气暂不可用', fallbackCity);
     return;
   }
   panel.hidden = false;

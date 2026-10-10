@@ -18,5 +18,16 @@ select { min-width: 180px; padding: 7px 9px; }
 input[type="color"] { width: 40px; height: 30px; padding: 2px; }
 input[type="text"] { width: 180px; padding: 7px 9px; }
 input[type="text"]:focus-visible { outline: 2px solid #73aff4; outline-offset: 2px; }
+.location-mode { display: flex; flex-wrap: wrap; gap: 12px 20px; margin: 0; padding: 11px 17px; border: 0; border-top: 1px solid #edf0f4; color: #263445; font-size: 13px; }
+.location-mode legend { width: 100%; padding: 0; color: #263445; font-weight: 600; }
+.location-mode label { display: inline-flex; align-items: center; gap: 4px; }
+.location-mode input { accent-color: #007aff; }
+.weather-city-row[data-inactive="true"] { opacity: .55; }
+.location-actions { display: grid; gap: 5px; padding: 0 17px 14px; border-top: 1px solid #edf0f4; }
+.location-button { justify-self: start; margin-top: 11px; padding: 7px 10px; border: 1px solid #cfe0f7; border-radius: 7px; background: #f5f9ff; color: #006edc; font-size: 12px; }
+.location-button:hover:not(:disabled) { background: #eaf3ff; }
+.location-button:focus-visible { outline: 2px solid #73aff4; outline-offset: 2px; }
+.location-button:disabled { cursor: default; opacity: .45; }
+.location-actions small { color: #8994a4; font-size: 11px; }
 footer { display: flex; gap: 16px; padding: 8px 2px; font-size: 12px; }
 button, a { border: 0; background: none; color: #007aff; font: inherit; text-decoration: none; cursor: pointer; }
