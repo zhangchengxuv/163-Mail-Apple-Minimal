@@ -44,18 +44,22 @@ html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] {
   line-height: var(--mail-minimal-action-line-height) !important;
   overflow: hidden !important;
   white-space: nowrap;
+  text-indent: 0 !important;
   box-shadow: none !important;
 }
 
-/* Native markup differs across mailbox releases. This keeps every internal layer
-   participating in the same centered flex line without changing its click target. */
-html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] :is(.nui-btn, .nui-btn-text, a) {
+/* Current NetEase markup is li > .om0 (sprite icon) + .oz0 (label).
+   Reset their native offsets on the actual two flex children, not on a guessed wrapper. */
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] > :is(.om0, .oz0) {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: var(--mail-minimal-action-gap) !important;
+  position: static !important;
+  inset: auto !important;
+  float: none !important;
+  order: 0 !important;
+  transform: none !important;
   min-inline-size: 0 !important;
-  max-inline-size: 100% !important;
   min-block-size: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -67,23 +71,39 @@ html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] :is(.nui-btn, .nui-b
   line-height: inherit !important;
   text-align: center !important;
   white-space: inherit;
+  text-indent: 0 !important;
 }
 
-html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] :is(.nui-btn, a) {
-  flex: 1 1 auto;
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] > .om0 {
+  flex: 0 0 var(--mail-minimal-action-icon-size) !important;
+  inline-size: var(--mail-minimal-action-icon-size) !important;
+  block-size: var(--mail-minimal-action-icon-size) !important;
+  margin-inline-end: var(--mail-minimal-action-gap) !important;
 }
 
-html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] :is(.nui-btn-icon, i, svg) {
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] > .om0 > .nui-ico {
+  display: block !important;
+  position: static !important;
+  margin: 0 !important;
+  padding: 0 !important;
   flex: 0 0 var(--mail-minimal-action-icon-size) !important;
   inline-size: var(--mail-minimal-action-icon-size) !important;
   block-size: var(--mail-minimal-action-icon-size) !important;
   color: var(--mail-sidebar-action-icon) !important;
-  fill: currentColor;
+  text-indent: 0 !important;
+}
+
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"] > .oz0 {
+  flex: 0 0 auto !important;
+  inline-size: auto !important;
+  block-size: auto !important;
+  max-inline-size: calc(100% - var(--mail-minimal-action-icon-size) - var(--mail-minimal-action-gap)) !important;
 }
 
 html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]::before,
 html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]::after {
-  color: var(--mail-sidebar-action-icon) !important;
+  content: none !important;
+  display: none !important;
 }
 
 html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:hover {
@@ -98,7 +118,7 @@ html[data-mail-minimal-sidebar] #dvNavTop li[role="button"][aria-current="page"]
   color: var(--mail-sidebar-action-active-text) !important;
 }
 
-html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:is(:active, [aria-current="page"]) :is(.nui-btn-icon, i, svg) {
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:is(:active, [aria-current="page"]) > .om0 > .nui-ico {
   color: var(--mail-sidebar-action-active-text) !important;
 }
 
@@ -109,7 +129,7 @@ html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:is([aria-disabled="t
   cursor: not-allowed;
 }
 
-html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:is([aria-disabled="true"], .nui-btn-disabled, .disabled, :has(.nui-btn-disabled), :has([aria-disabled="true"])) :is(.nui-btn-icon, i, svg) {
+html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:is([aria-disabled="true"], .nui-btn-disabled, .disabled, :has(.nui-btn-disabled), :has([aria-disabled="true"])) > .om0 > .nui-ico {
   color: var(--mail-sidebar-action-disabled-text) !important;
 }
 

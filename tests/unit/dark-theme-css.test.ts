@@ -47,7 +47,9 @@ describe('dark theme CSS regression boundaries', () => {
     const tokens = readStyle('tokens.css');
     const popup = readPopupStyle();
     expect(sidebar).toContain('/* Sidebar primary actions.');
-    expect(sidebar).toContain('.nui-btn-text');
+    expect(sidebar).toContain('> :is(.om0, .oz0)');
+    expect(sidebar).toContain('text-indent: 0 !important');
+    expect(sidebar).toContain('content: none !important');
     expect(sidebar).toContain('background: var(--mail-sidebar-action-bg) !important');
     expect(sidebar).toContain('align-items: center !important');
     expect(sidebar).toContain('justify-content: center !important');
