@@ -20,7 +20,7 @@ npm run test
 npm run build
 ```
 
-Open `edge://extensions` or `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select `dist/`. The release archive is generated at `release/163-mail-minimal-v1.1.0.zip`.
+Open `edge://extensions` or `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select `dist/`. The release archive is generated at `release/163-mail-minimal-v1.1.1.zip`.
 
 ## Limits
 

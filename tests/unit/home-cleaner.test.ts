@@ -8,6 +8,7 @@ describe('welcome cleaner', () => {
     applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'minimal-home' }, 'welcome');
     expect(document.querySelector('[data-module="ai-assistant"]')?.hasAttribute(HIDDEN_ATTRIBUTE)).toBe(true);
     expect(document.querySelector('[role="link"]')?.hasAttribute(HIDDEN_ATTRIBUTE)).toBe(false);
+    expect(document.querySelector('[data-mail-minimal-card="today"]')?.textContent).toContain('今日概览');
   });
 
   it('uses the native inbox item once for default homepage mode', () => {
@@ -27,5 +28,12 @@ describe('welcome cleaner', () => {
     Object.defineProperty(banner, 'getBoundingClientRect', { value: () => ({ width: 600, height: 220 }) });
     applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'minimal-home' }, 'welcome');
     expect(banner.hasAttribute(HIDDEN_ATTRIBUTE)).toBe(true);
+  });
+
+  it('leaves the original welcome page untouched and removes the Today card', () => {
+    document.body.innerHTML = '<main id="dvContentContainer"><section data-module="ai-assistant"></section></main>';
+    applyCleaner({ ...DEFAULT_SETTINGS, homepageMode: 'original-home' }, 'welcome');
+    expect(document.querySelector('[data-module="ai-assistant"]')?.hasAttribute(HIDDEN_ATTRIBUTE)).toBe(false);
+    expect(document.querySelector('[data-mail-minimal-card="today"]')).toBeNull();
   });
 });

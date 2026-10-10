@@ -18,7 +18,8 @@ export function cleanAdvertisements(settings: Settings, documentRef: Document = 
 
 function isAdBadge(element: Element): boolean {
   const label = tidy(element.textContent);
-  if (label !== '广告' && !label.startsWith('广告×')) return false;
+  // NetEase currently renders this as “广告▼”; earlier variants used “广告×”.
+  if (!label.startsWith('广告')) return false;
   const rect = element.getBoundingClientRect();
   return rect.width <= 100 && rect.height <= 48;
 }

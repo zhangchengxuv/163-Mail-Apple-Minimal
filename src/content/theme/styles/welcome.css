@@ -1,2 +1,29 @@
 html[data-mail-minimal-page="welcome"][data-mail-minimal-theme] #dvContentContainer,
 html[data-mail-minimal-page="welcome"][data-mail-minimal-theme] .frame-main { background: var(--mail-minimal-page-bg) !important; }
+
+/* This card remains in the native welcome content flow; it never uses positioning or viewport offsets. */
+html[data-mail-minimal-page="welcome"] [data-mail-minimal-card="today"] {
+  display: block;
+  width: min(720px, calc(100% - 40px));
+  margin: 22px auto 40px;
+  padding: 18px 20px;
+  border: 1px solid var(--mail-minimal-border);
+  border-radius: var(--mail-radius-md);
+  background: rgb(255 255 255 / 94%);
+  box-shadow: var(--mail-shadow-sm);
+  color: var(--mail-minimal-text);
+  font-family: var(--mail-minimal-font);
+}
+.mail-minimal-today-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.mail-minimal-today-heading p { margin: 0 0 3px; color: var(--mail-minimal-muted); font-size: 12px; font-weight: 600; }
+.mail-minimal-today-heading h2 { margin: 0; font-size: 18px; line-height: 24px; }
+.mail-minimal-today-heading time { color: var(--mail-minimal-muted); font-size: 12px; white-space: nowrap; }
+.mail-minimal-today-stats { display: flex; gap: 24px; margin-top: 16px; color: var(--mail-minimal-muted); font-size: 12px; }
+.mail-minimal-today-stats span { display: inline-flex; align-items: baseline; gap: 5px; }
+.mail-minimal-today-stats b { color: var(--mail-minimal-text); font-size: 21px; font-weight: 650; }
+.mail-minimal-today-actions { display: flex; gap: 8px; margin-top: 16px; }
+.mail-minimal-today-actions button { padding: 7px 11px; border: 1px solid var(--mail-minimal-border); border-radius: var(--mail-radius-sm); background: #fff; color: var(--mail-minimal-text); font: inherit; font-size: 12px; cursor: pointer; }
+.mail-minimal-today-actions button:first-child { border-color: var(--mail-minimal-accent); background: var(--mail-minimal-accent); color: #fff; }
+.mail-minimal-today-actions button:hover { background: var(--mail-minimal-hover); }
+.mail-minimal-today-actions button:first-child:hover { filter: brightness(.96); background: var(--mail-minimal-accent); }
+@media (max-width: 720px) { html[data-mail-minimal-page="welcome"] [data-mail-minimal-card="today"] { width: calc(100% - 24px); margin-top: 14px; } .mail-minimal-today-heading { flex-direction: column; } }
