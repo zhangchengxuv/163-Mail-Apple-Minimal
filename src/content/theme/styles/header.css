@@ -1,5 +1,5 @@
 html[data-mail-minimal-header] header.frame-head {
-  background: #f3f5f9 !important;
+  background: var(--mail-header) !important;
   background-image: none !important;
   border-bottom: 1px solid var(--mail-minimal-border) !important;
   box-shadow: 0 2px 9px rgb(40 60 90 / 4.5%) !important;
@@ -10,13 +10,13 @@ html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item {
   background: transparent !important; background-image: none !important; border: 1px solid transparent !important;
   border-bottom: 0 !important; border-radius: 10px 10px 0 0 !important; box-shadow: none !important;
 }
-html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item:hover { background: #e5edf7 !important; }
+html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item:hover { background: var(--mail-minimal-hover) !important; }
 html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item-selected {
-  background: #fff !important; border-color: var(--mail-minimal-border) !important; box-shadow: 0 -1px 5px rgb(50 66 90 / 4%) !important;
+  background: var(--mail-tab-selected) !important; border-color: var(--mail-minimal-border) !important; box-shadow: none !important;
 }
-html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item-text { color: #6d7b90 !important; font-weight: 500 !important; }
+html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item-text { color: var(--mail-minimal-muted) !important; font-weight: 500 !important; }
 html[data-mail-minimal-header] #dvMultiTabWrapper .nui-tabs-item-selected .nui-tabs-item-text { color: var(--mail-minimal-accent) !important; font-weight: 650 !important; }
 html[data-mail-minimal-header] header.frame-head input[type="text"],
 html[data-mail-minimal-header] header.frame-head input[type="search"] {
-  border: 1px solid #e2e7ef !important; border-radius: 16px !important; background: #f8fafc !important; box-shadow: none !important;
+  border: 1px solid var(--mail-control-border) !important; border-radius: 16px !important; background: var(--mail-control) !important; color: var(--mail-minimal-text) !important; box-shadow: none !important;
 }

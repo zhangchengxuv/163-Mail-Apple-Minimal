@@ -16,6 +16,10 @@ function refresh(): void {
   initialized = true;
 }
 
+function refreshSystemTheme(): void {
+  if (settings.themeMode === 'system') applyTheme(settings, currentPage);
+}
+
 async function start(): Promise<void> {
   settings = await getSettings();
   refresh();
@@ -23,6 +27,7 @@ async function start(): Promise<void> {
   observer.observe(document.documentElement);
   window.addEventListener('popstate', () => observer.schedule());
   window.addEventListener('hashchange', () => observer.schedule());
+  window.matchMedia?.('(prefers-color-scheme: dark)').addEventListener('change', refreshSystemTheme);
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== 'sync' || !changes.settings) return;
     settings = changes.settings.newValue as Settings;

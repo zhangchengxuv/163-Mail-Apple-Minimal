@@ -10,6 +10,7 @@ A Manifest V3 browser extension for `mail.163.com` that independently provides i
 
 - Independent cleanup and theme switches, stored with `chrome.storage.sync`.
 - Scoped CSS for header, sidebar, list, compose, reader, and welcome states.
+- Light, dark, and system-following appearance modes for the extension and mailbox chrome; email bodies, images, and iframes are never inverted.
 - No custom dashboard, history overrides, dynamic-ID selectors, or contact-panel geometry overrides.
 - Minimal permissions: `storage`, `geolocation` used only after an explicit Options-page action, `https://mail.163.com/*`, and two narrowly scoped Open-Meteo endpoints used only for optional weather.
 - Static local assets only; no remote code, analytics, or ads.
@@ -19,6 +20,10 @@ A Manifest V3 browser extension for `mail.163.com` that independently provides i
 When **Minimal home** is selected, the Today card can show weather for a manually entered city (default: `Tokyo`) or an explicitly saved current position. Manual-city mode never requests location and never uses IP geolocation. Current-position mode can only be triggered by clicking **Use current location** or **Update current location** in Options; it does not request location when mail opens, the SPA changes page, or a background refresh runs. The coordinates remain in local-only `chrome.storage.local` and are not synced. Manual-city mode sends only the city name to Open-Meteo's geocoding and forecast endpoints; current-position mode sends only the saved coordinates to the forecast endpoint. Neither mode sends email content. Weather data is cached locally for 30 minutes, with a matching stale-cache fallback on network failure.
 
 The required, narrowly scoped host permissions are `https://geocoding-api.open-meteo.com/*` and `https://api.open-meteo.com/*`. Weather data is supplied by [Open-Meteo's Geocoding API](https://open-meteo.com/en/docs/geocoding-api) and [Forecast API](https://open-meteo.com/en/docs). You can turn weather off or change the city in Options.
+
+## Appearance modes
+
+Choose **Light**, **Dark**, or **System** in the popup or Options page. System is the default and follows `prefers-color-scheme` while the mailbox is open, without refetching weather or reloading the list. Dark mode uses scoped CSS variables for the NetEase shell, Today card, and extension settings only. It deliberately leaves HTML email bodies, images, signatures, tables, iframe documents, and rich-text editor content untouched.
 
 ## Build and install
 
@@ -30,7 +35,7 @@ npm run test
 npm run build
 ```
 
-Open `edge://extensions` or `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select `dist/`. The release archive is generated at `release/163-mail-minimal-v1.1.2.zip`.
+Open `edge://extensions` or `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select `dist/`. The release archive is generated at `release/163-mail-minimal-v1.2.0.zip`.
 
 See [GitHub Releases](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/releases/latest) for the latest stable download. A Release ZIP is an unpacked developer-mode extension package, not a one-click Chrome Web Store or Edge Add-ons installer.
 

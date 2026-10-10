@@ -3,7 +3,7 @@ html[data-mail-minimal-sidebar] #dvNavContainer #dvNavTop,
 html[data-mail-minimal-sidebar] #dvNavContainer #dvNavTop > ul { background: var(--mail-minimal-sidebar-bg) !important; background-image: none !important; }
 html[data-mail-minimal-sidebar] #dvNavTop li[role="button"],
 html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label {
-  border-radius: var(--mail-minimal-radius) !important; color: #435268 !important;
+  border-radius: var(--mail-minimal-radius) !important; color: var(--mail-minimal-text) !important;
 }
 html[data-mail-minimal-sidebar] #dvNavTop li[role="button"]:hover,
 html[data-mail-minimal-sidebar] #dvNavTree .nui-tree-item-label:hover { background: var(--mail-minimal-hover) !important; }

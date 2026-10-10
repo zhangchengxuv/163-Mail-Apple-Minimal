@@ -15,6 +15,25 @@ test('popup document renders its settings controls', async ({ page }) => {
   await expect(page.locator('[data-setting="cleanerEnabled"]')).toBeVisible();
   await page.locator('[data-setting="cleanerEnabled"]').click();
   await expect(page.locator('[data-setting="cleanerEnabled"]')).not.toBeChecked();
+  await expect(page.locator('input[name="themeMode"][value="system"]')).toBeChecked();
+  await page.locator('input[name="themeMode"][value="dark"]').check();
+  await expect(page.locator('html')).toHaveAttribute('data-mail-minimal-theme', 'dark');
+});
+
+test('system appearance resolves to dark for popup and options without changing the setting', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.addInitScript(() => {
+    let settings: Record<string, unknown> = {};
+    Object.defineProperty(window, 'chrome', { value: { storage: { sync: {
+      get: async (key: string) => ({ [key]: settings[key] }), set: async (next: Record<string, unknown>) => { settings = { ...settings, ...next }; }
+    } }, tabs: { query: async () => [{ id: 1, url: 'https://mail.163.com/js6/' }], sendMessage: async () => ({ ready: true, page: 'welcome' }) }, runtime: { getURL: (path: string) => path, openOptionsPage: async () => undefined } } });
+  });
+  await page.goto('/src/popup/index.html');
+  await expect(page.locator('input[name="themeMode"][value="system"]')).toBeChecked();
+  await expect(page.locator('html')).toHaveAttribute('data-mail-minimal-theme', 'dark');
+  await page.goto('/src/options/index.html');
+  await expect(page.locator('input[name="themeMode"][value="system"]')).toBeChecked();
+  await expect(page.locator('html')).toHaveAttribute('data-mail-minimal-theme', 'dark');
 });
 
 test('options persist a manually selected weather city', async ({ page }) => {

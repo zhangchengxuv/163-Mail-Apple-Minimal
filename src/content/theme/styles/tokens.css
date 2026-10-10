@@ -1,17 +1,48 @@
 html {
+  --mail-radius-sm: 8px;
+  --mail-radius-md: 12px;
+  --mail-minimal-accent: #007aff;
+  --mail-minimal-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+}
+
+html[data-mail-minimal-theme="light"] {
   --mail-bg: #f5f7fa;
   --mail-surface: #ffffff;
   --mail-sidebar: #edf2f8;
   --mail-text-primary: #263445;
   --mail-text-secondary: #7b8797;
   --mail-border: #e3e8ef;
-  --mail-accent: #007aff;
   --mail-hover: #f0f5fc;
   --mail-selected: #e7f0fc;
-  --mail-radius-sm: 8px;
-  --mail-radius-md: 12px;
+  --mail-control: #f8fafc;
+  --mail-control-border: #dce4ee;
+  --mail-header: #f3f5f9;
+  --mail-tab-selected: #ffffff;
+  --mail-on-accent: #ffffff;
   --mail-shadow-sm: 0 2px 9px rgb(40 60 90 / 4.5%);
-  --mail-minimal-accent: #007aff;
+  --mail-focus-ring: color-mix(in srgb, var(--mail-minimal-accent) 70%, white);
+}
+
+html[data-mail-minimal-theme="dark"] {
+  color-scheme: dark;
+  --mail-bg: #171b23;
+  --mail-surface: #272f3b;
+  --mail-sidebar: #202732;
+  --mail-text-primary: #e7ecf4;
+  --mail-text-secondary: #9caabc;
+  --mail-border: #394457;
+  --mail-hover: #303b4b;
+  --mail-selected: #304664;
+  --mail-control: #222a35;
+  --mail-control-border: #435066;
+  --mail-header: #202731;
+  --mail-tab-selected: #2a3441;
+  --mail-on-accent: #f8fbff;
+  --mail-shadow-sm: 0 2px 10px rgb(0 0 0 / 18%);
+  --mail-focus-ring: color-mix(in srgb, var(--mail-minimal-accent) 78%, white);
+}
+
+html[data-mail-minimal-theme] {
   --mail-minimal-page-bg: var(--mail-bg);
   --mail-minimal-sidebar-bg: var(--mail-sidebar);
   --mail-minimal-surface: var(--mail-surface);
@@ -21,5 +52,4 @@ html {
   --mail-minimal-hover: var(--mail-hover);
   --mail-minimal-selected: var(--mail-selected);
   --mail-minimal-radius: var(--mail-radius-sm);
-  --mail-minimal-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
 }

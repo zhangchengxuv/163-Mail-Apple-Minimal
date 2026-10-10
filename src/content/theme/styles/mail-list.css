@@ -3,17 +3,17 @@ html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body { background: var(--mail-minimal-page-bg) !important; background-image: none !important; }
 html[data-mail-minimal-list] header.frame-main-cont-head,
 html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar,
-html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar-ext { background: #fff !important; background-image: none !important; border-color: var(--mail-minimal-border) !important; box-shadow: none !important; }
+html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar-ext { background: var(--mail-minimal-surface) !important; background-image: none !important; border-color: var(--mail-minimal-border) !important; color: var(--mail-minimal-text) !important; box-shadow: none !important; }
 html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar > .nui-toolbar-item > .nui-btn {
-  border: 1px solid #dce4ee !important; border-radius: 7px !important; background: #f8fafc !important; box-shadow: none !important;
+  border: 1px solid var(--mail-control-border) !important; border-radius: 7px !important; background: var(--mail-control) !important; color: var(--mail-minimal-text) !important; box-shadow: none !important;
 }
 html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar-ext .nui-roundBtn {
-  border: 1px solid #dce4ee !important; border-radius: 7px !important; background: #f8fafc !important; box-shadow: none !important;
+  border: 1px solid var(--mail-control-border) !important; border-radius: 7px !important; background: var(--mail-control) !important; color: var(--mail-minimal-text) !important; box-shadow: none !important;
 }
 /* Only the outer pagination button owns a border: fixes the historic double frame. */
 html[data-mail-minimal-list] header.frame-main-cont-head .nui-toolbar-ext .nui-roundBtn .nui-btn-text { border: 0 !important; background: transparent !important; box-shadow: none !important; }
 html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] {
-  background: var(--mail-minimal-surface) !important; border-bottom-color: var(--mail-minimal-border) !important; outline: none !important;
+  background: var(--mail-minimal-surface) !important; border-bottom-color: var(--mail-minimal-border) !important; color: var(--mail-minimal-text) !important; outline: none !important;
 }
 /* Keep every native row layer aligned with its parent so selection cannot leave a date-column seam. */
 html[data-mail-minimal-list] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] > .nl0,

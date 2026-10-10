@@ -9,7 +9,7 @@ html[data-mail-minimal-page="welcome"] [data-mail-minimal-card="today"] {
   padding: 18px 20px;
   border: 1px solid var(--mail-minimal-border);
   border-radius: var(--mail-radius-md);
-  background: rgb(255 255 255 / 94%);
+  background: var(--mail-minimal-surface);
   box-shadow: var(--mail-shadow-sm);
   color: var(--mail-minimal-text);
   font-family: var(--mail-minimal-font);
@@ -24,8 +24,8 @@ html[data-mail-minimal-page="welcome"] [data-mail-minimal-card="today"] {
 .mail-minimal-today-stats span { display: inline-flex; align-items: baseline; gap: 5px; }
 .mail-minimal-today-stats b { color: var(--mail-minimal-text); font-size: 21px; font-weight: 650; }
 .mail-minimal-today-actions { display: flex; gap: 8px; margin-top: 16px; }
-.mail-minimal-today-actions button { padding: 7px 11px; border: 1px solid var(--mail-minimal-border); border-radius: var(--mail-radius-sm); background: #fff; color: var(--mail-minimal-text); font: inherit; font-size: 12px; cursor: pointer; }
-.mail-minimal-today-actions button:first-child { border-color: var(--mail-minimal-accent); background: var(--mail-minimal-accent); color: #fff; }
+.mail-minimal-today-actions button { padding: 7px 11px; border: 1px solid var(--mail-minimal-border); border-radius: var(--mail-radius-sm); background: var(--mail-control); color: var(--mail-minimal-text); font: inherit; font-size: 12px; cursor: pointer; }
+.mail-minimal-today-actions button:first-child { border-color: var(--mail-minimal-accent); background: var(--mail-minimal-accent); color: var(--mail-on-accent); }
 .mail-minimal-today-actions button:hover { background: var(--mail-minimal-hover); }
 .mail-minimal-today-actions button:first-child:hover { filter: brightness(.96); background: var(--mail-minimal-accent); }
 .mail-minimal-today-weather { display: flex; flex: 0 0 174px; align-items: center; gap: 10px; margin: 0; padding-left: 20px; border-left: 1px solid var(--mail-minimal-border); color: var(--mail-minimal-muted); }

@@ -3,6 +3,7 @@ import type { WeatherLocationMode } from './weather-types';
 export type MailPage = 'welcome' | 'list' | 'compose' | 'read' | 'unknown';
 export type HomepageMode = 'inbox' | 'minimal-home' | 'original-home';
 export type AccentColor = 'blue' | 'graphite' | 'custom';
+export type ThemeMode = 'light' | 'dark' | 'system';
 
 export interface Settings {
   cleanerEnabled: boolean;
@@ -17,6 +18,7 @@ export interface Settings {
   themeList: boolean;
   themeCompose: boolean;
   themeRead: boolean;
+  themeMode: ThemeMode;
   homepageMode: HomepageMode;
   accentColor: AccentColor;
   customAccent: string;

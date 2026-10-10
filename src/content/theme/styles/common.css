@@ -13,7 +13,7 @@ html[data-mail-minimal-theme] body.frame-default {
 }
 html[data-mail-minimal-theme] :focus:not(:focus-visible) { outline: none !important; }
 html[data-mail-minimal-theme] :focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--mail-minimal-accent) 70%, white) !important;
+  outline: 2px solid var(--mail-focus-ring) !important;
   outline-offset: 2px !important;
 }
 @media (prefers-reduced-motion: reduce) {
