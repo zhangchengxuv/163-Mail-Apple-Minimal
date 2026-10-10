@@ -35,10 +35,23 @@ html[data-mail-minimal-header] header.frame-head input[type="text"],
 html[data-mail-minimal-header] header.frame-head input[type="search"] {
   border: 1px solid var(--mail-control-border) !important; border-radius: 16px !important; background: var(--mail-control) !important; color: var(--mail-minimal-text) !important; box-shadow: none !important;
 }
-html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head :is(.nui-ipt, .nui-ipt-input, .nui-ipt-placeholder) {
-  background-color: var(--mail-control) !important;
-  border-color: var(--mail-control-border) !important;
+/* The native search shell and input both paint backgrounds; make the shell the only surface. */
+html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head [role="search"].sU0 {
+  background: #273341 !important;
+  border: 1px solid var(--mail-control-border) !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head [role="search"] :is(.nui-ipt, .nui-ipt-input) {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
   color: var(--mail-minimal-text) !important;
+  box-shadow: none !important;
   opacity: 1 !important;
 }
-html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head .nui-ipt-placeholder { color: var(--mail-minimal-muted) !important; }
+html[data-mail-minimal-header][data-mail-minimal-theme="dark"] header.frame-head [role="search"] .nui-ipt-placeholder {
+  background: transparent !important;
+  color: var(--mail-minimal-muted) !important;
+  opacity: 1 !important;
+}

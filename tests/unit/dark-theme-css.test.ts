@@ -34,6 +34,8 @@ describe('dark theme CSS regression boundaries', () => {
     expect(css).toContain('background: #18212c');
     expect(css).toContain('color: #eef4fc');
     expect(css).toContain('.nui-ipt-placeholder');
+    expect(css).toContain('[role="search"].sU0');
+    expect(css).toContain('background: transparent !important');
   });
 
   it('does not target reader iframe documents or generic message bodies', () => {
