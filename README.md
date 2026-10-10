@@ -43,6 +43,16 @@
 
 最新正式版本与下载地址见 [GitHub Releases](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/releases/latest)。Release ZIP 是开发者模式下的“加载解压缩的扩展”安装包，不是 Chrome 或 Edge 商店的一键安装程序。
 
+## 使用教程
+
+1. 下载 Release ZIP 并解压缩。
+
+   ![解压缩扩展安装包](docs/教程/1、解压缩.png)
+
+2. 在 `edge://extensions` 或 `chrome://extensions` 开启开发者模式，将解压后的扩展文件夹拖入页面，或点击“加载解压缩的扩展”。
+
+   ![开启开发者模式并加载扩展](docs/教程/2、开启开发者模式，将文件夹直接拖入.png)
+
 ## 开发
 
 要求：Node.js 20+、npm 10+。
