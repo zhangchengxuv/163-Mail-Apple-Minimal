@@ -1,11 +1,24 @@
 import type { Settings } from '../../shared/types';
 import { setHidden, tidy } from './dom';
+import {
+  findWelcomeRoot,
+  WELCOME_AD_PANEL_SELECTOR,
+  WELCOME_AD_PLACEHOLDER_SELECTOR,
+  WELCOME_ASSISTANT_PANEL_SELECTOR,
+  WELCOME_PAYMENT_SELECTOR,
+  WELCOME_PRIVILEGES_PANEL_SELECTOR
+} from './welcome-dom';
 
 /** Only inspects the welcome module and only accepts a bounded card around a verified advert badge. */
 export function cleanAdvertisements(settings: Settings, documentRef: Document = document): void {
-  const root = welcomeRoot(documentRef);
+  const root = findWelcomeRoot(documentRef);
   if (!root) return;
   if (settings.hideAds) {
+    // JS6 creates the recommendation banner with createId('dvmailrecompanel').
+    // Its “广告” badge is image-based and intentionally has no text, so hiding the
+    // verified module root (and its measured placeholder) is safer than text matching.
+    root.querySelectorAll(`${WELCOME_AD_PANEL_SELECTOR}, ${WELCOME_AD_PLACEHOLDER_SELECTOR}`)
+      .forEach((element) => setHidden(element, true));
     for (const badge of root.querySelectorAll('span, div, a')) {
       if (!isAdBadge(badge)) continue;
       const card = closestBoundedCard(badge, root);
@@ -14,6 +27,11 @@ export function cleanAdvertisements(settings: Settings, documentRef: Document = 
     root.querySelectorAll('[data-ad], [data-advertisement], .mail-advertisement').forEach((element) => setHidden(element, true));
   }
   if (settings.hideAi) cleanWelcomeAiModules(root);
+  if (settings.hideMembership) {
+    // Keep the account summary intact; only hide the nested paid-membership CTA.
+    root.querySelectorAll(`${WELCOME_PAYMENT_SELECTOR}, ${WELCOME_PRIVILEGES_PANEL_SELECTOR}`)
+      .forEach((element) => setHidden(element, true));
+  }
 }
 
 function isAdBadge(element: Element): boolean {
@@ -24,17 +42,14 @@ function isAdBadge(element: Element): boolean {
   return rect.width <= 100 && rect.height <= 48;
 }
 
-function welcomeRoot(documentRef: Document): Element | null {
-  return documentRef.querySelector('[id*="welcome.WelcomeModule" i], [id*="WelcomeModule" i], #dvContentContainer');
-}
-
 function cleanWelcomeAiModules(root: Element): void {
   const moduleSelectors = [
     '[data-module*="assistant" i]', '[data-component*="assistant" i]',
     '[data-testid*="assistant" i]', '[data-module*="ai" i]',
     '.APP-smartAssistant', '.APP-toolAssistant', '.APP-jobAssistant'
   ];
-  root.querySelectorAll(moduleSelectors.join(', ')).forEach((element) => setHidden(element, true));
+  root.querySelectorAll(`${WELCOME_ASSISTANT_PANEL_SELECTOR}, ${moduleSelectors.join(', ')}`)
+    .forEach((element) => setHidden(element, true));
 
   // On the welcome module only, an AI assistant's large prompt card has a search-like input.
   // This bounded structural check never touches the header search or mail rows.

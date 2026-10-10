@@ -7,6 +7,8 @@ import { handleHomepage } from './home-cleaner';
 import { syncTodayCard } from './home-card';
 import { cleanSidebar } from './sidebar-cleaner';
 
+const lastCleanerState = new WeakMap<Document, string>();
+
 export function applyCleaner(settings: Settings, page: MailPage, documentRef: Document = document): void {
   const minimalWelcome = settings.cleanerEnabled && page === 'welcome' && settings.homepageMode === 'minimal-home';
   const root = documentRef.documentElement;
@@ -15,9 +17,26 @@ export function applyCleaner(settings: Settings, page: MailPage, documentRef: Do
   root.toggleAttribute('data-mail-minimal-hide-ai', settings.cleanerEnabled && (settings.hideAi || minimalWelcome));
   root.toggleAttribute('data-mail-minimal-hide-ads', settings.cleanerEnabled && (settings.hideAds || minimalWelcome) && page === 'welcome' && settings.homepageMode !== 'original-home');
   root.toggleAttribute('data-mail-minimal-hide-membership', settings.cleanerEnabled && settings.hideMembership);
+  root.toggleAttribute('data-mail-minimal-hide-welcome-membership', settings.cleanerEnabled && settings.hideMembership && page === 'welcome' && settings.homepageMode !== 'original-home');
   root.toggleAttribute('data-mail-minimal-hide-enterprise', settings.cleanerEnabled && settings.hideEnterprisePromotion);
-  clearHidden(documentRef);
-  if (!settings.cleanerEnabled) return;
+  const state = JSON.stringify({
+    page,
+    cleanerEnabled: settings.cleanerEnabled,
+    hideAds: settings.hideAds,
+    hideAi: settings.hideAi,
+    hideMembership: settings.hideMembership,
+    hideOtherTools: settings.hideOtherTools,
+    hideEnterprisePromotion: settings.hideEnterprisePromotion,
+    homepageMode: settings.homepageMode
+  });
+  if (lastCleanerState.get(documentRef) !== state) {
+    clearHidden(documentRef);
+    lastCleanerState.set(documentRef, state);
+  }
+  if (!settings.cleanerEnabled) {
+    syncTodayCard(settings, page, documentRef);
+    return;
+  }
   cleanHeader(settings, documentRef);
   cleanSidebar(settings, documentRef);
   cleanAi(settings, documentRef);

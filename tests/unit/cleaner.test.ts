@@ -22,6 +22,20 @@ describe('Cleaner', () => {
     applyCleaner({ ...DEFAULT_SETTINGS }, 'list');
     applyCleaner({ ...DEFAULT_SETTINGS, cleanerEnabled: false }, 'list');
     expect(document.querySelectorAll(`[${HIDDEN_ATTRIBUTE}]`)).toHaveLength(0);
+    expect(document.querySelector<HTMLElement>('#dvNavFoot')?.style.getPropertyValue('display')).not.toBe('none');
+  });
+
+  it('uses a reversible direct display rule for the stable other-tools group', () => {
+    document.body.innerHTML = fixture;
+    applyCleaner({ ...DEFAULT_SETTINGS, hideOtherTools: true }, 'list');
+
+    const tools = document.querySelector<HTMLElement>('#dvNavFoot')!;
+    expect(tools.style.getPropertyValue('display')).toBe('none');
+    expect(tools.style.getPropertyPriority('display')).toBe('important');
+
+    applyCleaner({ ...DEFAULT_SETTINGS, hideOtherTools: false }, 'list');
+    expect(tools.hasAttribute(HIDDEN_ATTRIBUTE)).toBe(false);
+    expect(tools.style.getPropertyValue('display')).toBe('');
   });
 
   it('does not remove a mail row whose subject contains AI', () => {

@@ -1,4 +1,5 @@
 import type { Settings } from '../../shared/types';
+import { findWelcomeInner, findWelcomeRoot, WELCOME_INFO_PANEL_SELECTOR } from './welcome-dom';
 
 const CARD_ATTRIBUTE = 'data-mail-minimal-card';
 
@@ -10,17 +11,29 @@ export function syncTodayCard(settings: Settings, page: string, documentRef: Doc
     return;
   }
 
-  const flow = welcomeFlow(documentRef);
-  if (!flow) return;
+  const placement = welcomePlacement(documentRef);
+  if (!placement) return;
   const card = existing ?? createCard(documentRef);
-  if (card.parentElement !== flow) flow.append(card);
+  placeCard(card, placement);
   updateCard(card, documentRef);
 }
 
-function welcomeFlow(documentRef: Document): Element | null {
-  const root = documentRef.querySelector('[id*="welcome.WelcomeModule" i], [id*="WelcomeModule" i], #dvContentContainer');
+function welcomePlacement(documentRef: Document): { inner: HTMLElement; anchor: Element | null } | null {
+  const root = findWelcomeRoot(documentRef);
   if (!root) return null;
-  return root.querySelector('.frame-main-cont-body, [role="main"], .frame-main') ?? root;
+  const inner = findWelcomeInner(root);
+  if (!inner) return null;
+  const infoPanel = inner.querySelector<HTMLElement>(WELCOME_INFO_PANEL_SELECTOR);
+  return { inner, anchor: infoPanel?.parentElement ?? null };
+}
+
+function placeCard(card: HTMLElement, placement: { inner: HTMLElement; anchor: Element | null }): void {
+  const { inner, anchor } = placement;
+  if (anchor) {
+    if (card.parentElement !== inner || card.previousElementSibling !== anchor) anchor.after(card);
+    return;
+  }
+  if (card.parentElement !== inner) inner.append(card);
 }
 
 function createCard(documentRef: Document): HTMLElement {
