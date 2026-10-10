@@ -17,9 +17,9 @@ html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(header.frame-mai
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar, .nui-toolbar-ext) {
-  padding-block: 4px !important;
+  padding-block: 3px !important;
   padding-inline: 8px !important;
-  font-size: var(--mail-minimal-font-size) !important;
+  font-size: var(--mail-toolbar-font-size) !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar > .nui-toolbar-item {
@@ -41,7 +41,7 @@ html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar > .
   background: var(--mail-toolbar-button-bg) !important;
   color: var(--mail-toolbar-text) !important;
   box-shadow: none !important;
-  font-size: var(--mail-minimal-font-size) !important;
+  font-size: var(--mail-toolbar-font-size) !important;
   font-weight: 500 !important;
   letter-spacing: normal !important;
   word-spacing: normal !important;
@@ -53,6 +53,31 @@ html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar > .
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar-ext .nui-roundBtn {
   min-inline-size: var(--mail-toolbar-button-height) !important;
   padding-inline: 8px !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar-ext .nui-select {
+  min-block-size: var(--mail-toolbar-button-height) !important;
+  block-size: var(--mail-toolbar-button-height) !important;
+  margin: 0 var(--mail-toolbar-gap) 0 0 !important;
+  padding: 0 20px 0 8px !important;
+  border: 1px solid transparent !important;
+  border-radius: var(--mail-toolbar-radius) !important;
+  background: transparent !important;
+  color: var(--mail-toolbar-text) !important;
+  font-size: var(--mail-toolbar-font-size) !important;
+  line-height: calc(var(--mail-toolbar-button-height) - 2px) !important;
+  box-shadow: none !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar-ext .nui-select:hover {
+  border-color: var(--mail-toolbar-divider) !important;
+  background: var(--mail-toolbar-hover) !important;
+}
+
+html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar-ext .nui-select :is(.nui-select-text, .nui-select-arr) {
+  color: inherit !important;
+  font: inherit !important;
+  line-height: inherit !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn.nui-splitBtn, .nui-toolbar .nui-btn:has(.nui-splitBtn-text), .nui-toolbar .nui-splitBtn) {
@@ -89,11 +114,11 @@ html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-sp
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-splitBtn-arr {
-  flex: 0 0 var(--mail-toolbar-button-height) !important;
-  inline-size: var(--mail-toolbar-button-height) !important;
-  min-inline-size: var(--mail-toolbar-button-height) !important;
+  flex: 0 0 var(--mail-toolbar-arrow-width) !important;
+  inline-size: var(--mail-toolbar-arrow-width) !important;
+  min-inline-size: var(--mail-toolbar-arrow-width) !important;
   padding: 0 !important;
-  border-inline-start: 1px solid var(--mail-toolbar-button-border) !important;
+  border-inline-start: 1px solid var(--mail-toolbar-divider) !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-splitBtn-split {
@@ -103,7 +128,7 @@ html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-sp
   inline-size: 1px !important;
   block-size: auto !important;
   margin: 0 !important;
-  background: var(--mail-toolbar-button-border) !important;
+  background: var(--mail-toolbar-divider) !important;
   overflow: hidden !important;
   text-indent: 0 !important;
 }
@@ -137,7 +162,7 @@ html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nu
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn):hover:not(:disabled):not([aria-disabled="true"]) {
   background: var(--mail-toolbar-hover) !important;
-  border-color: color-mix(in srgb, var(--mail-toolbar-button-border) 62%, var(--mail-minimal-accent)) !important;
+  border-color: var(--mail-toolbar-divider) !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn):active:not(:disabled):not([aria-disabled="true"]) {
@@ -145,15 +170,15 @@ html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nu
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn:disabled, .nui-toolbar .nui-btn[aria-disabled="true"], .nui-toolbar .nui-btn-disabled, .nui-toolbar-ext .nui-roundBtn:disabled, .nui-toolbar-ext .nui-roundBtn[aria-disabled="true"], .nui-toolbar-ext .nui-btn-disabled) {
-  background: color-mix(in srgb, var(--mail-toolbar-button-bg) 72%, var(--mail-toolbar-bg)) !important;
-  border-color: color-mix(in srgb, var(--mail-toolbar-button-border) 52%, transparent) !important;
+  background: color-mix(in srgb, var(--mail-toolbar-bg) 78%, var(--mail-toolbar-hover)) !important;
+  border-color: transparent !important;
   color: var(--mail-toolbar-disabled) !important;
   opacity: 1 !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar :is(.nui-btn:has(.nui-splitBtn-text-disabled), .nui-btn:has(.nui-splitBtn-arr-disabled), .nui-splitBtn:has(.nui-splitBtn-text-disabled), .nui-splitBtn:has(.nui-splitBtn-arr-disabled)) {
-  background: color-mix(in srgb, var(--mail-toolbar-button-bg) 72%, var(--mail-toolbar-bg)) !important;
-  border-color: color-mix(in srgb, var(--mail-toolbar-button-border) 52%, transparent) !important;
+  background: color-mix(in srgb, var(--mail-toolbar-bg) 78%, var(--mail-toolbar-hover)) !important;
+  border-color: transparent !important;
   color: var(--mail-toolbar-disabled) !important;
 }
 

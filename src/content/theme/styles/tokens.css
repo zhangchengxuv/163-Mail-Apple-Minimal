@@ -10,12 +10,15 @@ html {
   --mail-minimal-action-icon-size: max(16px, calc(var(--mail-minimal-font-size) + 1px));
   --mail-minimal-action-line-height: 1.2;
   --mail-minimal-action-radius: 12px;
-  --mail-toolbar-height: clamp(44px, calc(var(--mail-minimal-font-size) + 30px), 48px);
-  --mail-toolbar-button-height: clamp(34px, calc(var(--mail-minimal-font-size) + 20px), 36px);
-  --mail-toolbar-padding-inline: clamp(10px, calc(var(--mail-minimal-font-size) * 0.75), 12px);
-  --mail-toolbar-gap: clamp(4px, calc(var(--mail-minimal-font-size) * 0.36), 6px);
-  --mail-toolbar-icon-size: max(15px, min(16px, calc(var(--mail-minimal-font-size) + 1px)));
-  --mail-toolbar-radius: 8px;
+  /* Toolbar density stays compact even when the reading/sidebar UI is enlarged. */
+  --mail-toolbar-height: 42px;
+  --mail-toolbar-button-height: 30px;
+  --mail-toolbar-font-size: 13px;
+  --mail-toolbar-padding-inline: 8px;
+  --mail-toolbar-gap: 4px;
+  --mail-toolbar-icon-size: 14px;
+  --mail-toolbar-arrow-width: 22px;
+  --mail-toolbar-radius: 7px;
 }
 
 html[data-mail-minimal-theme="light"] {
@@ -47,8 +50,9 @@ html[data-mail-minimal-theme="light"] {
   --mail-sidebar-folder-selected-bg: #dce9ff;
   --mail-sidebar-folder-selected-text: #2459d6;
   --mail-toolbar-bg: #f7f9fc;
-  --mail-toolbar-button-bg: #ffffff;
-  --mail-toolbar-button-border: #dce5f0;
+  --mail-toolbar-button-bg: transparent;
+  --mail-toolbar-button-border: transparent;
+  --mail-toolbar-divider: #dce5f0;
   --mail-toolbar-text: #34445a;
   --mail-toolbar-icon: #60738d;
   --mail-toolbar-hover: #edf3fb;
@@ -86,8 +90,9 @@ html[data-mail-minimal-theme="dark"] {
   --mail-sidebar-folder-selected-bg: #2b4669;
   --mail-sidebar-folder-selected-text: #f2f6ff;
   --mail-toolbar-bg: #202937;
-  --mail-toolbar-button-bg: #2b394c;
-  --mail-toolbar-button-border: #3a4c62;
+  --mail-toolbar-button-bg: transparent;
+  --mail-toolbar-button-border: transparent;
+  --mail-toolbar-divider: #39485a;
   --mail-toolbar-text: #dce7f7;
   --mail-toolbar-icon: #a4b2c6;
   --mail-toolbar-hover: #35475e;

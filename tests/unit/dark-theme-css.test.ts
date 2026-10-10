@@ -90,6 +90,8 @@ describe('dark theme CSS regression boundaries', () => {
     expect(css).toContain('letter-spacing: normal !important');
     expect(tokens).toContain('--mail-toolbar-bg: #f7f9fc');
     expect(tokens).toContain('--mail-toolbar-bg: #202937');
-    expect(tokens).toContain('--mail-toolbar-button-height: clamp(34px');
+    expect(tokens).toContain('--mail-toolbar-height: 42px');
+    expect(tokens).toContain('--mail-toolbar-button-height: 30px');
+    expect(tokens).toContain('--mail-toolbar-font-size: 13px');
   });
 });
