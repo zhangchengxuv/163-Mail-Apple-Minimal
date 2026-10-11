@@ -38,7 +38,7 @@ npm run test
 npm run build
 ```
 
-Open `edge://extensions` or `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select `dist/`. The release archive is generated at `release/163-mail-minimal-v1.3.7.zip`.
+Open `edge://extensions` or `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select `dist/`. The release archive is generated at `release/163-mail-minimal-v1.3.8.zip`.
 
 See [GitHub Releases](https://github.com/zhangchengxuv/163-Mail-Apple-Minimal/releases/latest) for the latest stable download. A Release ZIP is an unpacked developer-mode extension package, not a one-click Chrome Web Store or Edge Add-ons installer.
 
