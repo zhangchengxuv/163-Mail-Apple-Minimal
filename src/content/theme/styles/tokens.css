@@ -50,8 +50,8 @@ html[data-mail-minimal-theme="light"] {
   --mail-sidebar-folder-selected-bg: #dce9ff;
   --mail-sidebar-folder-selected-text: #2459d6;
   --mail-toolbar-bg: #f7f9fc;
-  --mail-toolbar-button-bg: transparent;
-  --mail-toolbar-button-border: transparent;
+  --mail-toolbar-button-bg: #ffffff;
+  --mail-toolbar-button-border: #dce5f0;
   --mail-toolbar-divider: #dce5f0;
   --mail-toolbar-text: #34445a;
   --mail-toolbar-icon: #60738d;
@@ -90,8 +90,8 @@ html[data-mail-minimal-theme="dark"] {
   --mail-sidebar-folder-selected-bg: #2b4669;
   --mail-sidebar-folder-selected-text: #f2f6ff;
   --mail-toolbar-bg: #202937;
-  --mail-toolbar-button-bg: transparent;
-  --mail-toolbar-button-border: transparent;
+  --mail-toolbar-button-bg: #263547;
+  --mail-toolbar-button-border: #39485a;
   --mail-toolbar-divider: #39485a;
   --mail-toolbar-text: #dce7f7;
   --mail-toolbar-icon: #a4b2c6;

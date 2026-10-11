@@ -12,7 +12,7 @@ type Theme = 'light' | 'dark';
 function pageMarkup(theme: Theme, fontSize: number, pageType: 'read' | 'list'): string {
   const listAttribute = pageType === 'list' ? ' data-mail-minimal-list' : '';
   const selectionControls = pageType === 'list'
-    ? '<div class="nui-toolbar-item" data-test="select-all-group"><button class="nui-btn" data-test="select-all"><span class="nui-chk" role="checkbox" aria-label="全选"><span class="nui-chk-symbol">□</span></span><span class="nui-splitBtn-arr" data-test="select-all-arrow">⌄</span></button><button class="nui-btn" data-test="delete"><span class="nui-btn-text">删除</span></button></div>'
+    ? '<div class="nui-toolbar-item" data-test="select-all-group"><button class="nui-btn" data-test="select-all"><span class="nui-chk" role="checkbox" aria-label="select all"><span class="nui-chk-symbol">□</span></span><span class="nui-splitBtn-arr" data-test="select-all-arrow">⌄</span></button></div><div class="nui-toolbar-item" data-test="delete-group"><button class="nui-btn" data-test="delete"><span class="nui-btn-text">delete</span></button></div>'
     : '';
   return `<!doctype html>
     <html data-mail-minimal-page="${pageType}" data-mail-minimal-theme="${theme}"${listAttribute} style="--mail-minimal-font-size: ${fontSize}px">
@@ -21,6 +21,14 @@ function pageMarkup(theme: Theme, fontSize: number, pageType: 'read' | 'list'): 
         body { margin: 0; }
         .frame-main-cont-head { inline-size: 100%; min-inline-size: 0; display: flex; align-items: center; justify-content: space-between; }
         .nui-toolbar, .nui-toolbar-ext { display: flex; align-items: center; }
+        .nui-toolbar-item { margin-right: 6px; }
+        .nui-toolbar-item .nui-btn { margin-right: -1px; }
+        .nui-toolbar .nui-btn { box-sizing: border-box; }
+        .nui-toolbar .nui-splitBtn { display: inline-block; }
+        .nui-toolbar .nui-splitBtn-text, .nui-toolbar .nui-splitBtn-arr { display: inline-block; min-height: 28px; line-height: 28px; vertical-align: top; }
+        .nui-toolbar .nui-splitBtn-text { padding: 0 8px; }
+        .nui-toolbar .nui-splitBtn-arr { box-sizing: border-box; width: 22px; padding: 0; border: 0; text-align: center; }
+        .nui-toolbar-ext .nui-select { display: inline-block; height: 30px; line-height: 28px; }
         .nui-btn-icon { inline-size: 16px; block-size: 16px; background: currentColor; border-radius: 3px; }
       </style></head>
       <body>
@@ -57,9 +65,9 @@ async function toolbarMetrics(page: Page) {
 }
 
 async function selectAllMetrics(page: Page) {
-  return page.locator('[data-test="select-all-group"]').evaluate((group) => {
+  return page.locator('.nui-toolbar').evaluate((toolbar) => {
     const rect = (selector: string) => {
-      const element = group.querySelector<HTMLElement>(selector)!;
+      const element = toolbar.querySelector<HTMLElement>(selector)!;
       const { left, right, top, bottom } = element.getBoundingClientRect();
       return { left, right, top, bottom, width: right - left, height: bottom - top };
     };
@@ -101,7 +109,7 @@ for (const pageType of ['read', 'list'] as const) {
 
       if (pageType === 'list') {
         const selectAll = await selectAllMetrics(page);
-        expect(selectAll.selectAll.width).toBeGreaterThanOrEqual(52);
+        expect(selectAll.selectAll.width).toBeGreaterThan(selectAll.checkbox.width);
         expect(selectAll.gap).toBeGreaterThanOrEqual(4);
         expect(selectAll.gap).toBeLessThanOrEqual(6);
         expect(selectAll.intersects).toBe(false);

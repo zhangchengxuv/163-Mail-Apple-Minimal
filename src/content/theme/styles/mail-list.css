@@ -17,199 +17,77 @@ html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(header.frame-mai
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar, .nui-toolbar-ext) {
-  padding-block: 3px !important;
-  padding-inline: 8px !important;
   font-size: var(--mail-toolbar-font-size) !important;
 }
 
-html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar > .nui-toolbar-item {
-  /* NetEase lays toolbar items out as floats.  Making each float a flex
-   * container keeps compound controls (checkbox + menu trigger) measured as
-   * one item without changing the toolbar's native ordering or events. */
-  display: flex !important;
-  align-items: center !important;
-  flex: 0 0 auto !important;
-  inline-size: max-content !important;
-  min-inline-size: max-content !important;
-  gap: var(--mail-toolbar-gap) !important;
-  margin-inline-end: var(--mail-toolbar-gap) !important;
-}
-
-html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar > .nui-toolbar-item > .nui-btn, .nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn) {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  flex: 0 0 auto !important;
-  inline-size: auto !important;
-  min-inline-size: 0 !important;
+/* Native floats, margins, natural widths and split-button child placement are
+   deliberately left intact. These rules are visual only. */
+html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn) {
   min-block-size: var(--mail-toolbar-button-height) !important;
-  padding-inline: var(--mail-toolbar-padding-inline) !important;
   border: 1px solid var(--mail-toolbar-button-border) !important;
   border-radius: var(--mail-toolbar-radius) !important;
-  background: var(--mail-toolbar-button-bg) !important;
+  background-color: var(--mail-toolbar-button-bg) !important;
+  background-image: none !important;
   color: var(--mail-toolbar-text) !important;
   box-shadow: none !important;
   font-size: var(--mail-toolbar-font-size) !important;
-  font-weight: 500 !important;
   letter-spacing: normal !important;
   word-spacing: normal !important;
-  line-height: 1.2 !important;
-  text-indent: 0 !important;
-  white-space: nowrap !important;
-}
-
-/* Native list buttons use `margin-right: -1px` to join grouped controls.
- * That is correct for the old rectangular design, but lets Delete overlap the
- * select-all compound control after its minimum width was compacted.  Keep
- * the compound control intrinsically sized and let the item gap separate
- * adjacent native actions. */
-html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar > .nui-toolbar-item > .nui-btn {
-  margin-inline-end: 0 !important;
-}
-
-html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar :is(.nui-btn:has(.nui-chk), .nui-btn:has([role="checkbox"])),
-html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar > .nui-toolbar-item:has(.nui-chk),
-html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar > .nui-toolbar-item:has([role="checkbox"]) {
-  flex: 0 0 auto !important;
-  min-inline-size: calc(var(--mail-toolbar-button-height) + var(--mail-toolbar-arrow-width)) !important;
-}
-
-html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar-ext .nui-roundBtn {
-  min-inline-size: var(--mail-toolbar-button-height) !important;
-  padding-inline: 8px !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar-ext .nui-select {
-  min-block-size: var(--mail-toolbar-button-height) !important;
-  block-size: var(--mail-toolbar-button-height) !important;
-  margin: 0 var(--mail-toolbar-gap) 0 0 !important;
-  padding: 0 20px 0 8px !important;
-  border: 1px solid transparent !important;
+  border-color: var(--mail-toolbar-button-border) !important;
   border-radius: var(--mail-toolbar-radius) !important;
-  background: transparent !important;
+  background-color: var(--mail-toolbar-button-bg) !important;
+  background-image: none !important;
   color: var(--mail-toolbar-text) !important;
   font-size: var(--mail-toolbar-font-size) !important;
-  line-height: calc(var(--mail-toolbar-button-height) - 2px) !important;
   box-shadow: none !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar-ext .nui-select:hover {
   border-color: var(--mail-toolbar-divider) !important;
-  background: var(--mail-toolbar-hover) !important;
-}
-
-html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar-ext .nui-select :is(.nui-select-text, .nui-select-arr) {
-  color: inherit !important;
-  font: inherit !important;
-  line-height: inherit !important;
-}
-
-html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn.nui-splitBtn, .nui-toolbar .nui-btn:has(.nui-splitBtn-text), .nui-toolbar .nui-splitBtn) {
-  display: inline-flex !important;
-  align-items: stretch !important;
-  gap: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  position: relative !important;
+  background-color: var(--mail-toolbar-hover) !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar :is(.nui-splitBtn-text, .nui-splitBtn-arr) {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  position: static !important;
-  min-block-size: var(--mail-toolbar-button-height) !important;
-  block-size: var(--mail-toolbar-button-height) !important;
-  margin: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
   color: inherit !important;
-  box-sizing: border-box !important;
-  font: inherit !important;
-  line-height: 1.2 !important;
-  text-indent: 0 !important;
-  vertical-align: middle !important;
-}
-
-html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-splitBtn-text {
-  padding-inline: var(--mail-toolbar-padding-inline) !important;
-  white-space: nowrap !important;
-}
-
-html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-splitBtn-arr {
-  flex: 0 0 var(--mail-toolbar-arrow-width) !important;
-  inline-size: var(--mail-toolbar-arrow-width) !important;
-  min-inline-size: var(--mail-toolbar-arrow-width) !important;
-  padding: 0 !important;
-  border-inline-start: 1px solid var(--mail-toolbar-divider) !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-splitBtn-split {
-  display: block !important;
-  position: static !important;
-  flex: 0 0 1px !important;
-  inline-size: 1px !important;
-  block-size: auto !important;
-  margin: 0 !important;
-  background: var(--mail-toolbar-divider) !important;
-  overflow: hidden !important;
-  text-indent: 0 !important;
+  background-color: var(--mail-toolbar-divider) !important;
 }
 
-html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-btn:has(.nui-splitBtn-split) .nui-splitBtn-arr {
-  border-inline-start: 0 !important;
-}
-
-html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar .nui-splitBtn-arr .nui-ico {
-  position: static !important;
-  margin: 0 !important;
+html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn-icon, .nui-toolbar-ext .nui-btn-icon, .nui-toolbar .nui-splitBtn-arr .nui-ico) {
   color: var(--mail-toolbar-icon) !important;
 }
 
-html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn) :is(.nui-btn-text, .nui-btn-icon) {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-block-size: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-  color: inherit !important;
-  font: inherit !important;
-  letter-spacing: inherit !important;
-  word-spacing: inherit !important;
-  line-height: inherit !important;
-  text-indent: 0 !important;
-}
-
 html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn):hover:not(:disabled):not([aria-disabled="true"]) {
-  background: var(--mail-toolbar-hover) !important;
+  background-color: var(--mail-toolbar-hover) !important;
   border-color: var(--mail-toolbar-divider) !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn):active:not(:disabled):not([aria-disabled="true"]) {
-  background: var(--mail-toolbar-active) !important;
+  background-color: var(--mail-toolbar-active) !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] :is(.nui-toolbar .nui-btn:disabled, .nui-toolbar .nui-btn[aria-disabled="true"], .nui-toolbar .nui-btn-disabled, .nui-toolbar-ext .nui-roundBtn:disabled, .nui-toolbar-ext .nui-roundBtn[aria-disabled="true"], .nui-toolbar-ext .nui-btn-disabled) {
-  background: color-mix(in srgb, var(--mail-toolbar-bg) 78%, var(--mail-toolbar-hover)) !important;
-  border-color: transparent !important;
+  background-color: var(--mail-toolbar-button-bg) !important;
+  border-color: var(--mail-toolbar-button-border) !important;
   color: var(--mail-toolbar-disabled) !important;
   opacity: 1 !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar :is(.nui-btn:has(.nui-splitBtn-text-disabled), .nui-btn:has(.nui-splitBtn-arr-disabled), .nui-splitBtn:has(.nui-splitBtn-text-disabled), .nui-splitBtn:has(.nui-splitBtn-arr-disabled)) {
-  background: color-mix(in srgb, var(--mail-toolbar-bg) 78%, var(--mail-toolbar-hover)) !important;
-  border-color: transparent !important;
+  background-color: var(--mail-toolbar-button-bg) !important;
+  border-color: var(--mail-toolbar-button-border) !important;
   color: var(--mail-toolbar-disabled) !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] .nui-toolbar :is(.nui-splitBtn-text-disabled, .nui-splitBtn-arr-disabled) {
-  background: transparent !important;
   color: var(--mail-toolbar-disabled) !important;
-  cursor: not-allowed !important;
 }
 
 html[data-mail-minimal-list][data-mail-minimal-page="list"] #dvContentContainer .frame-main-cont-body .tv0 > .rF0[role="link"] {

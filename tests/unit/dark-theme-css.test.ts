@@ -27,7 +27,7 @@ describe('dark theme CSS regression boundaries', () => {
     const css = readStyle('mail-list.css');
     expect(css).toContain(':is(.nl0, .hV0, .im0)');
     expect(css).toContain('border-bottom-color: color-mix');
-    expect(css).toContain('background: var(--mail-toolbar-button-bg)');
+    expect(css).toContain('background-color: var(--mail-toolbar-button-bg)');
     expect(css).toContain('.nui-splitBtn-text');
     expect(css).toContain('.nui-splitBtn-arr');
   });
@@ -86,7 +86,7 @@ describe('dark theme CSS regression boundaries', () => {
     expect(css).toContain('--mail-toolbar-button-height');
     expect(css).toContain('.nui-splitBtn-text-disabled');
     expect(css).toContain('.nui-splitBtn-arr-disabled');
-    expect(css).toContain('flex: 0 0 auto !important');
+    expect(css).not.toContain('flex: 0 0 auto !important');
     expect(css).toContain('letter-spacing: normal !important');
     expect(tokens).toContain('--mail-toolbar-bg: #f7f9fc');
     expect(tokens).toContain('--mail-toolbar-bg: #202937');
