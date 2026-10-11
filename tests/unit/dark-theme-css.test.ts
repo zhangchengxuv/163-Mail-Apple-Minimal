@@ -25,14 +25,15 @@ describe('dark theme CSS regression boundaries', () => {
 
   it('keeps native mail-row layers continuous and avoids bright separators', () => {
     const css = readStyle('mail-list.css');
-    const shared = readStyle('common.css');
+    const toolbar = readStyle('toolbar.css');
     expect(css).toContain(':is(.nl0, .hV0, .im0)');
     expect(css).toContain('border-bottom-color: color-mix');
-    expect(css).toContain('background-color: var(--mail-toolbar-button-bg)');
-    expect(css).toContain('.nui-splitBtn-text');
-    expect(css).toContain('.nui-splitBtn-arr');
-    expect(shared).toContain('border-color: var(--mail-toolbar-button-border)');
-    expect(shared).toContain('border-radius: var(--mail-toolbar-radius)');
+    expect(toolbar).toContain('background: var(--mail-toolbar-button-bg)');
+    expect(toolbar).toContain('.nui-splitBtn-text');
+    expect(toolbar).toContain('.nui-splitBtn-arr');
+    expect(toolbar).toContain('border-color: var(--mail-toolbar-button-border)');
+    expect(toolbar).toContain('border-radius: var(--mail-toolbar-radius)');
+    expect(css).not.toContain('.nui-toolbar');
     expect(css).not.toContain('min-inline-size: 0 !important');
   });
 
@@ -78,24 +79,26 @@ describe('dark theme CSS regression boundaries', () => {
 
   it('keeps message bodies untouched while styling reader controls and the marked quick-reply panel', () => {
     const css = readStyle('reader.css');
+    const toolbar = readStyle('toolbar.css');
     const tokens = readStyle('tokens.css');
     expect(css).not.toMatch(/filter:\s*invert/i);
     expect(css).not.toMatch(/iframe\s*\{/i);
     expect(css).toContain('[data-mail-minimal-reader-quick-reply]');
     expect(css).toContain('[data-mail-minimal-reader-quick-reply-hidden]');
     expect(css).toContain('[data-mail-minimal-reader-message-surface]');
-    expect(css).toContain(':hover:not(:disabled):not([aria-disabled="true"])');
-    expect(css).toContain(':active:not(:disabled):not([aria-disabled="true"])');
-    expect(css).toContain('.nui-btn[aria-disabled="true"]');
-    expect(css).toContain('--mail-toolbar-button-height');
-    expect(css).toContain('.nui-splitBtn-text-disabled');
-    expect(css).toContain('.nui-splitBtn-arr-disabled');
+    expect(toolbar).toContain('.nui-btn[aria-disabled="true"]');
+    expect(toolbar).toContain('.nui-splitBtn-text-disabled');
+    expect(toolbar).toContain('.nui-splitBtn-arr-disabled');
+    expect(toolbar).toContain('border-inline-end-width: 0');
+    expect(toolbar).toContain('border-inline-start-width: 0');
+    expect(toolbar).toContain(':focus-visible');
+    expect(toolbar).toContain(':has(.nui-ico-prev)');
     expect(css).not.toContain('flex: 0 0 auto !important');
-    expect(css).toContain('letter-spacing: normal !important');
-    expect(tokens).toContain('--mail-toolbar-bg: #f7f9fc');
-    expect(tokens).toContain('--mail-toolbar-bg: #202937');
+    expect(toolbar).toContain('letter-spacing: normal !important');
+    expect(tokens).toContain('--mail-toolbar-bg: #f5f7fb');
+    expect(tokens).toContain('--mail-toolbar-bg: #1e2633');
     expect(tokens).toContain('--mail-toolbar-height: 42px');
-    expect(tokens).toContain('--mail-toolbar-button-height: 30px');
+    expect(tokens).toContain('--mail-toolbar-button-height: 28px');
     expect(tokens).toContain('--mail-toolbar-font-size: 13px');
   });
 });

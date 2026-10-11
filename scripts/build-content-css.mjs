@@ -2,7 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync, watch } from 'node:fs';
 import { resolve } from 'node:path';
 
 const sources = [
-  'tokens.css', 'common.css', 'header.css', 'sidebar.css', 'mail-list.css',
+  'tokens.css', 'common.css', 'header.css', 'sidebar.css', 'toolbar.css', 'mail-list.css',
   'compose.css', 'reader.css', 'welcome.css', 'responsive.css'
 ].map((file) => resolve('src/content/theme/styles', file));
 const output = resolve('dist/assets/content.css');

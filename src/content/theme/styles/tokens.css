@@ -12,7 +12,7 @@ html {
   --mail-minimal-action-radius: 12px;
   /* Toolbar density stays compact even when the reading/sidebar UI is enlarged. */
   --mail-toolbar-height: 42px;
-  --mail-toolbar-button-height: 30px;
+  --mail-toolbar-button-height: 28px;
   --mail-toolbar-font-size: 13px;
   --mail-toolbar-padding-inline: 8px;
   --mail-toolbar-gap: 4px;
@@ -49,15 +49,15 @@ html[data-mail-minimal-theme="light"] {
   --mail-sidebar-action-disabled-text: #9aabc1;
   --mail-sidebar-folder-selected-bg: #dce9ff;
   --mail-sidebar-folder-selected-text: #2459d6;
-  --mail-toolbar-bg: #f7f9fc;
-  --mail-toolbar-button-bg: #ffffff;
-  --mail-toolbar-button-border: #dce5f0;
-  --mail-toolbar-divider: #dce5f0;
-  --mail-toolbar-text: #34445a;
-  --mail-toolbar-icon: #60738d;
+  --mail-toolbar-bg: #f5f7fb;
+  --mail-toolbar-button-bg: #f8fafd;
+  --mail-toolbar-button-border: #e5ebf3;
+  --mail-toolbar-divider: #edf1f6;
+  --mail-toolbar-text: #394a62;
+  --mail-toolbar-icon: #9aa8b9;
   --mail-toolbar-hover: #edf3fb;
-  --mail-toolbar-active: #e1ebf8;
-  --mail-toolbar-disabled: #9aa8b8;
+  --mail-toolbar-active: #e3edfa;
+  --mail-toolbar-disabled: #aab7c9;
 }
 
 html[data-mail-minimal-theme="dark"] {
@@ -89,15 +89,15 @@ html[data-mail-minimal-theme="dark"] {
   --mail-sidebar-action-disabled-text: #718096;
   --mail-sidebar-folder-selected-bg: #2b4669;
   --mail-sidebar-folder-selected-text: #f2f6ff;
-  --mail-toolbar-bg: #202937;
-  --mail-toolbar-button-bg: #263547;
-  --mail-toolbar-button-border: #39485a;
-  --mail-toolbar-divider: #39485a;
-  --mail-toolbar-text: #dce7f7;
-  --mail-toolbar-icon: #a4b2c6;
-  --mail-toolbar-hover: #35475e;
-  --mail-toolbar-active: #405773;
-  --mail-toolbar-disabled: #7f8ca0;
+  --mail-toolbar-bg: #1e2633;
+  --mail-toolbar-button-bg: #293444;
+  --mail-toolbar-button-border: #344254;
+  --mail-toolbar-divider: #3a4a5d;
+  --mail-toolbar-text: #dce5f1;
+  --mail-toolbar-icon: #96a8bc;
+  --mail-toolbar-hover: #334358;
+  --mail-toolbar-active: #3b5068;
+  --mail-toolbar-disabled: #8190a5;
 }
 
 html[data-mail-minimal-theme] {

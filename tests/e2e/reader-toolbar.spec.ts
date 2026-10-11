@@ -1,215 +1,155 @@
 import { expect, test } from '@playwright/test';
-import type { Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const styles = ['tokens.css', 'common.css', 'reader.css', 'mail-list.css']
+const extensionCss = ['tokens.css', 'common.css', 'toolbar.css', 'reader.css', 'mail-list.css']
   .map((name) => readFileSync(resolve(process.cwd(), 'src/content/theme/styles', name), 'utf8'))
   .join('\n');
 
+// Reproduce the relevant NetEase child frames and !important disabled rule.
+// The logged-in, dynamically generated mailbox DOM is not available to CI.
+const nativeCss = `
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Arial, sans-serif; }
+  .frame-main-cont-head { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 42px; padding: 0 8px; }
+  .nui-toolbar, .nui-toolbar-ext { display: flex; align-items: center; }
+  .nui-toolbar-item { margin-right: 6px; }
+  .nui-toolbar-item .nui-btn { margin-right: -1px; }
+  .nui-btn { display: inline-flex; align-items: center; padding: 0; font: inherit; cursor: pointer; }
+  .nui-btn-text, .nui-splitBtn-text, .nui-splitBtn-arr, .nui-select { display: inline-flex; align-items: center; height: 28px; line-height: 26px; padding: 0 8px; border: 1px solid #999; border-radius: 3px; background: white; color: #444; white-space: nowrap; }
+  .nui-splitBtn-text { border-right-width: 0; padding-right: 8px; }
+  .nui-splitBtn-arr { border-left-width: 0; width: 20px; padding: 0; justify-content: center; }
+  .nui-splitBtn-split { width: 1px; height: 18px; background: #aaa; }
+  .nui-btn-disabled .nui-btn-text, .nui-splitBtn-text-disabled, .nui-splitBtn-arr-disabled { background: #f0f0f0 !important; border-color: #d8d8d8 !important; color: #ccc !important; }
+  .nui-splitBtn-text-disabled { border-right-width: 1px; padding-right: 7px; }
+  .nui-splitBtn-arr-disabled { border-left-width: 1px; }
+  .nui-roundBtn .nui-btn-text { border-radius: 13px !important; }
+  .nui-toolbar-ext .nui-btn { margin-right: -1px; }
+  .nui-toolbar-ext .nui-select { margin-right: 10px; }
+  .nui-toolbar-ext .settings { margin-left: 10px; }
+  .nui-chk { display: inline-flex; width: 18px; justify-content: center; }
+`;
+
 type Theme = 'light' | 'dark';
+type PageType = 'list' | 'read';
 
-function pageMarkup(theme: Theme, fontSize: number, pageType: 'read' | 'list'): string {
-  const listAttribute = pageType === 'list' ? ' data-mail-minimal-list' : '';
-  const selectionControls = pageType === 'list'
-    ? '<div class="nui-toolbar-item" data-test="select-all-group"><button class="nui-btn" data-test="select-all"><span class="nui-chk" role="checkbox" aria-label="select all"><span class="nui-chk-symbol">□</span></span><span class="nui-splitBtn-arr" data-test="select-all-arrow">⌄</span></button></div><div class="nui-toolbar-item" data-test="delete-group"><button class="nui-btn" data-test="delete"><span class="nui-btn-text">delete</span></button></div>'
-    : '';
-  return `<!doctype html>
-    <html data-mail-minimal-page="${pageType}" data-mail-minimal-theme="${theme}"${listAttribute} style="--mail-minimal-font-size: ${fontSize}px">
-      <head><style>${styles}
-        * { box-sizing: border-box; }
-        body { margin: 0; }
-        .frame-main-cont-head { inline-size: 100%; min-inline-size: 0; display: flex; align-items: center; justify-content: space-between; }
-        .nui-toolbar, .nui-toolbar-ext { display: flex; align-items: center; }
-        .nui-toolbar-item { margin-right: 6px; }
-        .nui-toolbar-item .nui-btn { margin-right: -1px; }
-        .nui-toolbar .nui-btn { box-sizing: border-box; }
-        .nui-toolbar .nui-splitBtn { display: inline-block; }
-        .nui-toolbar .nui-splitBtn-text, .nui-toolbar .nui-splitBtn-arr { display: inline-block; min-height: 28px; line-height: 28px; vertical-align: top; }
-        .nui-toolbar .nui-splitBtn-text { padding: 0 8px; }
-        .nui-toolbar .nui-splitBtn-arr { box-sizing: border-box; width: 22px; padding: 0; border: 0; text-align: center; }
-        .nui-toolbar-ext .nui-select { display: inline-block; height: 30px; line-height: 28px; }
-        .nui-btn-icon { inline-size: 16px; block-size: 16px; background: currentColor; border-radius: 3px; }
-      </style></head>
-      <body>
-        <main id="_dvModuleContainer_read.ReadModule_1">
-          <header class="frame-main-cont-head">
-            <div class="nui-toolbar">
-              ${selectionControls}
-              <div class="nui-toolbar-item"><button class="nui-btn"><span class="nui-btn-text">返回</span></button></div>
-              <div class="nui-toolbar-item"><button class="nui-btn"><span class="nui-btn-text">回复</span></button></div>
-              <div class="nui-toolbar-item"><button class="nui-btn"><span class="nui-btn-text">回复全部</span></button></div>
-              <div class="nui-toolbar-item"><button class="nui-btn"><span class="nui-btn-text">转发</span></button></div>
-              <div class="nui-toolbar-item"><button class="nui-btn"><span class="nui-btn-text">删除</span></button></div>
-              <div class="nui-toolbar-item"><button class="nui-btn" aria-disabled="true"><span class="nui-btn-text">举报</span></button></div>
-              <div class="nui-toolbar-item"><span class="nui-btn nui-splitBtn"><span class="nui-splitBtn-text">标记为</span><i class="nui-splitBtn-split"></i><button class="nui-splitBtn-arr" aria-label="展开标记菜单"><span class="nui-ico">⌄</span></button></span></div>
-              <div class="nui-toolbar-item"><span class="nui-btn nui-splitBtn"><span class="nui-splitBtn-text nui-splitBtn-text-disabled">移动到</span><i class="nui-splitBtn-split"></i><button class="nui-splitBtn-arr nui-splitBtn-arr-disabled" aria-label="展开移动菜单"><span class="nui-ico">⌄</span></button></span></div>
-            </div>
-            <div class="nui-toolbar-ext"><span class="nui-select"><span class="nui-select-text">1 / 2</span><span class="nui-select-arr">⌄</span></span><button class="nui-roundBtn" aria-label="上一封"><span class="nui-btn-icon"></span></button><button class="nui-roundBtn" aria-label="下一封"><span class="nui-btn-icon"></span></button></div>
-          </header>
-        </main>
-      </body>
-    </html>`;
+function fixture(theme: Theme, pageType: PageType, fontSize: number): string {
+  const list = pageType === 'list' ? ' data-mail-minimal-list' : '';
+  const select = pageType === 'list' ? '<div class="nui-toolbar-item"><button class="nui-btn" data-control="select"><span class="nui-btn-text"><span class="nui-chk">□</span>⌄</span></button></div>' : '';
+  const action = (label: string, extra = '') => `<div class="nui-toolbar-item"><button class="nui-btn ${extra}"><span class="nui-btn-text">${label}</span></button></div>`;
+  const split = (label: string, disabled = false) => `<div class="nui-toolbar-item"><span class="nui-btn nui-splitBtn"><span class="nui-splitBtn-text ${disabled ? 'nui-splitBtn-text-disabled' : ''}">${label}</span><i class="nui-splitBtn-split"></i><button class="nui-splitBtn-arr ${disabled ? 'nui-splitBtn-arr-disabled' : ''}" aria-label="${label}菜单"><span class="nui-ico">⌄</span></button></span></div>`;
+  return `<!doctype html><html data-mail-minimal-theme="${theme}" data-mail-minimal-page="${pageType}"${list} style="--mail-minimal-font-size:${fontSize}px"><head><style>${nativeCss}</style><style>${extensionCss}</style></head><body><header class="frame-main-cont-head"><div class="nui-toolbar">${select}${pageType === 'read' ? action('返回') + action('回复') : ''}${action('删除', 'nui-btn-disabled')}${action('举报')}${split('标记为')}${split('移动到', true)}${action('更多')}${pageType === 'list' ? action('刷新') : ''}</div><div class="nui-toolbar-ext"><span class="nui-select">1/2 <span class="nui-select-arr">⌄</span></span><button class="nui-btn nui-roundBtn" aria-label="上一封"><span class="nui-btn-text"><span class="nui-ico-prev">←</span></span></button><button class="nui-btn nui-roundBtn" aria-label="下一封"><span class="nui-btn-text"><span class="nui-ico-next">→</span></span></button><button class="nui-btn nui-roundBtn settings" aria-label="设置"><span class="nui-btn-text">⚙</span></button></div></header></body></html>`;
 }
 
-async function toolbarMetrics(page: Page) {
-  return page.locator('.nui-toolbar .nui-btn:not(.nui-splitBtn):not([data-test])').evaluateAll((buttons) => buttons.map((button) => {
-    const rect = button.getBoundingClientRect();
-    const text = button.querySelector<HTMLElement>('.nui-btn-text')!.getBoundingClientRect();
-    return {
-      width: rect.width,
-      height: rect.height,
-      textCenterOffset: (text.top + text.bottom - rect.top - rect.bottom) / 2
-    };
-  }));
-}
-
-async function selectAllMetrics(page: Page) {
-  return page.locator('.nui-toolbar').evaluate((toolbar) => {
-    const rect = (selector: string) => {
-      const element = toolbar.querySelector<HTMLElement>(selector)!;
-      const { left, right, top, bottom } = element.getBoundingClientRect();
-      return { left, right, top, bottom, width: right - left, height: bottom - top };
-    };
-
-    const selectAll = rect('[data-test="select-all"]');
-    const deleteButton = rect('[data-test="delete"]');
-    const checkbox = rect('.nui-chk');
-    const arrow = rect('[data-test="select-all-arrow"]');
-    return {
-      selectAll,
-      deleteButton,
-      checkbox,
-      arrow,
-      gap: deleteButton.left - selectAll.right,
-      intersects: !(selectAll.right <= deleteButton.left || deleteButton.right <= selectAll.left || selectAll.bottom <= deleteButton.top || deleteButton.bottom <= selectAll.top)
-    };
-  });
-}
-
-for (const pageType of ['read', 'list'] as const) {
-  for (const theme of ['light', 'dark'] as const) {
-    test(`${theme} ${pageType} toolbar remains compact at all UI font sizes`, async ({ page }, testInfo) => {
-    for (const fontSize of [13, 14, 15, 16]) {
-      await page.setContent(pageMarkup(theme, fontSize, pageType));
-      const header = await page.locator('.frame-main-cont-head').boundingBox();
-      const buttons = await toolbarMetrics(page);
-
-      expect(header?.height).toBeGreaterThanOrEqual(40);
-      expect(header?.height).toBeLessThanOrEqual(44);
-      expect(buttons).toHaveLength(6);
-      // The fixture contains both short and long labels.  Natural-width controls
-      // must therefore not all be stretched to the same width.
-      expect(new Set(buttons.map((button) => Math.round(button.width))).size).toBeGreaterThan(1);
-      for (const button of buttons) {
-        expect(button.height).toBeGreaterThanOrEqual(30);
-        expect(button.height).toBeLessThanOrEqual(32);
-        expect(Math.abs(button.textCenterOffset)).toBeLessThanOrEqual(2);
+for (const theme of ['light', 'dark'] as const) {
+  for (const pageType of ['list', 'read'] as const) {
+    test(`${theme} ${pageType}: native compact toolbar states and seams`, async ({ page }, testInfo) => {
+      await page.setViewportSize({ width: 1280, height: 720 });
+      for (const fontSize of [13, 14, 15, 16]) {
+        await page.setContent(fixture(theme, pageType, fontSize));
+        const metrics = await page.locator('.frame-main-cont-head').evaluate((header) => {
+          const controls = [...header.querySelectorAll<HTMLElement>('.nui-toolbar > .nui-toolbar-item > .nui-btn')];
+          const frames = [...header.querySelectorAll<HTMLElement>('.nui-btn-text, .nui-splitBtn-text, .nui-splitBtn-arr')];
+          return {
+            toolbarHeight: header.getBoundingClientRect().height,
+            fits: header.scrollWidth <= header.clientWidth,
+            fontSizes: [...new Set(frames.map((frame) => getComputedStyle(frame).fontSize))],
+            heights: frames.map((frame) => frame.getBoundingClientRect().height),
+            gaps: controls.slice(1).map((control, index) => control.getBoundingClientRect().left - controls[index].getBoundingClientRect().right)
+          };
+        });
+        expect(metrics.toolbarHeight).toBe(42);
+        expect(metrics.fits).toBe(true);
+        expect(metrics.fontSizes).toEqual(['13px']);
+        expect(metrics.heights.every((height) => height >= 28 && height <= 30)).toBe(true);
+        expect(metrics.gaps.every((gap) => gap >= 0)).toBe(true);
       }
 
-      if (pageType === 'list') {
-        const selectAll = await selectAllMetrics(page);
-        expect(selectAll.selectAll.width).toBeGreaterThan(selectAll.checkbox.width);
-        expect(selectAll.gap).toBeGreaterThanOrEqual(4);
-        expect(selectAll.gap).toBeLessThanOrEqual(6);
-        expect(selectAll.intersects).toBe(false);
-        expect(selectAll.checkbox.left).toBeGreaterThanOrEqual(selectAll.selectAll.left);
-        expect(selectAll.checkbox.right).toBeLessThanOrEqual(selectAll.selectAll.right);
-        expect(selectAll.arrow.left).toBeGreaterThanOrEqual(selectAll.selectAll.left);
-        expect(selectAll.arrow.right).toBeLessThanOrEqual(selectAll.selectAll.right);
-      }
-    }
+      await page.setContent(fixture(theme, pageType, 16));
+      const appearance = await page.locator('.frame-main-cont-head').evaluate((header) => {
+        const style = (selector: string) => getComputedStyle(header.querySelector<HTMLElement>(selector)!);
+        const normal = style('.nui-toolbar-item .nui-btn:not(.nui-btn-disabled) .nui-btn-text');
+        const disabled = style('.nui-btn-disabled .nui-btn-text');
+        const splitText = style('.nui-splitBtn-text');
+        const splitArrow = style('.nui-splitBtn-arr');
+        const disabledSplit = style('.nui-splitBtn-text-disabled');
+        const previous = style('.nui-ico-prev').getPropertyValue('color');
+        const previousFrame = style('.nui-roundBtn:has(.nui-ico-prev) .nui-btn-text');
+        const nextFrame = style('.nui-roundBtn:has(.nui-ico-next) .nui-btn-text');
+        const settings = style('.settings .nui-btn-text');
+        return {
+          normalBackground: normal.backgroundColor, normalColor: normal.color, normalBorder: normal.borderTopColor, normalShadow: normal.boxShadow,
+          disabledBackground: disabled.backgroundColor, disabledColor: disabled.color, disabledOpacity: disabled.opacity,
+          splitBackground: splitText.backgroundColor, arrowBackground: splitArrow.backgroundColor, splitRight: splitText.borderRightWidth, arrowLeft: splitArrow.borderLeftWidth,
+          disabledSplitBackground: disabledSplit.backgroundColor, disabledSplitRight: disabledSplit.borderRightWidth,
+          previous, previousRight: previousFrame.borderRightWidth, nextLeft: nextFrame.borderLeftWidth,
+          previousRadius: previousFrame.borderTopLeftRadius, nextRadius: nextFrame.borderTopRightRadius, settingsRadius: settings.borderTopLeftRadius
+        };
+      });
+      const expectedBackground = theme === 'light' ? 'rgb(248, 250, 253)' : 'rgb(41, 52, 68)';
+      expect(appearance.normalBackground).toBe(expectedBackground);
+      expect(appearance.disabledBackground).toBe(expectedBackground);
+      expect(appearance.splitBackground).toBe(expectedBackground);
+      expect(appearance.arrowBackground).toBe(expectedBackground);
+      expect(appearance.disabledSplitBackground).toBe(expectedBackground);
+      expect(appearance.normalBorder).toBe(theme === 'light' ? 'rgb(229, 235, 243)' : 'rgb(52, 66, 84)');
+      expect(appearance.normalShadow).toBe('none');
+      expect(appearance.disabledColor).not.toBe(appearance.normalColor);
+      expect(appearance.disabledOpacity).toBe('1');
+      expect(appearance.splitRight).toBe('0px');
+      expect(appearance.arrowLeft).toBe('0px');
+      expect(appearance.disabledSplitRight).toBe('0px');
+      expect(appearance.previousRight).toBe('0px');
+      expect(appearance.nextLeft).toBe('1px');
+      expect(appearance.previousRadius).toBe('7px');
+      expect(appearance.nextRadius).toBe('7px');
+      expect(appearance.settingsRadius).toBe('7px');
 
-    await page.setContent(pageMarkup(theme, 14, pageType));
-    const firstAction = page.locator('.nui-toolbar .nui-btn').first();
-    const disabledAction = page.locator('.nui-toolbar .nui-btn').last();
-    const normalBackground = await firstAction.evaluate((button) => getComputedStyle(button).backgroundColor);
-    const normalColor = await firstAction.evaluate((button) => getComputedStyle(button).color);
-    await firstAction.hover();
-    const hoverBackground = await firstAction.evaluate((button) => getComputedStyle(button).backgroundColor);
-    const disabledColor = await disabledAction.evaluate((button) => getComputedStyle(button).color);
-
-    expect(hoverBackground).not.toBe(normalBackground);
-    expect(disabledColor).not.toBe(normalColor);
-
-    const frame = await firstAction.evaluate((button) => {
-      const computed = getComputedStyle(button);
-      return {
-        borderColor: computed.borderTopColor,
-        radius: computed.borderTopLeftRadius,
-        shadow: computed.boxShadow,
-        fontSize: computed.fontSize
-      };
-    });
-    expect(frame.borderColor).toBe(theme === 'light' ? 'rgb(220, 229, 240)' : 'rgb(57, 72, 90)');
-    expect(frame.radius).toBe('7px');
-    expect(frame.shadow).toBe('none');
-    expect(frame.fontSize).toBe('13px');
-
-    const splitMetrics = await page.locator('.nui-splitBtn').evaluateAll((splits) => splits.map((split) => {
-      const text = split.querySelector<HTMLElement>('.nui-splitBtn-text')!;
-      const arrow = split.querySelector<HTMLElement>('.nui-splitBtn-arr')!;
-      const root = split.getBoundingClientRect();
-      const textRect = text.getBoundingClientRect();
-      const arrowRect = arrow.getBoundingClientRect();
-      return {
-        rootHeight: root.height,
-        textHeight: textRect.height,
-        arrowHeight: arrowRect.height,
-        joinGap: arrowRect.left - textRect.right,
-        textBackground: getComputedStyle(text).backgroundColor,
-        arrowBackground: getComputedStyle(arrow).backgroundColor,
-        rootColor: getComputedStyle(split).color,
-        textColor: getComputedStyle(text).color
-      };
-    }));
-    expect(splitMetrics).toHaveLength(2);
-    for (const split of splitMetrics) {
-      expect(split.rootHeight).toBeGreaterThanOrEqual(30);
-      expect(split.rootHeight).toBeLessThanOrEqual(32);
-      // The one-pixel outer frame leaves a 30px content box inside the visual
-      // button, so both split children must fill that inner box.
-      expect(split.rootHeight - split.textHeight).toBeLessThanOrEqual(2);
-      expect(split.rootHeight - split.arrowHeight).toBeLessThanOrEqual(2);
-      expect(Math.abs(split.joinGap)).toBeLessThanOrEqual(2);
-      expect(split.textBackground).toBe('rgba(0, 0, 0, 0)');
-      expect(split.arrowBackground).toBe('rgba(0, 0, 0, 0)');
-    }
-    expect(splitMetrics[1].textColor).not.toBe(splitMetrics[0].textColor);
-
-    const selectMetrics = await page.locator('.nui-toolbar-ext .nui-select').evaluate((select) => {
-      const styles = getComputedStyle(select);
-      return { height: select.getBoundingClientRect().height, background: styles.backgroundColor, fontSize: styles.fontSize };
-    });
-    expect(selectMetrics.height).toBeGreaterThanOrEqual(30);
-    expect(selectMetrics.height).toBeLessThanOrEqual(32);
-    expect(selectMetrics.fontSize).toBe('13px');
-
-    for (const viewportWidth of [1280, 1600, 1920]) {
-      for (const zoom of [1, 1.25, 1.5]) {
-        await page.setViewportSize({ width: viewportWidth, height: 720 });
-        await page.setContent(pageMarkup(theme, 16, pageType));
-        await page.evaluate((value) => { document.body.style.zoom = String(value); }, zoom);
-        const layout = await page.locator('.frame-main-cont-head').evaluate((header) => ({
-          scrollWidth: header.scrollWidth,
-          clientWidth: header.clientWidth,
-          toolbarFontSize: getComputedStyle(header.querySelector('.nui-toolbar')!).fontSize,
-          buttonMinHeight: getComputedStyle(header.querySelector('.nui-btn')!).minHeight
-        }));
-        expect(layout.scrollWidth).toBeLessThanOrEqual(layout.clientWidth);
-        expect(layout.toolbarFontSize).toBe('13px');
-        expect(layout.buttonMinHeight).toBe('30px');
-        if (pageType === 'list') {
-          const selectAll = await selectAllMetrics(page);
-          expect(selectAll.intersects).toBe(false);
-          expect(selectAll.gap).toBeGreaterThan(0);
-        }
-      }
-    }
-
-    await page.setViewportSize({ width: 1280, height: 720 });
-    await page.setContent(pageMarkup(theme, 14, pageType));
-    await page.screenshot({ path: testInfo.outputPath(`${pageType}-toolbar-${theme}.png`) });
+      const regular = page.locator('.nui-toolbar-item .nui-btn:not(.nui-btn-disabled)').first();
+      const beforeHover = await regular.locator('.nui-btn-text').evaluate((el) => getComputedStyle(el).backgroundColor);
+      await regular.hover();
+      const afterHover = await regular.locator('.nui-btn-text').evaluate((el) => getComputedStyle(el).backgroundColor);
+      expect(afterHover).not.toBe(beforeHover);
+      await page.locator('.frame-main-cont-head').screenshot({ path: testInfo.outputPath(`${theme}-${pageType}-toolbar.png`) });
     });
   }
 }
+
+test('theme switching changes colors without shifting native control geometry', async ({ page }) => {
+  await page.setContent(fixture('light', 'list', 14));
+  const control = page.locator('.nui-toolbar-item .nui-btn-text').first();
+  const before = await control.boundingBox();
+  await page.locator('html').evaluate((root) => root.setAttribute('data-mail-minimal-theme', 'dark'));
+  const after = await control.boundingBox();
+  expect(after).toEqual(before);
+  expect(await control.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe('rgb(41, 52, 68)');
+});
+
+test('native controls stay separate across desktop widths, zoom levels and selection states', async ({ page }) => {
+  for (const theme of ['light', 'dark'] as const) {
+    for (const width of [1280, 1600, 1920]) {
+      await page.setViewportSize({ width, height: 720 });
+      for (const zoom of [1, 1.25, 1.5]) {
+        await page.setContent(fixture(theme, 'list', 16));
+        await page.locator('body').evaluate((body, value) => { body.style.zoom = String(value); }, zoom);
+        for (const selected of [0, 1, 2]) {
+          await page.locator('.nui-toolbar-item:nth-child(2) .nui-btn').evaluate((button, count) => {
+            button.classList.toggle('nui-btn-disabled', count === 0);
+          }, selected);
+          const layout = await page.locator('.frame-main-cont-head').evaluate((header) => {
+            const select = header.querySelector<HTMLElement>('[data-control="select"]')!.getBoundingClientRect();
+            const deletion = header.querySelector<HTMLElement>('.nui-toolbar-item:nth-child(2) .nui-btn')!.getBoundingClientRect();
+            return {
+              fits: header.scrollWidth <= header.clientWidth,
+              gap: deletion.left - select.right,
+              toolbarFont: getComputedStyle(header.querySelector('.nui-toolbar')!).fontSize
+            };
+          });
+          expect(layout.fits).toBe(true);
+          expect(layout.gap).toBeGreaterThan(0);
+          expect(layout.toolbarFont).toBe('13px');
+        }
+      }
+    }
+  }
+});

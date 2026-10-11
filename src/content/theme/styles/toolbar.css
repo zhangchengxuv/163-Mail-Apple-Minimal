@@ -1,0 +1,96 @@
+/* NetEase paints its buttons on .nui-btn-text and the two split-button
+   children. Keep the native float layout, hit targets and child positioning. */
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) :is(.frame-main-cont-head, .nui-toolbar, .nui-toolbar-ext) {
+  background-color: var(--mail-toolbar-bg) !important;
+  background-image: none !important;
+  color: var(--mail-toolbar-text) !important;
+}
+
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) .frame-main-cont-head {
+  min-block-size: var(--mail-toolbar-height) !important;
+  border-color: var(--mail-minimal-border) !important;
+}
+
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) :is(.nui-toolbar, .nui-toolbar-ext) {
+  font-size: var(--mail-toolbar-font-size) !important;
+}
+
+/* The native root is a hit target, not an additional visual frame. */
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) :is(.nui-toolbar, .nui-toolbar-ext) :is(.nui-btn, .nui-splitBtn, .nui-roundBtn) {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--mail-toolbar-text) !important;
+  font-size: var(--mail-toolbar-font-size) !important;
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+}
+
+/* One frame per visible native control, including pagination and settings. */
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) :is(.nui-toolbar .nui-btn-text, .nui-toolbar-ext .nui-btn-text, .nui-toolbar .nui-splitBtn-text, .nui-toolbar .nui-splitBtn-arr, .nui-toolbar-ext .nui-select) {
+  background: var(--mail-toolbar-button-bg) !important;
+  border-color: var(--mail-toolbar-button-border) !important;
+  border-radius: var(--mail-toolbar-radius) !important;
+  box-shadow: none !important;
+  color: var(--mail-toolbar-text) !important;
+  font-size: var(--mail-toolbar-font-size) !important;
+  letter-spacing: normal !important;
+  text-shadow: none !important;
+}
+
+/* The split component has only its native outside edges and one separator. */
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) .nui-toolbar .nui-splitBtn-text {
+  border-inline-end-width: 0 !important;
+  border-radius: var(--mail-toolbar-radius) 0 0 var(--mail-toolbar-radius) !important;
+  padding-inline-end: 8px !important;
+}
+
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) .nui-toolbar .nui-splitBtn-arr {
+  border-inline-start-width: 0 !important;
+  border-radius: 0 var(--mail-toolbar-radius) var(--mail-toolbar-radius) 0 !important;
+}
+
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) .nui-toolbar .nui-splitBtn-split {
+  background-color: var(--mail-toolbar-divider) !important;
+}
+
+/* The paired native arrow buttons share a single centre stroke. The gear is
+   not part of this pair and keeps the ordinary full radius. */
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) .nui-toolbar-ext .nui-roundBtn:has(.nui-ico-prev) .nui-btn-text {
+  border-inline-end-width: 0 !important;
+  border-radius: var(--mail-toolbar-radius) 0 0 var(--mail-toolbar-radius) !important;
+}
+
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) .nui-toolbar-ext .nui-roundBtn:has(.nui-ico-next) .nui-btn-text {
+  border-radius: 0 var(--mail-toolbar-radius) var(--mail-toolbar-radius) 0 !important;
+}
+
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) :is(.nui-toolbar, .nui-toolbar-ext) :is(.nui-btn-icon, .nui-splitBtn-arr .nui-ico, .nui-select-arr) {
+  color: var(--mail-toolbar-icon) !important;
+}
+
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) :is(.nui-toolbar, .nui-toolbar-ext) :is(.nui-btn, .nui-splitBtn, .nui-roundBtn):is(:hover, .nui-btn-hover):not(:disabled):not([aria-disabled="true"]):not(.nui-btn-disabled):not(:has(.nui-splitBtn-text-disabled, .nui-splitBtn-arr-disabled)) :is(.nui-btn-text, .nui-splitBtn-text, .nui-splitBtn-arr),
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) .nui-toolbar-ext .nui-select:hover:not(.nui-select-disabled) {
+  background: var(--mail-toolbar-hover) !important;
+}
+
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) :is(.nui-toolbar, .nui-toolbar-ext) :is(.nui-btn, .nui-splitBtn, .nui-roundBtn):is(:active, .nui-btn-active):not(:disabled):not([aria-disabled="true"]):not(.nui-btn-disabled):not(:has(.nui-splitBtn-text-disabled, .nui-splitBtn-arr-disabled)) :is(.nui-btn-text, .nui-splitBtn-text, .nui-splitBtn-arr) {
+  background: var(--mail-toolbar-active) !important;
+}
+
+/* NetEase's disabled child rule uses !important and a fixed light background. */
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) :is(.nui-toolbar, .nui-toolbar-ext) :is(.nui-btn-disabled .nui-btn-text, .nui-btn:disabled .nui-btn-text, .nui-btn[aria-disabled="true"] .nui-btn-text, .nui-roundBtn:disabled .nui-btn-text, .nui-roundBtn[aria-disabled="true"] .nui-btn-text, .nui-btn-text-disabled, .nui-splitBtn-text-disabled, .nui-splitBtn-arr-disabled, .nui-splitBtn-arr:disabled, .nui-splitBtn-arr[aria-disabled="true"], .nui-select-disabled) {
+  background: var(--mail-toolbar-button-bg) !important;
+  border-color: var(--mail-toolbar-button-border) !important;
+  color: var(--mail-toolbar-disabled) !important;
+  opacity: 1 !important;
+}
+
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) :is(.nui-toolbar, .nui-toolbar-ext) :is(.nui-btn-disabled, .nui-btn:disabled, .nui-btn[aria-disabled="true"], .nui-roundBtn:disabled, .nui-roundBtn[aria-disabled="true"], .nui-splitBtn:has(.nui-splitBtn-text-disabled), .nui-splitBtn:has(.nui-splitBtn-arr-disabled)) :is(.nui-btn-icon, .nui-ico) {
+  color: var(--mail-toolbar-disabled) !important;
+}
+
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) :is(.nui-toolbar, .nui-toolbar-ext) :is(.nui-btn, .nui-roundBtn, .nui-splitBtn-text, .nui-splitBtn-arr, .nui-select):focus-visible {
+  outline: 2px solid var(--mail-focus-ring) !important;
+  outline-offset: 1px !important;
+}
