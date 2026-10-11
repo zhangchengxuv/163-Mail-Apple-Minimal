@@ -25,11 +25,15 @@ describe('dark theme CSS regression boundaries', () => {
 
   it('keeps native mail-row layers continuous and avoids bright separators', () => {
     const css = readStyle('mail-list.css');
+    const shared = readStyle('common.css');
     expect(css).toContain(':is(.nl0, .hV0, .im0)');
     expect(css).toContain('border-bottom-color: color-mix');
     expect(css).toContain('background-color: var(--mail-toolbar-button-bg)');
     expect(css).toContain('.nui-splitBtn-text');
     expect(css).toContain('.nui-splitBtn-arr');
+    expect(shared).toContain('border-color: var(--mail-toolbar-button-border)');
+    expect(shared).toContain('border-radius: var(--mail-toolbar-radius)');
+    expect(css).not.toContain('min-inline-size: 0 !important');
   });
 
   it('uses one shared search surface without a nested input background in either theme', () => {

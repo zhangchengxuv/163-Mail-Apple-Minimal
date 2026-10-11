@@ -24,6 +24,13 @@ html[data-mail-minimal-theme] :focus-visible {
   outline: 2px solid var(--mail-focus-ring) !important;
   outline-offset: 2px !important;
 }
+/* One visual frame for both native toolbars. Page styles keep NetEase's own
+   widths, margins, split-button structure and control order. */
+html[data-mail-minimal-theme]:is([data-mail-minimal-page="read"], [data-mail-minimal-page="list"][data-mail-minimal-list]) :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn, .nui-toolbar-ext .nui-select) {
+  border-color: var(--mail-toolbar-button-border) !important;
+  border-radius: var(--mail-toolbar-radius) !important;
+  box-shadow: none !important;
+}
 @media (prefers-reduced-motion: reduce) {
   html[data-mail-minimal-theme] *, html[data-mail-minimal-theme] *::before, html[data-mail-minimal-theme] *::after { transition-duration: 0ms !important; }
 }

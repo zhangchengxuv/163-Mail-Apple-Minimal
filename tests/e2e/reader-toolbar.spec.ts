@@ -3,7 +3,7 @@ import type { Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const styles = ['tokens.css', 'reader.css', 'mail-list.css']
+const styles = ['tokens.css', 'common.css', 'reader.css', 'mail-list.css']
   .map((name) => readFileSync(resolve(process.cwd(), 'src/content/theme/styles', name), 'utf8'))
   .join('\n');
 
@@ -131,6 +131,20 @@ for (const pageType of ['read', 'list'] as const) {
 
     expect(hoverBackground).not.toBe(normalBackground);
     expect(disabledColor).not.toBe(normalColor);
+
+    const frame = await firstAction.evaluate((button) => {
+      const computed = getComputedStyle(button);
+      return {
+        borderColor: computed.borderTopColor,
+        radius: computed.borderTopLeftRadius,
+        shadow: computed.boxShadow,
+        fontSize: computed.fontSize
+      };
+    });
+    expect(frame.borderColor).toBe(theme === 'light' ? 'rgb(220, 229, 240)' : 'rgb(57, 72, 90)');
+    expect(frame.radius).toBe('7px');
+    expect(frame.shadow).toBe('none');
+    expect(frame.fontSize).toBe('13px');
 
     const splitMetrics = await page.locator('.nui-splitBtn').evaluateAll((splits) => splits.map((split) => {
       const text = split.querySelector<HTMLElement>('.nui-splitBtn-text')!;

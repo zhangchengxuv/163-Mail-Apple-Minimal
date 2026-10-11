@@ -20,24 +20,18 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar, .
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn) {
   min-block-size: var(--mail-toolbar-button-height) !important;
-  border-color: var(--mail-toolbar-button-border) !important;
-  border-radius: var(--mail-toolbar-radius) !important;
   background-color: var(--mail-toolbar-button-bg) !important;
   background-image: none !important;
   color: var(--mail-toolbar-text) !important;
-  box-shadow: none !important;
   font-size: var(--mail-toolbar-font-size) !important;
   letter-spacing: normal !important;
   word-spacing: normal !important;
 }
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar-ext .nui-select {
-  border-color: var(--mail-toolbar-button-border) !important;
-  border-radius: var(--mail-toolbar-radius) !important;
   background-color: var(--mail-toolbar-button-bg) !important;
   background-image: none !important;
   color: var(--mail-toolbar-text) !important;
-  box-shadow: none !important;
   font-size: var(--mail-toolbar-font-size) !important;
 }
 
@@ -58,7 +52,6 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .n
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn):hover:not(:disabled):not([aria-disabled="true"]),
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar-ext .nui-select:hover {
   background-color: var(--mail-toolbar-hover) !important;
-  border-color: var(--mail-toolbar-divider) !important;
 }
 
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn, .nui-toolbar-ext .nui-roundBtn):active:not(:disabled):not([aria-disabled="true"]) {
@@ -73,7 +66,6 @@ html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .n
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] :is(.nui-toolbar .nui-btn:disabled, .nui-toolbar .nui-btn[aria-disabled="true"], .nui-toolbar .nui-btn-disabled, .nui-toolbar-ext .nui-roundBtn:disabled, .nui-toolbar-ext .nui-roundBtn[aria-disabled="true"], .nui-toolbar-ext .nui-btn-disabled),
 html[data-mail-minimal-page="read"][data-mail-minimal-theme] .nui-toolbar :is(.nui-btn:has(.nui-splitBtn-text-disabled), .nui-btn:has(.nui-splitBtn-arr-disabled), .nui-splitBtn:has(.nui-splitBtn-text-disabled), .nui-splitBtn:has(.nui-splitBtn-arr-disabled)) {
   background-color: var(--mail-toolbar-button-bg) !important;
-  border-color: var(--mail-toolbar-button-border) !important;
   color: var(--mail-toolbar-disabled) !important;
   opacity: 1 !important;
 }
